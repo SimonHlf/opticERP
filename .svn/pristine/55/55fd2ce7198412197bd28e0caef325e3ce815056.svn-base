@@ -1,0 +1,78 @@
+package com.optic.service;
+
+import java.util.List;
+
+import com.optic.exception.WEBException;
+import com.optic.module.ProductInfo;
+
+public interface ProductInfoManager {
+	/**
+	 * 添加产品信息
+	 * @param pNo 产品编码
+	 * @param pType 产品类别
+	 * @param pName 产品名称
+	 * @param pPy 产品拼音码
+	 * @param pSpec 产品规格
+	 * @param pCz 材质要求
+	 * @param pUnit 基本单位
+	 * @param pType2 产品类别二
+	 * @param pPriceL 最低单价
+	 * @param pPriceH 最高单价
+	 * @param pPriceA 平均单价
+	 * @param pNumber 库存量
+	 * @param pRemark 商品备注
+	 * @return
+	 * @throws WEBException
+	 */
+	Integer addProductInfo(String pNo,Integer pType,String pName,String pPy,String pSpec,String pCz,String pUnit,
+	 String pType2,Float pPriceL,Float pPriceH,Float pPriceA,Integer pNumber,String pRemark)throws WEBException;
+	/**
+	 * 删除指定编号的产品信息
+	 * @param id 产品编号
+	 * @return
+	 * @throws WEBException
+	 */
+	boolean deleteProductInfo(Integer id)throws WEBException;
+	/**
+	 * 更新产品信息
+	 * @param id 主键
+	 * @param pNo 产品编码
+	 * @param pType 产品类别
+	 * @param pName 产品名称
+	 * @param pPy 产品拼音码
+	 * @param pSpec 商品规格
+	 * @param pCz 材质要求
+	 * @param pUnit 基本单位
+	 * @param pType2 产品类别二
+	 * @param pPriceL 最低单价
+	 * @param pPriceH 最高单价
+	 * @param pPriceA 平均单价
+	 * @param pNumber 库存量
+	 * @param pRemark 产品备注
+	 * @return
+	 * @throws WEBException
+	 */
+	boolean updateProductInfo(Integer id,String pNo,Integer pType,String pName,String pPy,String pSpec,String pCz,String pUnit,
+			 String pType2,Float pPriceL,Float pPriceH,Float pPriceA,Integer pNumber,String pRemark)throws WEBException;
+	/**
+	 * 查询产品信息
+	 * @return
+	 * @throws WEBException
+	 */
+	List<ProductInfo> listProductInfo(Integer proTypeId , String proPy,int pageNo, int pageSize)throws WEBException;
+	/**
+	 * 根据添加获取产品的记录数
+	 * @param proTypeId
+	 * @param proPy
+	 * @return
+	 * @throws WEBException
+	 */
+	Integer getProCount(Integer proTypeId , String proPy)throws WEBException; 
+	/**
+	 * 查看指定产品信息
+	 * @param proId 产品编号
+	 * @return
+	 * @throws WEBException
+	 */
+	List<ProductInfo> listProInfo(Integer proId )throws WEBException;
+}

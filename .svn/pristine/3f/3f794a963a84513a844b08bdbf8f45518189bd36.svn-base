@@ -1,0 +1,347 @@
+<%@ page contentType="text/html; charset=UTF-8" language="java"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" href="Module/css/reset.css"/>
+		<link rel="stylesheet" type="text/css" href="Module/basicInfo/css/basicInfo.css"/>
+		<link rel="stylesheet" type="text/css" href="Module/basicInfo/css/addProductInfoCss.css"/>
+		<link rel="stylesheet" type="text/css" href="Module/css/iconfont.css"/>
+		<script src="Module/commonJs/jquery-1.7.2.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="Module/commonJs/comMethod.js" type="text/javascript" charset="utf-8"></script>
+		<script src="Module/basicInfo/js/basicInfo.js" type="text/javascript" charset="utf-8"></script>
+		<script src="Module/basicInfo/js/addProductInfo.js" type="text/javascript" charset="utf-8"></script>
+		<title>添加产品信息</title>
+		<script type="text/javascript">
+			$(function(){
+				judgeTime("addProInfo");
+				checkCategUlHei("addProInfo");
+				listPt("selCategUl");
+				listPt("categUl");
+				listProduct();
+			});
+			//添加产品弹窗
+			function showAddProWin(){
+				$(".addNewProDiv").show();
+				$(".layer").show();
+				$(".comCategStyInp").each(function(){
+					$(this).on("click",function(){
+						if($(this).attr("id")=="categSty_buy"){
+							$("#categSty_buy").attr("checked","checked");
+							$("#categSty_made").removeAttr("checked");
+							$("#pt_type").val("b");
+						}else if($(this).attr("id")=="categSty_made"){
+							$("#categSty_made").attr("checked","checked");
+							$("#categSty_buy").removeAttr("checked");
+							$("#pt_type").val("m");
+						}
+						$(this).parent("label").append("<i class='iconfont icon-duihao choiceAct'></i>").siblings().find('i').remove();
+					});
+				});
+			}
+		</script>
+	</head>
+	<body>
+		<!-- 头部  -->
+		<div class="headWrap">
+			<img class="logo fl" src="Module/basicInfo/images/logo.png" alt="镜片车间ERP管理系统"/>
+			<div class="perInfoBox fr">
+				<div class="perInfo clearfix fl">
+					<img class="fl" src="Module/basicInfo/images/user.png"/>
+					<p class="timeHello fl"></p>
+					<p class="fl">${sessionScope.login_real_name}</p>
+				</div>
+				<a class="exit fr" href="javascript:void(0)" title="退出系统" onclick="loginOut()">
+					<i class="iconfont icon-tuichu exitIcon"></i>
+				</a>
+			</div>
+		</div>
+		<!-- 主体  -->
+		<div class="mainWrap clearfix">
+			<!-- 左侧导航  -->
+			<div class="leftPart"></div>
+			<!-- 左侧副导航  -->
+			<div class="leftSmallNav">
+				<ul>
+					<li><span></span>添加产品类别</li>
+					<li class="active"><span></span>添加产品信息</li>
+					<li><span></span>添加往来单位信息</li>
+					<li><span></span>添加仓库货架信息</li>
+				</ul>
+			</div>
+			<!-- 右侧对应内容  -->
+			<div class="rightPart hasSmaNav">
+				<!-- 头部搜索框 -->
+				<div class="searWrap">
+					<div class="searBox comMainWid">
+						<p class="fl">
+							全部&nbsp;&gt;
+							<a href="javascript:void(0)">
+								<span id="secMenu">镜片耗材类</span>
+								<i class="iconfont icon-close closeIcon_3 comTransition"></i>
+								
+							</a>
+							<span class="gtSpan">&gt;</span>
+						</p>
+						<a class="addCategBtn fr" href="javascript:void(0)" onclick="showAddProWin()">
+							<i class="iconfont icon-tianjia addCaIcon fl"></i>
+							<span class="fl">添加产品</span>
+						</a>
+						<div class="searchDiv margL_pro fl">
+							<input type="text" id="searInput" value="请输入产品编码" class="searInp fl"/>
+							<a href="javascript:void(0)" class="searA fl" title="查询">
+								<i class="iconfont icon-search searIcon"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+				<!-- 商品类别层 -->
+				<div class="categBox comMainWid margT_prod categHei_proInfo">
+					<p class="titP fl">产品类别</p>
+					<div id="categUlBox" class="categUlBox fl">
+						<ul id="categUl">
+							<%--<li class="active">全部</li>
+							<li>钢笔耗材类</li>
+							<li>镜片耗材</li>
+							<li>磨砂镜片</li>
+							<li>百货</li>
+							<li>文具类</li>
+							<li>钢笔耗材类</li>
+						--%></ul>
+						<a class="setBtn" href="javascript:void(0)" title="编辑" onclick="editCategWin()">
+							<i class="iconfont icon-shezhi fixIcon comTransition"></i>
+						</a>
+					</div>
+				</div>
+				<div class="mainCon comMainWid clearfix">
+					<div class="listTit">
+						<ul>
+							<li class="listWid1 bigWid1 ellip">产品名称</li>
+							<li class="listWid1 bigWid1">产品类别</li>
+							<li class="listWid2 bigWid2">类别类型</li>
+							<li class="listWid1 bigWid1">产品编码</li>
+							<li class="listWid1 bigWid1">产品规格</li>
+							<li class="listWid2 bigWid2">基本单位</li>
+							<li class="listWid1 bigWid1">材质要求</li>
+							<li class="listWid1 bigWid1">产品库存</li>
+							<li class="listWid3 bigWid3">单价(最低/最高/平均)</li>
+							<li class="listWid1 bigWid1 ellip">产品备注</li>
+							<li class="listWid2 bigWid2">操作</li>
+						</ul>
+					</div>
+					<div class="listCon">
+						<ul id="proList">
+							<li>
+								<p class="listWid1 bigWid1 ellip">磨砂镜片</p>
+								<p class="listWid1 bigWid1">镜片耗材类</p>
+								<p class="listWid2 bigWid2">制造</p>
+								<p class="listWid1 bigWid1">HNS-2015-SN</p>
+								<p class="listWid1 bigWid1">20cm*20cm</p>
+								<p class="listWid2 bigWid2">个</p>
+								<p class="listWid1 bigWid1 ellip">HNBS-350</p>
+								<p class="listWid1 bigWid1 ellip">150件</p>
+								<p class="listWid3 bigWid3 ellip">220元/5000元/25.2元</p>
+								<p class="listWid1 bigWid1 ellip">这个是要发呢</p>
+								<p class="listWid2 bigWid2">
+									<a href="javascript:void(0)" onclick="">编辑</a>
+								</p>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="layer"></div>
+		<!-- 增加商品/编辑商品弹窗 -->
+		<div class="addNewProDiv addProHei">
+			<i class="iconfont icon-close closeIcon comTransition" onclick="closeAddProdWin()"></i>
+			<span class="decSpan"><i class="iconfont icon-addProd addProIcon"></i></span>
+			<div class="comAddDiv margT">
+				<span>产品名称：</span>
+				<input type="text"  class="comInp_add" id="proName"/>
+				<!-- input提示信息 -->
+				<div id="proNameDiv" class="tipDiv">
+					<span class="tipTriSpan"></span>
+					<p></p>
+				</div>
+				<i id="sucProNa" class="iconfont icon-duihao sucInfoIcon"></i>
+			</div>
+			<div class="comAddDiv margT">
+				<span class="fl">产品类别：</span>
+				<div class="selCategDiv fl">
+					<!-- 将确定的分类增加到p标签里面 -->
+					<input type="hidden" id="ptID" />
+					<p  id="new_protype"></p>
+					<a class="classifyA" href="javascript:void(0)" title="查看分类" onclick="selCateg('addProInfo')">
+						<i class="iconfont icon-fenlei2 classifyIcon"></i>
+					</a>
+				</div>
+				<!-- input提示信息 -->
+				<div id="proCategDiv" class="tipDiv">
+					<span class="tipTriSpan"></span>
+					<p></p>
+				</div>
+				<i id="sucProCateg" class="iconfont icon-duihao sucInfoIcon1"></i>
+			</div>
+			<div class="comAddDiv">
+				<span>产品编码：</span>
+				<input type="text" class="comInp_add" id="pro_no"/>
+				<!-- input提示信息 -->
+				<div id="proCodeDiv" class="tipDiv">
+					<span class="tipTriSpan"></span>
+					<p></p>
+				</div>
+				<i id="sucProCode" class="iconfont icon-duihao sucInfoIcon"></i>
+			</div>
+			<div class="comAddDiv">
+				<span>产品规格：</span>
+				<input type="text" class="comInp_add" id="pro_spec"/>
+				<!-- input提示信息 -->
+				<div id="proFormatDiv" class="tipDiv">
+					<span class="tipTriSpan"></span>
+					<p></p>
+				</div>
+				<i id="sucProFormat" class="iconfont icon-duihao sucInfoIcon"></i>
+			</div>
+			<div class="comAddDiv">
+				<span>基本单位：</span>
+				<input type="text" class="comInp_add" id="pro_unit"/>
+				<!-- input提示信息 -->
+				<div id="basicUnit" class="tipDiv">
+					<span class="tipTriSpan"></span>
+					<p></p>
+				</div>
+				<i id="sucBasicUn" class="iconfont icon-duihao sucInfoIcon"></i>
+			</div>
+			<div class="comAddDiv">
+				<span>材质要求：</span>
+				<input type="text" class="comInp_add" id="pro_cz"/>
+				<!-- input提示信息 -->
+				<div id="materReqDiv" class="tipDiv">
+					<span class="tipTriSpan"></span>
+					<p></p>
+				</div>
+				<i id="sucMatReq" class="iconfont icon-duihao sucInfoIcon"></i>
+			</div>
+			<div class="comAddDiv">
+			   <input id="pt_type" type="hidden"/>
+				<span class="fl">类别类型：</span>
+				<label for="categSty_buy" class="categStyLab">
+					<input type="radio" id="categSty_buy" name="categStyRad" class="comCategStyInp"/>
+					<em>购进</em>
+					<span class="cirSpan"></span>
+				</label>
+				<label for="categSty_made" class="categStyLab">
+					<input type="radio" id="categSty_made" name="categStyRad" class="comCategStyInp"/>
+					<em>制造</em>
+					<span class="cirSpan"></span>
+				</label>
+				<!-- input提示信息 -->
+				<div id="proCategDiv" class="tipDiv">
+					<span class="tipTriSpan"></span>
+					<p></p>
+				</div>
+			</div>
+			<div class="comAddDiv">
+				<span>产品备注：</span>
+				<input type="text" class="comInp_add" id="pro_remark"/>
+				<!-- input提示信息 -->
+				<div id="proRemarkDiv" class="tipDiv">
+					<span class="tipTriSpan"></span>
+					<p></p>
+				</div>
+				<i id="sucProRem" class="iconfont icon-duihao sucInfoIcon"></i>
+			</div>
+			<div class="addBot fl">
+				<a href="javascript:void(0)" onclick="addProduct()">添加保存</a>
+			</div>
+			<!-- 查看商品类别层 -->
+			<div class="checkCategLayer">
+				<p>当前类别&gt&gt<span id="nowCateg_pro"></span></p>
+				<div id="selCategWrap" class="selCategHei_pro">
+					<ul id="selCategUl" class="clearfix">
+						
+					</ul>
+				</div>
+				<!-- 增加单位类别/关闭按钮 -->
+				<div class="selCategBot">
+					<a class="addBtn btn1" href="javascript:void(0)" onclick="addNewCateg()">增加产品类别</a>
+					<a class="addBtn btn2" href="javascript:void(0)" onclick="saveprotype()">保存</a>
+					<a class="cancelBtn" href="javascript:void(0)" onclick="closeSelCategWin()">关闭</a>
+				</div>
+				<!-- 增加产品类别层 -->
+				<div class="addCategBox addCategBoxHei_pro">
+					<div class="comAddDiv2 margT2">
+						<span>类别名称：</span>
+						<input type="text" class="comInp_add2"/>
+						<!-- input提示信息 -->
+						<div id="categNameDiv" class="tipDiv">
+							<span class="tipTriSpan"></span>
+							<span>类别名称不能为空</span>
+						</div>
+						<i id="sucCategNam" class="iconfont icon-duihao sucInfoIcon"></i>
+					</div>
+					<div class="comAddDiv2">
+						<span>类别备注：</span>
+						<input type="text" class="comInp_add2"/>
+						<!-- input提示信息 -->
+						<div id="categRemDiv" class="tipDiv">
+							<span class="tipTriSpan"></span>
+							<span></span>
+						</div>
+						<i id="sucCategRem_" class="iconfont icon-duihao sucInfoIcon"></i>
+					</div>
+					<div class="addBotInner">
+						<a class="saveBtn" href="javascript:void(0)">保存</a>
+						<a class="cancel" href="javascript:void(0)" onclick="cancelAddCateg('addProInfo')">取消</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--产品类别编辑层 -->
+		<div class="editCategWin editHei_pro">
+			<div class="editWinTop">
+				<p>编辑产品类别</p>
+				<i class="iconfont icon-close closeIcon_2 comTransition" onclick="closeEditCategWin()"></i>
+			</div>
+			<div id="editConDiv" class="editCon">
+				<ul id="eiitConUl">
+					<li>
+						<a href="javascript:void(0)">
+							<i class="iconfont icon-edit editIcon1"></i>
+						</a>
+						<span>钢笔耗材类</span>
+					</li>
+					<li>
+						<a href="javascript:void(0)">
+							<i class="iconfont icon-edit editIcon1"></i>
+						</a>
+						<span>钢笔耗材类</span>
+					</li>
+					<li>
+						<a href="javascript:void(0)">
+							<i class="iconfont icon-edit editIcon1"></i>
+						</a>
+						<span>钢笔耗材类</span>
+					</li>
+				</ul>
+			</div>
+			<div class="editBot">
+				<div class="comEditCategDiv margRedit">
+					<span>类别名称：</span>
+					<input type="text" class="comInp_edCateg" placeholder="如：镜片耗材类"/>
+				</div>
+				<div class="comEditCategDiv">
+					<span>类别备注：</span>
+					<input type="text" class="comInp_edCateg"/>
+				</div>
+			</div>
+			<a class="saveEditBtn" href="javascript:void(0)">保存</a>
+		</div>
+		<!-- 模拟alert弹层 -->
+		<div class="alertWin succBg">
+			<i class="iconfont fl"></i>
+			<em class="fl"></em>
+		</div>
+	</body>
+</html>

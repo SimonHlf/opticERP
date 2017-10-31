@@ -1,0 +1,108 @@
+package com.optic.dao;
+
+import java.util.List;
+
+import org.hibernate.Session;
+
+import com.optic.module.OutSellInfo;
+
+public interface OutSellInfoDao {
+	/**
+	 * 根据主键加载业务销售出库信息实体
+	 * @param sess 持久化操作所需要的Hiberate Session
+	 * @param id 需要加载的业务销售出库信息的主键值
+	 * @return 加载的业务销售出库信息PO
+	 */
+	
+	OutSellInfo get(Session sess,int id);
+	
+	/**
+	 * 保存业务销售出库实体，新增一条业务销售出库信息记录
+	 * @param osInfo 保存的业务销售出库信息实例
+	 */
+	void save(Session sess,OutSellInfo osInfo);
+	
+	/**
+	 * 删除业务销售出库实体，删除一条业务销售出库信息记录
+	 * @param osInfo 删除的业务销售出库信息实体
+	 */
+	void delete(Session sess,OutSellInfo osInfo);
+	
+	/**
+	 * 根据主键删除业务销售出库实体，删除一条业务销售出库信息记录
+	 * @param id 需要删除业务销售出库信息的主键
+	 */
+	void delete(Session sess,int id);
+	
+	/**
+	 * 更新一条业务销售出库信息记录
+	 * @param osInfo 需要更新的业务销售出库信息
+	 */
+	void update(Session sess,OutSellInfo osInfo);
+	
+	/**
+	 * 根据条件分页获取商品销售出库信息列表
+	 * @description
+	 * @author wm
+	 * @date 2017-6-6 下午03:44:29
+	 * @param sess
+	 * @param osNo 出库单编号（""为全部）
+	 * @param bcId 往来单位编号（0是为全部）
+	 * @param oStatus 标记状态（-1为全部）
+	 * @param oType 出库类型（-1为全部）
+	 * @param sDate 开始时间（""为全部）
+	 * @param eDate 结束时间（""为全部）
+	 * @param expNo 快递单号（""为全部）
+	 * @param pageNo 页码
+	 * @param pageSize 每页记录条数
+	 * @return
+	 */
+	List<OutSellInfo> findPageInfoByOption(Session sess,String osNo,Integer bcId,Integer oStatus,
+			Integer oType,String sDate,String eDate,String expNo,Integer pageNo,Integer pageSize);
+	
+	/**
+	 * 根据条件获取商品销售记录条数
+	 * @description
+	 * @author wm
+	 * @date 2017-6-7 上午08:12:25
+	 * @param sess
+	 * @param osNo 出库单编号（""为全部）
+	 * @param bcId 往来单位编号（0是为全部）
+	 * @param oStatus 标记状态（-1为全部）
+	 * @param oType 出库类型（-1为全部）
+	 * @param sDate 开始时间（""为全部）
+	 * @param eDate 结束时间（""为全部）
+	 * @param expNo 快递单号（""为全部）
+	 * @return
+	 */
+	Integer getCountByOption(Session sess,String osNo,Integer bcId,Integer oStatus,
+			Integer oType,String sDate,String eDate,String expNo);
+	/**
+	 * 根据出库单号查询
+	 * @param sess
+	 * @param oNo 出库单号
+	 * @param otype 出库类型
+	 * @return
+	 */
+	List<OutSellInfo> getInfoByoNo(Session sess,String oNo,Integer otype);
+	/**
+	 * 获取销售，加工出库最后一条记录
+	 * @param sess
+	 * @return
+	 */
+	Integer getCurrOrdNum(Session sess,Integer otype);
+	/**
+	 * 根据条件获取销售 ，加工 出库的合同总价
+	 * @param sess
+	 * @param osNo 出库单编号（""为全部）
+	 * @param bcId 往来单位编号（0是为全部）
+	 * @param oStatus 标记状态（-1为全部）
+	 * @param oType 出库类型（-1为全部）
+	 * @param sDate 开始时间（""为全部）
+	 * @param eDate 结束时间（""为全部）
+	 * @return
+	 */
+	Double getPriceSum(Session sess,String osNo,Integer bcId,Integer oStatus,
+			Integer oType,String sDate,String eDate,String sign);
+	
+}

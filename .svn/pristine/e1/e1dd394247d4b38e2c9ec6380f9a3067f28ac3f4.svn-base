@@ -1,0 +1,35 @@
+//新增采购单、浏览采购单 导航的tab切换
+function selPurchaseTab(options){
+	$(".searBox a").removeClass("active");
+	if(options == 1){//新增采购单
+		$(".newAddPurDiv").show();
+		$(".viewPurDiv").hide();
+		$("#addNewPurBtn").addClass("active");
+	}else if(options == 2){//浏览采购单
+		$(".viewPurDiv").show();
+		$(".newAddPurDiv").hide();
+		$("#viewPurBtn").addClass("active");
+		choiceOptionAns($(".comStrogStaInp"),"active",1);
+		choiceOptionAns($(".payStaInput"),"active",2);
+		//初始分页查询采购订单（近三天的所有订单）
+		queryOrder(0);
+	}
+}
+function choiceOptionAns(obj,newClassName,options){
+	//options 1:浏览采购单下的查询条件使用--入库状态  2:浏览采购单下的查询条件使用--付款状态    3:选择银行下使用
+	$(obj).each(function(i){
+		$(this).on("click",function(){
+			$(this).attr("checked",true);
+			if(options == 1){
+				$("#storgStatInp").val($(this).val());
+				$(this).parent("label").addClass(newClassName).append("<i class='iconfont icon-duihao'></i>").siblings().removeClass(newClassName).find('i').remove();
+			}else if(options == 2){
+				$("#payStatInp").val($(this).val());
+				$(this).parent("label").addClass(newClassName).append("<i class='iconfont icon-duihao'></i>").siblings().removeClass(newClassName).find('i').remove();
+			}else if(options == 3){
+				$(this).parent("li").addClass(newClassName).append("<b></b>").siblings().removeClass(newClassName).find('b').remove();
+				$("#nowBank").html($(this).val());
+			}
+		});
+	});
+}

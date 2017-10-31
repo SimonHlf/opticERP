@@ -1,0 +1,210 @@
+package com.optic.module;
+
+import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * UserInfo entity. @author MyEclipse Persistence Tools
+ */
+
+public class UserInfo implements java.io.Serializable {
+
+	// Fields
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Integer id;
+	private String userAccount;
+	private String userPassword;
+	private String userName;
+	private String userTel;
+	private String userMobile;
+	private String userQq;
+	private String userAddress;
+	private String userStatus;
+	private Timestamp lastLoginDate;
+	private String lastLoginIp;
+	private	Integer userLoginTimes;
+	private Set<UserDepartmentInfo> userDepartmentInfos = new HashSet<UserDepartmentInfo>();
+	private Set<InStoreInfo> inStoreInfos = new HashSet<InStoreInfo>();
+	private Set<PurchaseOrderInfo> purchaseOrderInfos = new HashSet<PurchaseOrderInfo>();
+	private Set<OutInfo> outInfos = new HashSet<OutInfo>();
+
+	// Constructors
+
+	/** default constructor */
+	public UserInfo() {
+	}
+
+	/** minimal constructor */
+	public UserInfo(String userAccount, String userPassword, String userName,
+			String userTel, String userMobile, String userQq, String userAddress,
+			String userStatus, Timestamp lastLoginDate, String lastLoginIp,Integer userLoginTimes) {
+		this.userAccount = userAccount;
+		this.userPassword = userPassword;
+		this.userName = userName;
+		this.userTel = userTel;
+		this.userMobile = userMobile;
+		this.userQq = userQq;
+		this.userAddress = userAddress;
+		this.userStatus = userStatus;
+		this.lastLoginDate = lastLoginDate;
+		this.lastLoginIp = lastLoginIp;
+		this.userLoginTimes = userLoginTimes;
+	}
+
+	/** full constructor */
+	public UserInfo(Integer id,String userAccount, String userPassword, String userName,
+			String userTel, String userMobile, String userQq, String userAddress,
+			String userStatus, Timestamp lastLoginDate, String lastLoginIp,Integer userLoginTimes) {
+		this.id = id;
+		this.userAccount = userAccount;
+		this.userPassword = userPassword;
+		this.userName = userName;
+		this.userTel = userTel;
+		this.userMobile = userMobile;
+		this.userQq = userQq;
+		this.userAddress = userAddress;
+		this.userStatus = userStatus;
+		this.lastLoginDate = lastLoginDate;
+		this.lastLoginIp = lastLoginIp;
+		this.userLoginTimes = userLoginTimes;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getUserAccount() {
+		return userAccount;
+	}
+
+	public void setUserAccount(String userAccount) {
+		this.userAccount = userAccount;
+	}
+
+	public String getUserPassword() {
+		return userPassword;
+	}
+
+	public void setUserPassword(String userPassword) {
+		this.userPassword = userPassword;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserTel() {
+		return userTel;
+	}
+
+	public void setUserTel(String userTel) {
+		this.userTel = userTel;
+	}
+
+	public String getUserMobile() {
+		return userMobile;
+	}
+
+	public void setUserMobile(String userMobile) {
+		this.userMobile = userMobile;
+	}
+
+	public String getUserQq() {
+		return userQq;
+	}
+
+	public void setUserQq(String userQq) {
+		this.userQq = userQq;
+	}
+
+	public String getUserAddress() {
+		return userAddress;
+	}
+
+	public void setUserAddress(String userAddress) {
+		this.userAddress = userAddress;
+	}
+
+	public String getUserStatus() {
+		return userStatus;
+	}
+
+	public void setUserStatus(String userStatus) {
+		this.userStatus = userStatus;
+	}
+
+	public Timestamp getLastLoginDate() {
+		return lastLoginDate;
+	}
+
+	public void setLastLoginDate(Timestamp lastLoginDate) {
+		this.lastLoginDate = lastLoginDate;
+	}
+
+	public String getLastLoginIp() {
+		return lastLoginIp;
+	}
+
+	public void setLastLoginIp(String lastLoginIp) {
+		this.lastLoginIp = lastLoginIp;
+	}
+
+	public Integer getUserLoginTimes() {
+		return userLoginTimes;
+	}
+
+	public void setUserLoginTimes(Integer userLoginTimes) {
+		this.userLoginTimes = userLoginTimes;
+	}
+
+	public Set<UserDepartmentInfo> getUserDepartmentInfos() {
+		return userDepartmentInfos;
+	}
+
+	public void setUserDepartmentInfos(Set<UserDepartmentInfo> userDepartmentInfos) {
+		this.userDepartmentInfos = userDepartmentInfos;
+	}
+
+	public Set<InStoreInfo> getInStoreInfos() {
+		return inStoreInfos;
+	}
+
+	public void setInStoreInfos(Set<InStoreInfo> inStoreInfos) {
+		this.inStoreInfos = inStoreInfos;
+	}
+
+	public Set<PurchaseOrderInfo> getPurchaseOrderInfos() {
+		return purchaseOrderInfos;
+	}
+
+	public void setPurchaseOrderInfos(Set<PurchaseOrderInfo> purchaseOrderInfos) {
+		this.purchaseOrderInfos = purchaseOrderInfos;
+	}
+
+	public Set<OutInfo> getOutInfos() {
+		return outInfos;
+	}
+
+	public void setOutInfos(Set<OutInfo> outInfos) {
+		this.outInfos = outInfos;
+	}
+
+
+	// Property accessors
+
+	
+
+}

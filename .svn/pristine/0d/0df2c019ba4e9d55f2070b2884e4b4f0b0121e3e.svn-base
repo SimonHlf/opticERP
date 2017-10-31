@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<daoContext>
+	<dao id="user_info_Dao" class="com.optic.dao.impl.UserInfoDaoImpl"/>
+	<dao id="product_info_Dao" class="com.optic.dao.impl.ProductInfoDaoImpl"/>
+	<dao id="product_type_info_Dao" class="com.optic.dao.impl.ProductTypeInfoDaoimpl"/>
+	<dao id="business_contact_info_dao" class="com.optic.dao.impl.BusinessContactInfoDaoImpl"/>
+	<dao id="business_type_info_dao" class="com.optic.dao.impl.BusinessTypeInfoDaoImpl"/>
+	<dao id="wh_type_info_Dao" class="com.optic.dao.impl.WhTypeInfoDaoImpl"/>
+	<dao id="wh_storage_info_Dao" class="com.optic.dao.impl.WhStorageInfoDaoImpl"/>
+	<dao id="user_dep_info_Dao" class="com.optic.dao.impl.UserDepartmentInfoDaoImpl"/>
+	<dao id="dep_info_Dao" class="com.optic.dao.impl.DepartmentInfoDaoImpl"/>
+	<dao id="purchase_order_info_Dao" class="com.optic.dao.impl.PurchaseOrderInfoDaoImpl"/>
+	<dao id="purchase_order_sub_info_Dao" class="com.optic.dao.impl.PurchaseOrderSubInfoDaoImpl"/>
+	<dao id="pay_purchase_info_Dao" class="com.optic.dao.impl.PayPurchaseInfoDaoImpl"/>
+	<dao id="in_store_info_Dao" class="com.optic.dao.impl.InstoreInfoDaoImpl"/>
+	<dao id="out_info_Dao" class="com.optic.dao.impl.OutInfoDaoImpl"/>
+	<dao id="out_sub_info_Dao" class="com.optic.dao.impl.OutSubInfoDaoImpl"/>
+	<dao id="in_store_sub_info_Dao" class="com.optic.dao.impl.InstoreSubInfoDaoImpl"/>
+	<dao id="return_info_Dao" class="com.optic.dao.impl.ReturnInfoDaoImpl"/>
+	<app id="out_sell_info_Dao" class="com.optic.dao.impl.OutSellInfoDaoImpl"/>
+	<app id="out_sell_sub_info_Dao" class="com.optic.dao.impl.OutSellSubInfoDaoImpl"/>
+	<app id="pay_re_out_sell_info_Dao" class="com.optic.dao.impl.PayReOutsellInfoDaoImpl"/>
+	<app id="product_loss_info_Dao" class="com.optic.dao.impl.PLossInfoDaoImpl"/>
+	<app id="product_loss_sub_info_Dao" class="com.optic.dao.impl.PLossSubInfoDaoImpl"/>
+</daoContext>

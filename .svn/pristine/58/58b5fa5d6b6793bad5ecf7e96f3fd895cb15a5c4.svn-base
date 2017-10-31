@@ -1,0 +1,26 @@
+package com.optic.module.json;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import com.optic.module.BusinessContactInfo;
+import com.optic.module.BusinessTypeInfo;
+import com.optic.tools.CommonTools;
+
+public class BusinessContactInfoJson {
+	public List<BusinessContactInfo> getBtJson(List<BusinessContactInfo> bcList){
+		List<BusinessContactInfo> result = new ArrayList<BusinessContactInfo>();
+		for(Iterator<BusinessContactInfo> it = bcList.iterator() ; it.hasNext();){
+			BusinessContactInfo bc = it.next();
+			BusinessTypeInfo bt = bc.getBusinessTypeInfo();
+			BusinessTypeInfo bt_new = new BusinessTypeInfo(bt.getId(), bt.getBtName(),bt.getBtRemark());
+			BusinessContactInfo bc_new = new BusinessContactInfo(bc.getId(),bt_new, bc.getBcName(), bc.getBcPy(), CommonTools.getFinalStr(bc.getBcAddress()),
+					CommonTools.getFinalStr(bc.getBcContact()),CommonTools.getFinalStr(bc.getBcTel()),CommonTools.getFinalStr(bc.getBcMobile()),
+					CommonTools.getFinalStr(bc.getBcFax()),CommonTools.getFinalStr(bc.getBcEmail()),CommonTools.getFinalStr(bc.getBcBankName()),
+					CommonTools.getFinalStr(bc.getBcBankInfo()),CommonTools.getFinalStr(bc.getBcBankNo()), CommonTools.getFinalStr(bc.getBcBankUser()),bc.getBcType());
+			result.add(bc_new);
+		}
+		return result;
+	}
+}

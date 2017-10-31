@@ -1,0 +1,770 @@
+//该js为基本信息里面的公用添加动作
+
+/**
+ * 检查所有存在的公用方法
+ * @param nameVar 需要检查是否存在的名字
+ * @param option 检查那个属性
+ * @returns {Boolean}
+ */
+function checkExistByName(nameVar,option){
+	var name = $("#"+nameVar).val().replace(/\s+/g, "");
+	var data = {};
+	var nameStr = "";//key
+	var url = "";
+	if(option == "wt"){//仓库类别
+		nameStr = "whName";
+		url = "basic.do?action=checkExistByWtName";
+	}else if(option == "proType"){//产品类别
+		nameStr = "proTypeName";
+		url = "producttype.do?action=checkExistByName";
+	}else if(option == "pro"){
+		nameStr = "proName";
+		url = "productInfo.do?action=checkExistByName";
+	}
+	data[nameStr] = escape(name);
+	var existFlag = false;
+	$.ajax({
+        type:"post",
+        async:false,
+        dataType:"json",
+        url:url,
+        data:data,
+        success:function (json){
+        	existFlag = json["result"];
+        }
+    });
+	return existFlag;
+}
+
+/**
+ * 添加产品类别
+ * @param winDiv 产品类别窗口class变量
+ * @param typeNameVar 类别名称id变量
+ * @param remarkVar 类别备注id变量
+ * @param tips 提示层div的id变量
+ * @param tipsTxt 提示内容
+ * @param module 那个模块调用
+ * @param option 检查那个属性
+ */
+function addCommProType(winDiv,typeNameVar,remarkVar,tips,module,option){
+	var typeName = $("#"+typeNameVar).val().replace(/\s+/g, "");
+	var remark = $("#"+remarkVar).val().replace(/\s+/g, "");
+	if(typeName == ""){
+		$("#"+tips).find("p").html("类别名称不能为空");
+		$("#"+tips).show();
+	}else if(checkInputChi(typeName,2,8)){
+		$("#"+tips).find("p").html("类别名称只能是2-8位的中文");
+		$("#"+tips).show();
+	}else if(checkExistByName(typeNameVar,option)){
+		$("#"+tips).find("p").html("该类别名称已存在");
+		$("#"+tips).show();
+	}else{
+		$("#"+tips).hide();
+		//执行添加产品类别动作
+	    $.ajax({
+			type:"post",
+			dataType:"json",
+			data:{proTypeName:escape(typeName),proTypeRemark:escape(remark)},
+			url:"producttype.do?action=addProductType",
+			success:function(json){
+				if(json==true){
+	        		calMargLRig($("body"),$(".alertWin"));
+	        		$(".alertWin").addClass("succBg").removeClass("errBg");
+	        		$(".alertWin i").addClass("icon-smile smileIcon").removeClass("icon-cry cryIcon");
+	        		$(".alertWin em").html("保存成功");
+	        		commonTipInfoFn($(".alertWin"),function(){
+	        			closeAddProTypeWindow(winDiv,typeNameVar,remarkVar,tips,module);
+					});
+				}else{
+					commonTipInfoFn($(".alertWin"));
+	        		calMargLRig($("body"),$(".alertWin"));
+	        		$(".alertWin").addClass("errBg").removeClass("succBg");;
+	        		$(".alertWin i").addClass("icon-cry cryIcon").removeClass("icon-smile smileIcon");
+	        		$(".alertWin em").html("保存失败，请重试");
+				}
+			}
+		});
+	}
+}
+
+/**
+ * 关闭增加产品类别窗口
+ * @param winDiv 产品类别窗口class变量
+ * @param typeNameVar 类别名称id变量
+ * @param remarkVar 类别备注id变量
+ * @param tips 提示层div的id变量
+ * @param module 那个模块调用
+ */
+function closeAddProTypeWindow(winDiv,typeNameVar,remarkVar,tips,module){
+	$("."+winDiv).hide();
+	//清空数据
+	$("#"+typeNameVar).val("");
+	$("#"+remarkVar).val("");
+	//隐藏提示层
+	$("#"+tips).hide();
+	//刷新产品类别数据
+	if(module == "purchase"){//采购模块调用
+		getCommonType("pType");
+		if($("#categDataUlPro").height() > $("#categDataDivPro").height() && $("#scrollPar_2").length > 0){
+			scrollBar("categDataDivPro","categDataUlPro","scrollPar_2","scrollSon_2",15);
+		}
+		$(".addNewDataDiv").hide();
+		$(".closeIcon").show();
+	}
+}
+
+/**
+ * 增加仓库类别方法
+ * @param wtNameVar 仓库类别名称
+ * @param wtRemarkVar 仓库类别备注
+ * @param tips 提示DIV
+ * @param wtDiv 仓库类别窗口
+ * @param module 那个模块调用
+ * @param option 检查那个属性
+ */
+function addCommWType(winDiv,wtNameVar,wtRemarkVar,tips,module,option){
+	var whName = $("#"+wtNameVar).val().replace(/\s+/g, "");
+	var whRemark = $("#"+wtRemarkVar).val().replace(/\s+/g, "");
+	if(whName == ""){
+		$("#"+tips).find("p").html("仓库类别名称不能为空");
+		$("#"+tips).show();
+	}else{
+		if(checkExistByName(wtNameVar,option)){
+			$("#"+tips).find("p").html("仓库类别已存在");
+			$("#"+tips).show();
+		}else{
+			$.ajax({
+		        type:"post",
+		        async:false,
+		        dataType:"json",
+		        url:"basic.do?action=addWHType",
+		        data:{whName:escape(whName),whRemark:escape(whRemark)},
+		        success:function (json){
+		        	if(json["result"] == "succ"){
+		        		alert("增加成功");
+		        		if(module == "main"){//添加仓库货架主页面仓库类别区域
+		        			closeWTypeWindow("",winDiv,wtNameVar,wtRemarkVar,tips);
+			        		loadWHTypeList("init",0);//刷新仓库类别列表
+		        		}else if(module == "sub_main_1"){//添加仓库货架主页面添加仓库货架内部添加类别区域
+		        			cancelAddCateg('addWhCategInfo');
+		        			//清空数据
+		        			$("#"+wtNameVar).val("");
+		        			$("#"+wtRemarkVar).val("");
+		        			$("#"+tips).hide();
+		        			loadWHTypeList("select",0);//刷新仓库类别列表
+		        		}else if(module == "inStore"){//入库时增加仓库类别
+		        			//关闭增加窗口
+		        			comCancelAdd(6);
+		        			//comCanCategBankWin(2);
+		        		}
+		        		//清空数据
+		        		$("#"+wtNameVar).val("");
+	        			$("#"+wtRemarkVar).val("");
+	        			$("#"+tips).hide();
+		        	}else if(json["result"] == "fail"){
+		        		alert("修改失败");
+		        	}else if(json["result"] == "noAbility"){
+		        		alert("您无权进行修改");
+		        	}
+		        }
+		    });
+		}
+	}
+}
+
+/**
+ * 修改仓库类别
+ * @param wtIdVar 仓库类别编号
+ * @param wtNameVar 仓库类别名称
+ * @param wtRemarkVar 仓库类别备注
+ * @param wtNameTips 类别名称提示层
+ * @param winDiv 窗口div
+ * @param module 那个模块调用
+ * @param option 检查那个属性
+ */
+function editCommWType(wtIdVar,wtNameVar,wtRemarkVar,wtNameTips,winDiv,module,option){
+	var wtId = $("#"+wtIdVar).val().replace(/\s+/g, "");
+	var whName = $("#"+wtNameVar).val().replace(/\s+/g, "");
+	var whRemark = $("#"+wtRemarkVar).val().replace(/\s+/g, "");
+	var whName_base = $("#"+wtNameVar).attr("alt").replace(/\s+/g, "");
+	var whRemark_base = $("#"+wtRemarkVar).attr("alt").replace(/\s+/g, "");
+	if(whName == ""){
+		$("#"+wtNameTips).find("p").html("类别名称不能为空");
+		$("#"+wtNameTips).show();
+	}else if(wtId == ""){
+		$("#"+wtNameTips).find("p").html("请选择一个类别进行修改");
+		$("#"+wtNameTips).show();
+	}else if((whName == whName_base) && (whRemark == whRemark_base)){//没做任何修改
+		//不执行数据库修改
+		closeWTypeWindow(wtIdVar,winDiv,wtNameVar,wtRemarkVar,wtNameTips);
+		if(module == "main"){//添加仓库主页面中编辑仓库类别
+			loadWHTypeList("init",0);//刷新仓库类别列表
+		}
+	}else if((whName != whName_base) && checkExistByName(wtNameVar,option)){//类别名称发生变化，需要进行类别名称是否存在判断
+		$("#"+wtNameTips).find("p").html("该类别名称已存在");
+		$("#"+wtNameTips).show();
+	}else{
+		$.ajax({
+	        type:"post",
+	        async:false,
+	        dataType:"json",
+	        url:"basic.do?action=updateWHType",
+	        data:{whId:wtId,whName:escape(whName),whRemark:escape(whRemark)},
+	        success:function (json){
+	        	if(json["result"] == "succ"){
+	        		alert("修改成功");
+	        		closeWTypeWindow(wtIdVar,winDiv,wtNameVar,wtRemarkVar,wtNameTips);
+	        		if(module == "main"){//添加仓库主页面中编辑仓库类别
+	        			loadWHTypeList("init",0);//刷新仓库类别列表
+	        		}
+	        	}else if(json["result"] == "fail"){
+	        		alert("修改失败");
+	        	}else if(json["result"] == "noAbility"){
+	        		alert("您无权进行修改");
+	        	}
+	        }
+	    });
+	}
+}
+
+/**
+ * 关闭仓库类别窗口
+ * @param wtIdVar 仓库类别编号
+ * @param wtNameVar 仓库类别名称
+ * @param wtRemarkVar 仓库类别备注
+ * @param wtDiv 仓库类别窗口
+ * @param tips 提示DIV
+ */
+function closeWTypeWindow(wtIdVar,winDiv,wtNameVar,wtRemarkVar,wtNameTips){
+	$(".layer").hide();
+	$("."+winDiv).hide();
+	if(wtIdVar != ""){//编辑窗口类别时用
+		$("#"+wtIdVar).val("");
+	}
+	$("#"+wtNameVar).val("");
+	$("#"+wtRemarkVar).val("");
+	$("#"+wtNameTips).hide();
+}
+
+/**
+ * 添加，修改仓库货架通用方法
+ * @param whVar 货架变量
+ * @param wtVar 仓库类别变量
+ * @param whRemarkVar 货架备注变量
+ * @param whNameTips 货架名称提示
+ * @param wtTips 仓库类别提示
+ * @param module 模块调用
+ * @param winDiv 窗口class
+ */
+function addOrEditCommWH(whVar,wtVar,whRemarkVar,whNameTips,wtTips,module,winDiv){
+	var whsId = $("#"+whVar).attr("alt");//只有编辑时才存在（货架编号）
+	var whsName = $("#"+whVar).val().replace(/\s+/g, "");//货架名称
+	var whId = $("#"+wtVar).attr("alt");//仓库类别编号
+	var whName = $("#"+wtVar).text();//仓库类别名称
+	var whsRemark = $("#"+whRemarkVar).val().replace(/\s+/g, "");
+	var actionStr = "增加";//默认增加
+	var urlStr = "basic.do?action=addWHS";//默认增加
+	var flag_wh = false;//货架标记
+	var flag_wt = false;//货架类别标记
+	if(whsName == ""){
+		$("#"+whNameTips).show();
+	}else{
+		$("#"+whNameTips).hide();
+		flag_wh = true;
+	}
+	if(whId == 0){//类别为空
+		$("#"+wtTips).show();
+	}else{
+		$("#"+wtTips).hide();
+		flag_wt = true;
+	}
+	if(whsId != 0){//修改动作
+		actionStr = "修改";
+		urlStr = "basic.do?action=updateWHS";
+	}
+	if(flag_wh && flag_wt){
+		$.ajax({
+	        type:"post",
+	        async:false,
+	        dataType:"json",
+	        url:urlStr,
+	        data:{whsId:whsId,whsName:escape(whsName),whId:whId,whsRemark:escape(whsRemark)},
+	        success:function (json){
+	        	if(json["result"] == "succ"){
+	        		alert(actionStr+"成功");
+	        		if(module == "main"){//添加仓库货架主页面添加仓库货架
+	        			closeCommWHWindow(whVar,wtVar,whRemarkVar,whNameTips,wtTips,winDiv,true);
+		        		showPageWSList(whId,whName,0,pageSize,"init");//刷新仓库货架列表(增加那个仓库下的货架就刷新那个仓库下的货架列表)
+		        		//让该li_whId的元素保留active，其他去除active
+	        		}else if(module == "inStore"){//入库时增加货架
+	        			comCancelAdd(5);
+	        		}
+	        	}else if(json["result"] == "fail"){
+	        		alert(actionStr+"失败");
+	        	}else if(json["result"] == "noAbility"){
+	        		alert("您无权进行"+actionStr);
+	        	}else if(json["result"] == "exist"){
+	        		$("#"+whNameTips).find("p").html("已存在该货架");
+	        		$("#"+whNameTips).show();
+	        	}
+	        }
+	    });
+	}
+}
+
+/**
+ * 关闭添加货架窗口(清空数据)
+ * @param whVar 货架变量
+ * @param wtVar 仓库类别变量
+ * @param whRemarkVar 货架备注变量
+ * @param whNameTips 货架名称提示
+ * @param wtTips 仓库类别提示
+ * @param winDiv 窗口class
+ * @param flag layer层是否隐藏true-隐藏
+ */
+function closeCommWHWindow(whVar,wtVar,whRemarkVar,whNameTips,wtTips,winDiv,flag){
+	$("#"+whVar).val("").attr("alt",0);;
+	$("#"+wtVar).text("").attr("alt","0");
+	$("#"+whRemarkVar).val("");
+	$("#"+whNameTips).hide();
+	$("#"+wtTips).hide();
+	if(flag){
+		$(".layer").hide();
+	}
+	$("."+winDiv).hide();
+}
+//----------------------------------采购、入库通用start--------------------------------------//
+//获取单位类别/产品类别列表
+function getCommonType(option){
+	var content = "";
+	var urlStr = "";
+	var txtContent = "";
+	var li_txt = "";
+	var ul_tag = "";
+	var div_tag = "";
+	if(option == "bType"){//获取往来单位类别
+		urlStr = "bizcontact.do?action=listBizType";
+		txtContent = "暂无单位类别，请添加";
+		li_txt = "b";
+		ul_tag = "categDataUlPur";
+		div_tag = "categDataDivPur";
+	}else if(option == "pType"){//获取产品类别
+		urlStr = "producttype.do?action=listProductType";
+		txtContent = "暂无产品类别，请添加";
+		li_txt = "p";
+		ul_tag = "categDataUlPro";
+		div_tag = "categDataDivPro";
+	}else if(option == "selBtype"){//增加往来单位中选择单位类别
+		urlStr = "bizcontact.do?action=listBizType";
+		txtContent = "暂无单位类别，请添加";
+		ul_tag = "selCategUl_un";
+	}else if(option == "wType"){//货架类别
+		urlStr = "basic.do?action=getWHSTypeList";
+		txtContent = "暂无单位类别，请添加";
+		ul_tag = "categDataUlWh";
+		div_tag = "categDataDivWh";
+	}
+	$.ajax({
+        type:"post",
+        async:false,
+        dataType:"json",
+        url:urlStr,
+        success:function (json){
+        	if(json != null){
+        		if(option == "bType"){
+        			for(var i = 0 ; i < json.length ; i++){
+            			content += "<li id='li_"+li_txt+"_"+json[i].id+"'><span></span><i class='iconfont icon-mingpian cardIcon'></i><p onclick=queryBusinessList(this,"+json[i].id+")>"+json[i].btName+"</p></li>";
+            		}
+        		}else if(option == "pType"){
+        			for(var i = 0 ; i < json.length ; i++){
+            			content += "<li id='li_"+li_txt+"_"+json[i].id+"'><span></span><i class='iconfont icon-mingpian cardIcon'></i><p onclick=showProductList(this,"+json[i].id+")>"+json[i].typeName+"</p></li>";
+            		}
+        		}else if(option == "selBtype"){
+        			for(var i = 0 ; i < json.length ; i++){
+        				content += "<li onclick=selectBsTypeInfo('"+json[i].id+"');>"+json[i].btName+"</li>";
+        			}
+        		}else if(option == "wType"){
+        			for(var i = 0 ; i < json["wtList"].length ; i++){
+        				content += "<li><span></span><i class='iconfont icon-mingpian cardIcon'></i><p onclick=showPageWSList(this,'"+json["wtList"][i].id+"') title='"+json["wtList"][i].whRemark+"'>"+json["wtList"][i].whName+"</p></li>";
+        			}
+        		}
+        		$("#"+ul_tag).html(content);
+        	}else{
+        		if(option == "selBtype"){
+        			$("#selCategWrap_un").html("<div class='noRecCon'><i class='iconfont icon-noListRec noListRec_1'></i><span>暂无单位类别，请添加</span></div>");
+        		}else{
+        			$("#"+div_tag).html("<div class='noRecCon'><i class='iconfont icon-noListRec noListRec'></i><p>"+txtContent+"</p></div>");
+        		}
+        	}
+        }
+    });
+}
+
+//获取往来单位列表
+function queryBusinessList(obj,bTypeId){
+	bTypeId_a = bTypeId;
+	if(bTypeId != 0){//根据类别查询
+		pyCode_a = "";
+	}else{//根据拼音码查询
+		bTypeId_a = 0;
+		var input_pyCode = $("#searInput").val();
+		if(input_pyCode == "请输入往来单位拼音码"){
+			input_pyCode = "";
+		}
+		pyCode_a = input_pyCode;
+	}
+	var allCount = getBusCount(bTypeId_a,pyCode_a);//全部
+	$("#categDataUlPur li").removeClass("active");
+	$(obj).parent().addClass("active");
+    $("#Pagination").pagination(allCount, {
+        callback: pageselectCallback,  //PageCallback() 为翻页调用次函数。
+        prev_text: "上一页",
+        next_text: "下一页 ",
+        items_per_page:pageSize,
+        current_page:page_index,
+        ellipse_text:"...",
+        num_edge_entries: 2,       //两侧首尾分页条目数
+        num_display_entries: 6	//连续分页主体部分分页条目数
+    });
+    $("#Pagination").css({
+   	 	"left":parseInt(($("#bsTurnPage").width() - $("#Pagination").width())/2),
+   	 	"top":20
+    });
+}
+
+//根据条件获取单位记录数
+function getBusCount(){
+	var count = 0;
+	$.ajax({
+		type:"post",
+	    async:false,
+	    dataType:"json",
+	    data:{typeId_c:bTypeId_a,py_c:pyCode_a},
+	    url:"bizcontact.do?action=getBizContactCount",
+	    success:function (json){
+	    	count = json["result"];
+	    }
+	});
+	return count;
+}
+//根据条件获取单位记录列表
+function getBusList(pageNo,pageSize){
+	$.ajax({
+		type:"post",
+	    async:false,
+	    dataType:"json",
+	    data:{typeId_c:bTypeId_a,py_c:pyCode_a,pageNo:pageNo,pageSize:pageSize},
+	    url:"bizcontact.do?action=listPageBizContact",
+	    success:function (json){
+	    	showBusList(json["result"]);
+	    }
+	});
+}
+//显示单位记录列表
+function showBusList(list){
+	var content = "";
+	var num = 0;
+	if(list.length > 0){
+		$("#bsTurnPage").show();
+		for(var i = 0 ; i < list.length ; i++){
+			num++;
+			content += "<tr id='"+list[i].id+"' alt='"+list[i].bcName+"' altVal='"+list[i].bcContact+"'>";
+			content += "<td class=listDataWid1 align=center>"+num+"</td>";
+			content += "<td class=listDataWid2 ellip align=center>"+list[i].bcName+"</td>";
+			content += "<td class=listDataWid3 align=center>"+list[i].bcPy+"</td>";
+			content += "<td class=listDataWid3 align=center>"+list[i].bcContact+"</td>";
+			content += "<td class=listDataWid4 align=center>"+list[i].bcTel+"</td>";
+			content += "<td class=listDataWid4 align=center>"+list[i].bcMobile+"</td>";
+			content += "<td class=listDataWid2 align=center>"+list[i].bcEmail+"</td>";
+			content += "<td class=listDataWid5 noBorR ellip align=center>"+list[i].bcAddress+"</td>";
+			content += "</tr>";
+		}
+		$("#dataListTab_un").html(content);
+		$("#dataListTab_un tr:odd").addClass("oddBgColor1");
+		doubleTrClick();
+	}else{
+		$("#bsTurnPage").hide();
+		$("#dataListTab_un").html("<div class='noRecCon1'><i class='iconfont icon-noListRec noListRec_1'></i><span>暂无单位</span></div>");
+	}
+} 
+//自动创建入库单编号
+function autoCreateInsOrder(){
+	var insOrder = "";
+	$.ajax({
+		type:"post",
+	    async:false,
+	    dataType:"json",
+	    url:"inStore.do?action=getInNo",
+	    success:function (json){
+	    	insOrder = json["result"];
+	    }
+	});
+	return insOrder;
+}
+//tr行双击事件
+function doubleTrClick(){
+	$("#dataListTab_un tr").dblclick(function() {
+		if(option_tr == "purchaseList"){//浏览采购单
+			$("#unNaInp").attr("alt",$(this).attr("id")).val($(this).attr("alt"));
+			closeAlertWin($('.purDataDiv'),"selBus");
+		}else if(option_tr == "sellOutList"){
+			$("#compNaInp").attr("alt",$(this).attr("id")).val($(this).attr("alt"));
+			closeAlertWin($('.corrUnDiv'),'bc');
+			$("#delOptComp_sell").show();
+		}else{
+			$("#purVal").attr("alt",$(this).attr("id")).val($(this).attr("alt"));
+			if(option_tr == "inStore"){//入库动作
+				//自动生产采购订单编号
+				var insOrder = autoCreateInsOrder();
+				if(insOrder != ""){
+					var insOrderArray = insOrder.split("_");
+					var preSuffix = insOrderArray[0];
+					var lastNum = insOrderArray[1];
+					$("#preSuffix").val(preSuffix);
+					$("#insOrder_add").val(lastNum);
+					closeAlertWin($('.purDataDiv'),"bc");
+				}
+				//根据供应商获取该供应商所有未完成的采购订单列表
+				showUnFiPurOrder();
+			}else if(option_tr == "listInStore"){//浏览入库单时
+				$("#compNaInp").val($(this).attr("alt")).attr("alt",$(this).attr("id"));
+				closeAlertWin($('.purDataDiv'),"bc");
+			}else if(option_tr == "purchase"){//新增
+				$("#purOrderNum").val(autoCreatePurOrder());
+				closeAlertWin($('.purDataDiv'),"selBus");
+			}else if(option_tr == "sellOut"){//销售出库
+				closeAlertWin($(".corrUnDiv"),"");
+				$("#contactName").val($(this).attr("altVal"));
+			}
+		}
+	});
+}
+//显示出列表数据
+function pageselectCallback(page_index,jq){
+	getBusList(page_index+1,pageSize);
+}
+
+//点击产品类别/输入商品名称获取产品列表
+function showProductList(obj,pTypeId){
+	if(pTypeId > 0){//点击产品类别
+		pTypeId_a = pTypeId;
+		pyCode_p_a = "";
+	}else{//搜索商品名称
+		pTypeId_a = 0;
+		var input_pCode = $("#searInput_pro").val().replace(/\s+/g, "");;
+		if(input_pCode == "请输入产品拼音码"){
+			input_pCode = "";
+		}
+		pyCode_p_a = input_pCode;
+	}
+	var allCount = getProCount(pTypeId_a,pyCode_p_a);//全部
+	$("#categDataUlPro li").removeClass("active");
+	$(obj).parent().addClass("active");
+    $("#Pagination_pro").pagination(allCount, {
+        callback: pageselectCallback_pro,  //PageCallback() 为翻页调用次函数。
+        prev_text: "上一页",
+        next_text: "下一页 ",
+        items_per_page:pageSize,
+        current_page:page_index_p,
+        ellipse_text:"...",
+        num_edge_entries: 2,       //两侧首尾分页条目数
+        num_display_entries: 6	//连续分页主体部分分页条目数
+    });
+    $("#Pagination_pro").css({
+   	 	"left":parseInt(($("#proTurnPage").width() - $("#Pagination_pro").width())/2),
+   	 	"top":20
+    });
+}
+//根据条件获取产品数量
+function getProCount(){
+	var count = 0;
+	$.ajax({
+		type:"post",
+		async:false,
+		dataType:"json",
+		data:{protypeId:pTypeId_a,propy:pyCode_p_a},
+		url:"productInfo.do?action=getProCount",
+		success:function(json){
+			count = json;
+		}
+	});
+	return count;
+}
+//根据条件获取产品列表
+function getProList(pageNo,pageSize){
+	$.ajax({
+		type:"post",
+		async:false,
+		dataType:"json",
+		data:{protypeId:pTypeId_a,propy:pyCode_p_a,pageNo:pageNo,pageSize:pageSize},
+		url:"productInfo.do?action=listProduct",
+		success:function(json){
+			if(json.length > 0){
+				$("#Pagination_pro").show();
+				var count = 0;
+				var content = "";
+				if(option_tr == "purchase"){//采购、出库调用
+					for(var i = 0 ; i < json.length ; i++){
+						var selProInfo = json[i].id + "," + json[i].proNo + "," + json[i].proName + "," + json[i].proSpec + "," + json[i].proCz + "," + json[i].proPriceL + "," + json[i].proUnit;
+						content += "<tr onclick=selPro('p_"+json[i].id+"');>";
+						content += "<td class=lisDaWid1 align=center>";
+						content += "<label class=tabLabel>";
+						content += "<span class=checkSpan></span>";
+						content += "<input type=checkbox name=proId id='p_"+json[i].id+"' value='"+selProInfo+"'/>";
+						content += "</label></td>";
+						count++;
+						content += "<td class=lisDaWid1 align=center>"+count+"</td>";
+						content += "<td class=lisDaWid2 align=center>"+json[i].proName+"</td>";
+						content += "<td class=lisDaWid3 align=center>"+json[i].proNumber+"</td>";
+						content += "<td class=lisDaWid3 align=center>"+json[i].proSpec+"</td>";
+						content += "<td class=lisDaWid3 align=center>"+json[i].proPriceA+"</td>";
+						content += "<td class=lisDaWid3 align=center>"+json[i].proPriceH+"</td>";
+						content += "<td class=lisDaWid3 noBorR align=center>"+json[i].proPriceL+"</td>";
+					}
+					$("#dataListTab_pro").html(content);
+				}else if(option_tr == "inStore"){//入库
+					for(var i = 0 ; i < json.length ; i++){
+						var selProInfo = json[i].proNo + "," +  json[i].proUnit + "," + json[i].proSpec;
+						content += "<tr id='"+json[i].id+"' alt='"+json[i].proName+"' altVar='"+selProInfo+"'>";
+						count++;
+						content += "<td class=lisDaWid1 align=center>"+count+"</td>";
+						content += "<td class=lisDaWid2 align=center>"+json[i].proName+"</td>";
+						content += "<td class=lisDaWid2 align=center>"+json[i].proNo+"</td>";
+						content += "<td class=lisDaWid4 align=center>"+json[i].proNumber+"</td>";
+						content += "<td class=lisDaWid2 align=center>"+json[i].proSpec+"</td>";
+						//content += "<td class=lisDaWid3 align=center>"+json[i].proPriceA+"</td>";
+						content += "<td class=lisDaWid4 align=center>"+json[i].proPriceH+"</td>";
+						content += "<td class='lisDaWid4 noBorR' align=center>"+json[i].proPriceL+"</td>";
+					}
+					$("#dataListTab_pro").html(content);
+					$("#dataListTab_pro tr:odd").addClass("oddBgColor1");
+					doubleTrClickPro();
+				}else if(option_tr == "listInStore"){//浏览入库
+					for(var i = 0 ; i < json.length ; i++){
+						content += "<tr id='"+json[i].id+"' alt='"+json[i].proName+"'>";
+						count++;
+						content += "<td class=lisDaWid1 align=center>"+count+"</td>";
+						content += "<td class=lisDaWid2 align=center>"+json[i].proName+"</td>";
+						content += "<td class=lisDaWid2 align=center>"+json[i].proNo+"</td>";
+						content += "<td class=lisDaWid4 align=center>"+json[i].proNumber+"</td>";
+						content += "<td class=lisDaWid2 align=center>"+json[i].proSpec+"</td>";
+						content += "<td class=lisDaWid4 align=center>"+json[i].proPriceH+"</td>";
+						content += "<td class='lisDaWid4 noBorR' align=center>"+json[i].proPriceL+"</td>";
+					}
+					$("#dataListTab_pro").html(content);
+					$("#dataListTab_pro tr:odd").addClass("oddBgColor1");
+					doubleTrClickPro_1();
+				}else if(option_tr == "sellOut"){//销售出库
+					for(var i = 0 ; i < json.length ; i++){
+						var selProInfo = json[i].id + "," + json[i].proNo + "," + json[i].proName + "," + json[i].proSpec + "," + json[i].proCz + "," + json[i].proPriceL + "," + json[i].proUnit + "," + json[i].proNumber;
+						content += "<tr onclick=selPro('p_"+json[i].id+"');>";
+						content += "<td class=lisDaWid1 align=center>";
+						content += "<label class=tabLabel>";
+						content += "<span class=checkSpan></span>";
+						content += "<input type=checkbox name=proId id='p_"+json[i].id+"' value='"+selProInfo+"'/>";
+						content += "</label></td>";
+						count++;
+						content += "<td class=lisDaWid1 align=center>"+count+"</td>";
+						content += "<td class=lisDaWid2 align=center>"+json[i].proName+"</td>";
+						content += "<td class=lisDaWid3 align=center>"+json[i].proNo+"</td>";
+						content += "<td class=lisDaWid3 align=center>"+json[i].proSpec+"</td>";
+						content += "<td class=lisDaWid4 align=center>"+json[i].proUnit+"</td>";
+						content += "<td class=lisDaWid3 align=center>"+json[i].proCz+"</td>";
+						content += "<td class=lisDaWid4 noBorR align=center>"+json[i].proNumber+"</td>";
+					}
+					$("#dataListTab_pro").html(content);
+				}else if(option_tr == "outStore"){
+					for(var i = 0 ; i < json.length ; i++){
+						var selProInfo = json[i].id + "," + json[i].proNo + "," + json[i].proName + "," + json[i].proSpec + "," + json[i].proCz + "," + json[i].proNumber + "," + json[i].proUnit;
+						content += "<tr onclick=selPro('p_"+json[i].id+"');>";
+						content += "<td class=lisDaWid1 align=center>";
+						content += "<label class=tabLabel>";
+						content += "<span class=checkSpan></span>";
+						content += "<input type=checkbox name=proId id='p_"+json[i].id+"' value='"+selProInfo+"'/>";
+						content += "</label></td>";
+						count++;
+						content += "<td class=lisDaWid1 align=center>"+count+"</td>";
+						content += "<td class=lisDaWid2 align=center>"+json[i].proName+"</td>";
+						content += "<td class=lisDaWid3 align=center>"+json[i].proNo+"</td>";
+						content += "<td class=lisDaWid3 align=center>"+json[i].proSpec+"</td>";
+						content += "<td class=lisDaWid4 align=center>"+json[i].proUnit+"</td>";
+						content += "<td class=lisDaWid3 align=center>"+json[i].proCz+"</td>";
+						content += "<td class=lisDaWid4 noBorR align=center>"+json[i].proNumber+"</td>";
+					}
+					$("#dataListTab_pro").html(content);
+				}else if(option_tr =="outSto"){
+					for(var i = 0 ; i < json.length ; i++){
+						var selProInfo = json[i].id + "," + json[i].proName;
+						content += "<tr onclick=selSpro('p_"+json[i].id+"');>";
+						content += "<td class=lisDaWid1 align=center>";
+						content += "<label class=tabLabel>";
+						content += "<span class=checkSpan></span>";
+						content += "<input type=checkbox name=proId id='p_"+json[i].id+"' value='"+selProInfo+"'/>";
+						content += "</label></td>";
+						count++;
+						content += "<td class=lisDaWid1 align=center>"+count+"</td>";
+						content += "<td class=lisDaWid2 align=center>"+json[i].proName+"</td>";
+						content += "<td class=lisDaWid3 align=center>"+json[i].proNo+"</td>";
+						content += "<td class=lisDaWid3 align=center>"+json[i].proSpec+"</td>";
+						content += "<td class=lisDaWid4 align=center>"+json[i].proUnit+"</td>";
+						content += "<td class=lisDaWid3 align=center>"+json[i].proCz+"</td>";
+						content += "<td class=lisDaWid4 noBorR align=center>"+json[i].proNumber+"</td>";
+					}
+					$("#dataListTab_pro").html(content);
+				}
+			}else{
+				$("#Pagination_pro").hide();
+				$("#dataListTab_pro").html("<div class='noRecCon1'><i class='iconfont icon-noListRec noListRec_1'></i><span>暂无产品记录</span></div>");
+			}
+		}
+	});
+}
+//tr行双击事件(pro)
+function doubleTrClickPro(){
+	$("#dataListTab_pro tr").dblclick(function() {
+		$("#proId_add").attr("alt",$(this).attr("id")).val($(this).attr("alt"));
+		var pro_array = $(this).attr("altVar").split(",");
+		$("#proNo_add").val(pro_array[0]);
+		$("#proUnit_add").val(pro_array[1]);
+		$("#proSpec_add").val(pro_array[2]);
+		closeAlertWin($('.proInfoDiv'),"pro");
+	});
+}
+//tr行双击事件(pro)
+function doubleTrClickPro_1(){
+	$("#dataListTab_pro tr").dblclick(function() {
+		$("#proNaInp").attr("alt",$(this).attr("id")).val($(this).attr("alt"));
+		$("#delOptPro").show();
+		closeAlertWin($('.proInfoDiv'),"pro");
+	});
+}
+//显示出列表数据
+function pageselectCallback_pro(page_index_p,jq){
+	getProList(page_index_p+1,pageSize);
+}
+
+//----------------------------------采购、入库通用end--------------------------------------//
+
+
+/**
+ * 关闭选择货架窗口（入库选择时用）
+ * @param winDiv 产品类别窗口class变量
+ * @param whNameVar 货架名称id变量
+ * @param whIdVar 货架id变量
+ */
+function closeSelWHWindow(whNameVar,whIdVar,winDiv){
+	$("#"+whNameVar).val("请输入货架编号");
+	//去除所有选中状态
+	$("#whListUl li").each(function(){
+		$("#whListUl li").removeClass("active");
+	});
+	$("#"+whIdVar).attr("alt","").val("0");
+	$(".layer").hide();
+	$("."+winDiv).hide();
+}
+//获取系统时间
+function getSysTime(obj){
+	var oDate = new Date();
+	var strTime = oDate.getFullYear() +"-"+ (oDate.getMonth()+1)+"-"+ oDate.getDate();
+	$(obj).html(strTime);
+}

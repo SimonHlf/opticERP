@@ -1,0 +1,428 @@
+@charset "utf-8";
+
+/*------------ 新增入库单内容样式st -------------------*/
+.outStWid1{
+	width:40px;
+}
+.outStWid2{
+	width:210px;
+}
+.outStWid3{
+	width:150px;
+}
+.outStWid4{
+	width:200px;
+}
+.outStWid5{
+	width:70px;
+}
+.outStWid6{
+	width:50px;	
+}
+.outStWid8{
+	width:150px;
+}
+.outStWid9{
+	width:69px;	
+}
+.outStWid10{
+	width:90px;
+}
+.margRSel{
+	margin-right:40px;
+}
+.addUnitIcon{
+	position:absolute;
+	top:2px;
+	right:0px;
+	font-size:28px;
+	cursor:pointer;
+	color:#00a3e4;
+	font-weight:400;
+}
+
+.addCategUnitBtn,
+.addCategBtn{
+	position:absolute;
+	top:10px;
+}
+.addCategUnitBtn{
+	right:10px;
+}
+.addCategBtn{
+	right:170px;
+}
+.addCategBtn,
+.addCategUnitBtn{
+	height: 39px;
+	line-height: 39px;
+	background:#fff;
+	display: inline-block;
+	font-size: 16px;
+	color: #666;
+}
+.addCategBtn{
+	width: 122px;
+}
+.addCategUnitBtn{
+	width: 150px;
+	margin-left:15px;
+}
+.addCategBtn:hover,
+.addCategUnitBtn:hover{
+	background: #00a3e4;
+	color:#fff;
+}
+.addCategBtn:hover .addCaIcon,
+.addCategUnitBtn:hover .addCaIcon{
+	color:#fff;
+}
+.addCaIcon{
+	color: #00a3e4;
+	font-size: 26px;
+	margin:0 3px 0 15px;
+}
+/*------------ 新增入库单内容样end -------------------*/
+.listDataWid1{
+	width:41px;
+}
+.listDataWid2{
+	width:122px;
+	max-width:122px;
+}
+.listDataWid3{
+	width:60px;
+}
+.listDataWid4{
+	width:90px;
+}
+.listDataWid5{
+	width:154px;
+	max-width:154px;
+}
+/* ------------浏览出库库单---st--------------------- */
+.listLiWid1{
+	width:50px;
+}
+.listLiWid2{
+	width:180px;
+}
+.listLiWid4{
+	width:178px;
+}
+.listLiWid3{
+	width:40px;
+}
+.listLiWid5{
+	width:65px;
+}
+.listLiWid6{
+	width:70px;
+}
+/* 增加业务单位基本信息 业务单位类别层 */
+/* 增加单位类别和单位基本信息 */
+.addNewDataDiv{
+	width:100%;
+	height:450px;
+	position:absolute;
+	left:0px;
+	top:-400px;
+	z-index:5;
+	border-radius:0 0 4px 4px;
+	background:rgba(255,255,255,.9);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#C8ffffff,endColorstr=#C8ffffff);
+	display:none;
+}
+/* 增加往来单位类别 产品类别层 */
+.addCorrUnDiv,
+.addProCategDiv{
+	width:400px;
+	height:100%;
+	position:absolute;
+	left:50%;
+	top:0px;
+	margin-left:-200px;
+	display:none;
+}
+.comCategDiv{
+	width: 300px;
+	height: 46px;
+	line-height: 46px;
+	margin:20px auto 0px;
+	font-size:14px;
+	color:#666;
+	position:relative;
+}
+.margT_cate{
+	margin-top:130px;
+}
+.comInp_add {
+	width: 226px;
+	height: 19px;
+	padding:8px 0px;
+	border:none;
+	border-bottom:1px solid #999;
+	font-size:14px;
+	color:#666;
+}
+.saveCategBtn{
+	display:inline-block;
+	margin:25px 0 0 100px;
+}
+.addCorrUnInfo,
+.addProInfoDiv{
+	height:100%;
+	margin:0 auto;
+	position:relative;
+	display:none;
+}
+.comAddDiv,
+.comAddDiv1,
+.comAddDiv2{
+	height: 46px;
+	line-height: 46px;
+	margin:20px auto 0px;
+	font-size:14px;
+	color:#666;
+	float: left;
+	position:relative;
+}
+.comAddDiv{
+	width: 310px;
+}
+.comAddDiv .comInp_add,
+.comAddDiv1 .comInp_add1{
+	height: 19px;
+	padding:8px 0px;
+	border:none;
+	font-size:14px;
+	color:#666;
+	border-bottom:1px solid #999;
+}
+.comAddDiv .comInp_add,
+.selCategDiv_pro,
+.selCategDiv_un,
+.selBankDiv{
+	width: 220px;
+}
+.comAddDiv1 .comInp_add1{
+	width: 530px;
+}
+.comAddDiv span,
+.comAddDiv1 span{
+	margin-left:15px;
+}
+.margT{
+	margin-top:40px;
+}
+.blank{
+	width: 7px;
+	display: inline-block;
+}
+.selCategDiv_pro,
+.selCategDiv_un,
+.selBankDiv{
+	height: 40px;
+	line-height: 47px;
+	border-bottom:1px solid #999;
+	position: relative;
+}
+.classifyA{
+	width: 35px;
+	height: 35px;
+	position:absolute;
+	right:0px;
+	top:0px;
+}
+.classifyIcon{
+	color:#00a3e4;
+	font-size: 34px;
+}
+.saveCorInfoBtn{
+	display:inline-block;
+	margin:25px 0 0 365px;
+}
+.cancelBtn{
+	display:inline-block;
+	background:#dbdbdb;
+	width:100px;
+	height:38px;
+	line-height:38px;
+	text-align:center;
+	font-size:18px;
+	color:#666;
+	margin-left:10px;
+}
+.cancelBtn:hover{
+	text-decoration:underline;
+}
+.selCategLay,
+.selBankLay,
+.selProCategLay{
+	width:100%;
+	height:100%;
+	background:#fff;
+	position:absolute;
+	left:0px;
+	top:0px;
+	z-index:2;
+	display:none;
+	opacity:0;
+	filter:alpha(opacity=0);
+}
+.selCategLay p,
+.selBankLay p.nowBankP,
+.selProCategLay p{
+	height:30px;
+	line-height:30px;
+	font-size:14px;
+	color:#00a3e4;
+	z-index: 2;
+	margin-top:5px;
+	text-indent:15px;
+}
+#selCategWrap_un,
+#selCategWrap_pro,
+.bankDiv{
+	height:350px;
+	width: 100%;
+	margin-top:5px;
+	color: #666;
+	overflow: hidden;
+	position:relative;
+	z-index:2;
+}
+.bankDiv{
+	height:320px;
+}
+#selCategWrap_un,
+#selCategWrap_pro{
+	height:350px;
+}
+#selCategUl,
+#selCategUl_pro,
+#selCategUl_un,
+.bankMidWinDiv{
+	position:absolute;
+	left:0;
+	top:0;
+}
+.parScroll_pro,
+.sonScroll_pro{
+	width:5px;
+	border-radius:20px;
+	position:absolute;
+	top:0px;
+}
+.parScroll_pro{
+	height:100%;
+	right:2px;
+}
+.sonScroll_pro{
+	height:50px;
+	left:0px;
+	background:#999;
+}
+#selCategWrap_un li,
+#selCategWrap_pro li{
+	width: 109px;
+	max-width: 109px;
+	height: 35px;
+	line-height: 35px;
+	float: left;
+	text-align: center;
+	font-size: 14px;
+	cursor: pointer;
+	margin:0 0 10px 8px;
+}
+#selCategWrap_un li.active,
+#selCategWrap_pro li.active,
+#selCategWrap_un li:hover,
+#selCategWrap_pro li:hover{
+	background:#00a3e4;
+	color: #fff;
+}
+.selCategBtn{
+	display:inline-block;
+	margin:10px 0 0 365px;
+}
+.selBankLay li{
+	width: 260px;
+	margin:8px 0 15px 40px;
+}
+/* 增加产品信息下类别类型层 */
+/* 类别类型 */
+.categStyLab{
+	float: left;
+	display: inline-block;
+	height: 100%;
+	width: 80px;
+	font-size: 14px;
+	position: relative;
+	text-indent: 15px;
+}
+.categStyLab input{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left:0px;
+	top:0px;
+	z-index: 2;
+	opacity: 0;
+	filter:alpha(opacity=0);
+	cursor: pointer;
+}
+.categStyLab em{
+	font-style: normal;
+}
+.categStyLab .cirSpan{
+	width: 20px;
+	height: 20px;
+	border:1px solid #999;
+	border-radius: 50%;
+	position: absolute;
+	right:10px;
+	top:12px;
+}
+.categStyLab i{
+	color: #00a3e4;
+	font-size: 18px;
+	position: absolute;
+	left:35px;
+	top:1px;
+}
+/* 模拟滚动条 */
+.parScroll,
+.sonScroll{
+	width: 5px;
+	position:absolute;
+	border-radius:10px;
+}
+.parScroll{
+	left:15px;
+	top:35px;
+	height: 340px;
+	background:#d8d8d8;
+}
+.sonScroll{
+	left:0px;
+	top:0px;
+	height: 50px;
+	background:#999;
+}
+/*end*/
+.margTSub{
+	margin-top:10px;
+}
+.editIcon{
+	cursor:pointer;
+	font-size:18px;
+}
+.comOutStInp{
+	width:0px;
+	border:none;
+	height:24px;
+	border-bottom:1px solid #999;
+	color:#666;
+	display:none;
+}

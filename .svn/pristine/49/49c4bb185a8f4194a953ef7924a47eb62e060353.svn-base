@@ -1,0 +1,86 @@
+package com.optic.service.impl;
+
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import com.optic.dao.ProductTypeInfoDao;
+import com.optic.exception.WEBException;
+import com.optic.factory.DaoFactory;
+import com.optic.module.ProductTypeInfo;
+import com.optic.service.ProducttypeinfoManager;
+import com.optic.tools.HibernateUtil;
+import com.optic.util.Constants;
+
+public class ProducttypeinfoManagerImpl implements ProducttypeinfoManager {
+	private ProductTypeInfoDao productTypeInfoDao;
+	private Transaction tran;
+	public Integer addProductTypeInfo(String typeName, String typeRemark)
+			throws WEBException {
+		try {
+			productTypeInfoDao = (ProductTypeInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_TYPE_INFO);
+			Session sess = HibernateUtil.currentSession();
+			tran = sess.beginTransaction();
+			ProductTypeInfo produTypectInfo = new ProductTypeInfo();
+			produTypectInfo.setTypeName(typeName);
+			produTypectInfo.setTypeRemark(typeRemark);
+			productTypeInfoDao.save(sess, produTypectInfo);
+			tran.commit();
+			return produTypectInfo.getId();
+		} catch (Exception e) {
+			tran.rollback();
+			throw new WEBException("增加产品类别信息时出现异常!");
+		}finally{
+			HibernateUtil.closeSession();
+		}	
+	}
+
+	public boolean deleteProductTypeInfo(Integer id) throws WEBException {
+		try {
+			productTypeInfoDao =  (ProductTypeInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_TYPE_INFO);
+			Session sess = HibernateUtil.currentSession();
+			tran = sess.beginTransaction();
+			productTypeInfoDao.delete(sess, id);
+			tran.commit();
+			return true;
+		} catch (Exception e) {
+			throw new WEBException("删除指定产品类别信息时出现异常!");
+		}finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public boolean updateProductTypeInfo(Integer id, String typeName,
+			String typeRemark) throws WEBException {
+		try {
+			productTypeInfoDao = (ProductTypeInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_TYPE_INFO);
+			Session sess = HibernateUtil.currentSession();
+			tran = sess.beginTransaction();
+			ProductTypeInfo productTypeInfo =productTypeInfoDao.get(sess, id);
+			productTypeInfo.setTypeName(typeName);
+			productTypeInfo.setTypeRemark(typeRemark);
+			productTypeInfoDao.update(sess, productTypeInfo);
+			tran.commit();
+			return true;
+		} catch (Exception e) {
+			throw new WEBException("更新产品类别信息时出现异常!");
+		}finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public List<ProductTypeInfo> listProductTypeInfo(String typePy) throws WEBException {
+		
+		try {
+			productTypeInfoDao = (ProductTypeInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_TYPE_INFO);
+			Session sess = HibernateUtil.currentSession();
+			return productTypeInfoDao.getProductTypeInfoList(sess, typePy);
+		} catch (Exception e) {
+			throw new WEBException("列出产品类别信息时出现异常,请重试！");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+}

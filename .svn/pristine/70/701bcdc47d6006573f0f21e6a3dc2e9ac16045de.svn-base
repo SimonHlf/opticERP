@@ -1,0 +1,116 @@
+package com.optic.service;
+
+import java.util.List;
+
+import com.optic.exception.WEBException;
+import com.optic.module.ProductInfo;
+
+public interface ProductInfoManager {
+	/**
+	 * 添加产品信息
+	 * @param pNo 产品编码
+	 * @param pType 产品类别
+	 * @param pName 产品名称
+	 * @param pPy 产品拼音码
+	 * @param pSpec 产品规格
+	 * @param pCz 材质要求
+	 * @param pUnit 基本单位
+	 * @param pType2 产品类别二
+	 * @param pPriceL 最低单价
+	 * @param pPriceH 最高单价
+	 * @param pPriceA 平均单价
+	 * @param pNumber 库存量
+	 * @param pvNumber 可用数量
+	 * @param pRemark 商品备注
+	 * @return
+	 * @throws WEBException
+	 */
+	Integer addProductInfo(String pNo,Integer pType,String pName,String pPy,String pSpec,String pCz,String pUnit,
+	 String pType2,Float pPriceL,Float pPriceH,Float pPriceA,Integer pNumber,Integer pvNumber,String pRemark,Integer madeDepID)throws WEBException;
+	/**
+	 * 删除指定编号的产品信息
+	 * @param id 产品编号
+	 * @return
+	 * @throws WEBException
+	 */
+	boolean deleteProductInfo(Integer id)throws WEBException;
+	/**
+	 * 更新产品信息
+	 * @param id 主键
+	 * @param pNo 产品编码
+	 * @param pType 产品类别
+	 * @param pName 产品名称
+	 * @param pPy 产品拼音码
+	 * @param pSpec 商品规格
+	 * @param pCz 材质要求
+	 * @param pUnit 基本单位
+	 * @param pType2 产品类别二
+	 * @param pPriceL 最低单价
+	 * @param pPriceH 最高单价
+	 * @param pPriceA 平均单价
+	 * @param pNumber 库存量
+	 * @param pRemark 产品备注
+	 * @return
+	 * @throws WEBException
+	 */
+	boolean updateProductInfo(Integer id,String pNo,Integer pType,String pName,String pPy,String pSpec,String pCz,String pUnit,
+			 String pType2,Float pPriceL,Float pPriceH,Float pPriceA,Integer pNumber,String pRemark)throws WEBException;
+	/**
+	 * 查询产品信息
+	 * @return
+	 * @throws WEBException
+	 */
+	List<ProductInfo> listProductInfo(Integer proTypeId , String proPy,int pageNo, int pageSize)throws WEBException;
+	/**
+	 * 根据添加获取产品的记录数
+	 * @param proTypeId
+	 * @param proPy
+	 * @return
+	 * @throws WEBException
+	 */
+	Integer getProCount(Integer proTypeId , String proPy)throws WEBException; 
+	/**
+	 * 查看指定产品信息
+	 * @param proId 产品编号
+	 * @return
+	 * @throws WEBException
+	 */
+	List<ProductInfo> listProInfo(Integer proId )throws WEBException;
+	
+	/**
+	 * 根据主键修改产品的高、低、平均单价
+	 * @description
+	 * @author wm
+	 * @date 2017-5-5 下午03:05:49
+	 * @param proId 产品编号
+	 * @param currPrice 当前采购价格
+	 * @param HLStr 最高、低标识（h:最高、l:最低）
+	 * @return
+	 * @throws WEBException
+	 */
+	boolean updatePriceById(Integer proId,float currPrice,String HLStr)throws WEBException;
+	
+	/**
+	 * 检查是否存在该产品
+	 * @description
+	 * @author wm
+	 * @date 2017-5-10 上午10:13:07
+	 * @param proName
+	 * @return
+	 * @throws WEBException
+	 */
+	boolean checkExistByName(String proName)throws WEBException;
+	
+	/**
+	 * 根据主键修改产品库存量、可用数量
+	 * @description
+	 * @author wm
+	 * @date 2017-5-22 下午03:22:43
+	 * @param proId 产品主键
+	 * @param proNum 大于0时增加，小于0时减少,等于0没动作
+	 * @param newProValNum 大于0时增加，小于0时减少,等于0没动作
+	 * @return
+	 * @throws WEBException
+	 */
+	boolean updateProNumber(Integer proId,Integer proNum,Integer newProValNum)throws WEBException;
+}

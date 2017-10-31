@@ -1,0 +1,175 @@
+package com.optic.module;
+
+import java.sql.Timestamp;
+
+/**
+ * OutSellInfo entity. @author MyEclipse Persistence Tools
+ */
+
+public class OutSellInfo implements java.io.Serializable {
+
+	// Fields
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Integer id;
+	private BusinessContactInfo businessContactInfo;
+	private ProductInfo productInfo;
+	private String outSNo;
+	private Integer proNumber;
+	private Float proPrice;
+	private Float totalPrice;
+	private Integer outStatus;
+	private Timestamp outDate;
+	private Integer outUserId;
+	private String outUserName;
+	private String expressNo;
+
+	// Constructors
+
+	/** default constructor */
+	public OutSellInfo() {
+	}
+
+	/** minimal constructor */
+	public OutSellInfo(BusinessContactInfo businessContactInfo,
+			ProductInfo productInfo, String outSNo, Integer proNumber,
+			Float proPrice, Float totalPrice, Integer outStatus, Timestamp outDate,
+			Integer outUserId, String outUserName, String expressNo) {
+		this.businessContactInfo = businessContactInfo;
+		this.productInfo = productInfo;
+		this.outSNo = outSNo;
+		this.proNumber = proNumber;
+		this.proPrice = proPrice;
+		this.totalPrice = totalPrice;
+		this.outStatus = outStatus;
+		this.outDate = outDate;
+		this.outUserId = outUserId;
+		this.outUserName = outUserName;
+		this.expressNo = expressNo;
+	}
+
+	/** full constructor */
+	public OutSellInfo(Integer id,BusinessContactInfo businessContactInfo,
+			ProductInfo productInfo, String outSNo, Integer proNumber,
+			Float proPrice, Float totalPrice, Integer outStatus, Timestamp outDate,
+			Integer outUserId, String outUserName, String expressNo) {
+		this.id = id;
+		this.businessContactInfo = businessContactInfo;
+		this.productInfo = productInfo;
+		this.outSNo = outSNo;
+		this.proNumber = proNumber;
+		this.proPrice = proPrice;
+		this.totalPrice = totalPrice;
+		this.outStatus = outStatus;
+		this.outDate = outDate;
+		this.outUserId = outUserId;
+		this.outUserName = outUserName;
+		this.expressNo = expressNo;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public BusinessContactInfo getBusinessContactInfo() {
+		return businessContactInfo;
+	}
+
+	public void setBusinessContactInfo(BusinessContactInfo businessContactInfo) {
+		this.businessContactInfo = businessContactInfo;
+	}
+
+	public ProductInfo getProductInfo() {
+		return productInfo;
+	}
+
+	public void setProductInfo(ProductInfo productInfo) {
+		this.productInfo = productInfo;
+	}
+
+	public String getOutSNo() {
+		return outSNo;
+	}
+
+	public void setOutSNo(String outSNo) {
+		this.outSNo = outSNo;
+	}
+
+	public Integer getProNumber() {
+		return proNumber;
+	}
+
+	public void setProNumber(Integer proNumber) {
+		this.proNumber = proNumber;
+	}
+
+	public Float getProPrice() {
+		return proPrice;
+	}
+
+	public void setProPrice(Float proPrice) {
+		this.proPrice = proPrice;
+	}
+
+	public Float getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(Float totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
+	public Integer getOutStatus() {
+		return outStatus;
+	}
+
+	public void setOutStatus(Integer outStatus) {
+		this.outStatus = outStatus;
+	}
+
+	public Timestamp getOutDate() {
+		return outDate;
+	}
+
+	public void setOutDate(Timestamp outDate) {
+		this.outDate = outDate;
+	}
+
+	public Integer getOutUserId() {
+		return outUserId;
+	}
+
+	public void setOutUserId(Integer outUserId) {
+		this.outUserId = outUserId;
+	}
+
+	public String getOutUserName() {
+		return outUserName;
+	}
+
+	public void setOutUserName(String outUserName) {
+		this.outUserName = outUserName;
+	}
+
+	public String getExpressNo() {
+		return expressNo;
+	}
+
+	public void setExpressNo(String expressNo) {
+		this.expressNo = expressNo;
+	}
+
+	
+
+	
+	// Property accessors
+
+	
+}

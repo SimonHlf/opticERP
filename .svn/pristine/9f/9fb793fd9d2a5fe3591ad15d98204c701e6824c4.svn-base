@@ -1,0 +1,87 @@
+package com.optic.service;
+
+import java.sql.Timestamp;
+import java.util.List;
+
+import com.optic.exception.WEBException;
+import com.optic.module.UserInfo;
+
+public interface UserInfoManager {
+	
+	/**
+	 * 增加用户
+	 * @description
+	 * @author wm
+	 * @date 2017-3-28 上午11:40:08
+	 * @param uAccount 账号
+	 * @param uPassword 密码
+	 * @param uName 姓名
+	 * @param uTel 电话
+	 * @param uMobile 移动电话
+	 * @param uQq QQ
+	 * @param uAddress 地址
+	 * @param uStatus 账号状态
+	 * @param lastLoginDate 上次登录时间
+	 * @param lastLoginIp 上次登录IP
+	 * @return
+	 * @throws WEBException
+	 */
+	Integer addUserInfo(String uAccount, String uPassword, String uName,
+			String uTel, String uMobile, String uQq, String uAddress,
+			String uStatus, Timestamp lastLoginDate, String lastLoginIp)throws WEBException;
+	
+	/**
+	 * 判断用户登录情况
+	 * @description
+	 * @author wm
+	 * @date 2017-3-30 上午10:04:24
+	 * @param userName
+	 * @param password
+	 * @return
+	 * @throws WEBException
+	 */
+	boolean userLogin(String userName,String password)throws WEBException;
+	
+	/**
+	 * 根据主键修改登录用户登录基本信息
+	 * @description
+	 * @author wm
+	 * @date 2017-3-30 上午10:07:15
+	 * @param userId
+	 * @param lastLoginDate
+	 * @param lastLoginIP
+	 * @param loginTimes
+	 * @return
+	 * @throws WEBException
+	 */
+	boolean updateUserInfoById(Integer userId,Timestamp lastLoginDate,String lastLoginIP,Integer loginTimes)throws WEBException;
+	
+	/**
+	 * 根据主键修改用户基本信息
+	 * @description
+	 * @author wm
+	 * @date 2017-3-30 上午10:08:17
+	 * @param userId 主键
+	 * @param uPassword 密码(为""不修改)
+	 * @param uName 真实姓名(为""不修改)
+	 * @param uTel 电话(为""不修改)
+	 * @param uMobile 手机(为""不修改)
+	 * @param uQq QQ(为""不修改)
+	 * @param uAddress 地址(为""不修改)
+	 * @return
+	 * @throws WEBException
+	 */
+	boolean updateBasicInfoById(Integer userId, String uPassword, String uName,
+			String uTel, String uMobile, String uQq, String uAddress)throws WEBException;
+	
+	/**
+	 * 根据用户账号获取用户信息列表
+	 * @description
+	 * @author wm
+	 * @date 2017-3-30 上午11:09:05
+	 * @param uAccount
+	 * @return
+	 * @throws WEBException
+	 */
+	List<UserInfo> listInfoByAccount(String uAccount)throws WEBException;
+}

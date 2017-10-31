@@ -1,0 +1,959 @@
+@charset "utf-8";
+/* 搜索框公共 */
+.searWrap{
+	width: 100%;
+	height: 69px;
+	background:#eaeaea;
+	border-bottom:1px solid #d8d8d8;
+}
+.searBox{
+	height: 100%;
+}
+.searBox p{
+	font-size: 24px;
+	color: #666;
+	line-height:69px;
+}
+.searBox p a{
+	color:#666;
+}
+.searBox p a:hover,
+.searBox p a.active{
+	color:#00a3e4;
+}
+/* 新增采购单 */
+.newAddOutStDiv{
+	display:block;
+}
+.viewOutStDiv{
+	display:none;
+	position:relative;
+}
+/*------------ 新增入库单内容样式st -------------------*/
+
+/* 选择供应商 填写采购单编号 */
+.selBusDiv{
+	font-size:14px;
+	color:#666;
+}
+.comSelDiv{
+	width:340px;
+	height:46px;
+	line-height:46px;
+	margin-top:26px;
+	position:relative;
+}
+.comSelDiv.specDivWid{
+	width:200px;
+}
+.comSelDiv.specDivWid1{
+	width:270px;
+}
+.comSelDiv input{
+	height:19px;
+	padding:8px 0px;
+	width:235px;
+	border:none;
+	font-size:14px;
+	color:#666;
+	border-bottom:1px solid #999;	
+	background:none;
+}
+.comSelDiv input.specInpWid{
+	width:90px;
+}
+.comSelDiv input.specInpWid1{
+	width:190px;
+}
+/* 领料出库数据层 */
+.outStDataDiv{
+	width:1198px;
+	min-height:400px;
+	margin-top:30px;
+	position:relative;
+	border:1px solid #ccc;
+}
+.outStListTit{
+	border-bottom:1px solid #ccc;
+}
+.outStListTit td,
+.outStListTab td,
+.dataTitTab td,
+.dataListTab td{
+	border-right:1px solid #ccc;
+	color:#666;
+}
+.outStListTab td,
+.outStListTit td{
+	font-size:14px;
+}
+.outStListTit td{
+	background:#eaeaea;
+	height:30px;
+}
+.outStListTab td{
+	height:36px;
+}
+.pickStatus{
+	text-indent:5px;
+}
+.outStListTit td.noBorR,
+.outStListTab td.noBorR,
+.dataTitTab td.noBorR,
+.dataListTab td.noBorR{
+	border-right:0px;
+}
+.outStListTab,
+.dataListTab{
+	border-collapse: collapse;
+}
+.outStListTab tr,
+.dataListTab tr{
+	border-bottom:1px solid #ccc;
+}
+.outStListTab td a{
+	color:#666;
+}
+.outStListTab td a:hover{
+	color:#f00;
+}
+/*.outStWid1{
+	width:35px;
+}
+.outStWid2{
+	width:200px;
+}
+.outStWid3{
+	width:140px;
+}
+.outStWid4{
+	width:183px;
+}
+.outStWid5{
+	width:60px;
+}
+.outStWid6{
+	width:50px;	
+}
+.outStWid8{
+	width:180px;
+}
+.outStWid9{
+	width:40px;	
+}*/
+.proNameTd{
+	position:relative;
+}
+.moreIcon{
+	font-size:24px;
+	position:absolute;
+	right:5px;
+	top:0px;
+	color:#999;
+	cursor:pointer;
+}
+.moreIcon:hover,
+.noRecDiv a:hover{
+	color:#00a3e4;
+}
+.deleteIcon{
+	font-size:20px;
+	cursor:pointer;
+}
+.deleteIcon:hover{
+	color:#f00;
+}
+/* 出库数据提交层 */
+.subOutStDataDiv{
+	height:50px;
+	line-height:50px;
+	color:#666;
+	font-size:14px;
+}
+.subOutStDataDiv .margL{
+	margin-left:20px;
+}
+.subOutStDataDiv label{
+	float: left;
+	display: inline-block;
+	height: 100%;
+	font-size: 14px;
+	position: relative;
+}
+.subOutStDataDiv label.marglLab{
+	margin-left:10px;
+}
+.subOutStDataDiv label input{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left:0px;
+	top:0px;
+	z-index: 2;
+	opacity: 0;
+	filter:alpha(opacity=0);
+	cursor: pointer;
+}
+.subOutStDataDiv label em{
+	font-style: normal;
+	float:left;
+}
+.subOutStDataDiv label.active em{
+	color:#00a3e4;
+}
+.subOutStDataDiv label .cirSpan{
+	width: 20px;
+	height: 20px;
+	border:1px solid #999;
+	border-radius: 50%;
+	float:left;
+	margin:15px 0 0 5px;
+}
+.subOutStDataDiv label.active .cirSpan{
+	border:1px solid #00a3e4;
+	border:1px solid #00a3e4;
+}
+.subOutStDataDiv label i{
+	color: #00a3e4;
+	font-size: 18px;
+	position: absolute;
+	left:63px;
+	top:2px;
+}
+.submitOutStBtn,
+.saveDataBtn,
+.saveCorInfoBtn,
+.saveCategBtn,
+.selCategBtn{
+	width:120px;
+	height:38px;
+	line-height:38px;
+	background:#68c7ec;
+	color:#fff;
+	text-align:center;
+	font-size:18px;
+}
+.submitOutStBtn:hover,
+.saveDataBtn:hover,
+.saveCorInfoBtn:hover,
+.saveCategBtn:hover,
+.selCategBtn:hover{
+	background:#00a3e4;
+}
+/* 暂无出库记录 提示添加 */
+.noRecDiv{
+	position:absolute;
+	left:50%;
+	top:50%;
+	margin-top:-70px;
+	text-align:center;
+}
+.noRecDivPos1{
+	margin-left:-70px;
+}
+.noRecDivPos2{
+	margin-left:-90px;
+}
+.noRecIcon{
+	font-size:90px;
+	color:#ccc;
+}
+.noRecDiv a{
+	display:block;
+	color:#999;
+}
+.noRecDiv a span{
+	display:block;
+	font-size:18px;
+	margin-top:-15px;
+}
+/* 增加一条出库记录数据btn */
+.addTrDiv{
+	width:100%;
+	height:25px;
+	position:relative;
+	display:none;
+}
+.addTrBtn{
+	width:46px;
+	height:20px;
+	position:absolute;
+	left:50%;
+	margin-left:-23px;
+	top:0px;
+	cursor:pointer;
+}
+/* 选择产品数据弹窗 */
+.comAlertDiv{
+	width:950px;
+	height:500px;
+	background:#fff;
+	position:absolute;
+	left:50%;
+	top:50%;
+	margin-left:-475px;
+	margin-top:-250px;
+	z-index:1000;
+	border-radius:4px;
+	overflow:hidden;
+}
+.outStInfoDiv,
+.corrUnDiv{
+	display:none;
+}
+.comDataDiv{
+	position:relative;
+}
+.comDataTop{
+	background:#fff;
+	height: 49px;
+	border-bottom:1px solid #dbdbdb;
+	font-size: 16px;
+	color: #666;
+	position: relative;
+	z-index:6;
+}
+.comDataTop p{
+	line-height: 49px;
+	border-bottom:1px solid #f90;
+	float:left;
+	padding:0 5px;
+	margin-left:15px;
+}
+.closeIcon,
+.closeGoPay{
+	position:absolute;
+	right:5px;
+	font-size:36px;
+	cursor:pointer;
+}
+.closeIcon{
+	color:#999;
+	top:0px;
+}
+.closeIcon:hover{
+	color:#f00;
+	-webkit-transform:rotate(180deg);
+	-moz-transform:rotate(180deg);
+	-ms-transform:rotate(180deg);
+	transform:rotate(180deg);
+	transform-origin:center center;
+}
+.searLay{
+	height:50px;
+	background:#eaeaea;
+	padding-top:10px;	
+	border-bottom:1px solid #dbdbdb;
+	position:relative;
+	z-index:4;
+}
+.searchDiv{
+	width: 220px;
+	height: 38px;
+	background:#fff;
+	border:1px solid #d8d8d8;
+	position: relative;
+	margin-left:15px;
+}
+.searInp,
+.searInp_outStNum{
+	border:none;
+	height:20px;
+	padding:9px 0 9px 5px;
+	background:none;
+	font-size:16px;
+	color:#999;
+}
+.searInp{
+	width: 170px;
+}
+.searInp_outStNum{
+	width: 210px;
+}
+.searA{
+	width: 45px;
+	height: 38px;
+	display: inline-block;
+	position:relative;
+}
+.searIcon{
+	color: #00a3e4;
+	font-size: 24px;
+	position:absolute;
+	right:10px;
+	top:2px;
+}
+.searA:hover{
+	background:#00a3e4;
+}
+.searA:hover .searIcon{
+	color:#fff;
+}
+/* 核心数据层 */
+.comLeftData{
+	width:165px;
+	height:389px;
+	border-right:1px solid #dbdbdb;
+	padding-left:15px;
+	font-size:14px;
+	color:#666;	
+}
+.categTit{
+	width:100%;
+	height:35px;
+	line-height:35px;
+	position:relative;
+}
+.categTit span{
+	position:absolute;
+	left:24px;
+}
+.categIcon{
+	font-size:22px;
+	color:#999;
+	position:absolute;
+	left:0px;
+	top:3px;
+}
+.categDataDiv{
+	height:340px;
+	margin:-5px 0 0 10px;
+	overflow:hidden;
+	position:relative;
+}
+.categDataUl{
+	width:100%;
+	position:absolute;
+	left:0px;
+	top:0px;
+	border-left:1px dotted #999;
+}
+.categDataUl li{
+	height:30px;
+	line-height:30px;
+	position:relative;
+	cursor:pointer;
+}
+.categDataUl li:hover,
+.categDataUl li.active p,
+.categDataUl li.active .cardIcon{
+	color:#00a3e4;
+}
+.categDataUl li p{
+	width:120px;
+	max-width:120px;
+	position:absolute;
+	left:32px;
+}
+.categDataUl li span{
+	width:12px;
+	height:1px;
+	border-bottom:1px dotted #999;
+	position:absolute;
+	left:0px;
+	top:14px;
+}
+.cardIcon{
+	font-size:18px;
+	position:absolute;
+	left:12px;
+	top:1px;
+	color:#999;
+}
+.tabData{
+	width:746px;
+	height:309px;
+	border:1px solid #ccc;
+	margin:10px 0 0 10px;
+	font-size:12px;
+}
+.dataTitTab{
+	height:30px;
+	background:#eaeaea;
+	border-bottom:1px solid #ccc;
+}
+.dataListTab tr:hover{
+	cursor:pointer;
+	background:#eaeaea;
+}
+.dataListTab td{
+	height:34px;
+}
+/*.listDataWid1{
+	width:41px;
+}
+.listDataWid2{
+	width:122px;
+	max-width:122px;
+}
+.listDataWid3{
+	width:60px;
+}
+.listDataWid4{
+	width:90px;
+}
+.listDataWid5{
+	width:154px;
+	max-width:154px;
+}*/
+.lisDaWid1{
+	width:40px;
+}
+.lisDaWid2{
+	width:135px;
+}
+.lisDaWid3{
+	width:132px;
+}
+.lisDaWid4{
+	width:65px;
+}
+.tabLabel{
+	width:100%;
+	height:100%;
+	display:inline-block;
+	position:relative;
+}
+.tabLabel input,
+.selAllLab input{
+	width:100%;
+	height:100%;
+	position:absolute;
+	left:0px;
+	top:0px;
+	z-index:2;
+	opacity:0;
+	filter:alpha(opacity=0);
+	cursor:pointer;
+}
+.tabLabel .checkSpan,
+.selAllLab .checkSpan{
+	border:1px solid #ccc;
+	position:absolute;
+	left:7px;
+	top:7px;
+}
+.tabLabel .checkSpan{
+	width:16px;
+	height:16px;
+}
+.selAllLab .checkSpan{
+	width:18px;
+	height:18px;
+}
+.tabLabel .choiceAct,
+.selAllLab .choiceAct{
+	font-size:16px;
+	color: #00a3e4;
+	position:absolute;
+}
+.tabLabel .choiceAct{
+	top:6px;
+	left:8px;
+}
+.selAllLab .choiceAct{
+	top:0px;
+	left:10px;
+}
+.botDiv{
+	height:35px;
+	line-height:35px;
+	margin-top:15px;
+	position:relative;
+}
+.selAllLab{
+	position:absolute;
+	left:10px;
+	cursor:pointer;
+}
+.selAllTxt{
+	font-size:14px;
+	color:#666;
+	padding-left:38px;
+}
+.saveDataBtn{
+	display:inline-block;
+	margin:0px 0 0 300px;
+}
+.saveDataBtn.saveMargT{
+	margin:15px 0 0 300px;
+}
+/* 模拟滚动条 */
+.parScroll,
+.sonScroll{
+	width: 5px;
+	position:absolute;
+	border-radius:10px;
+}
+.parScroll{
+	left:15px;
+	top:35px;
+	height: 340px;
+	background:#d8d8d8;	
+}
+.sonScroll{
+	left:0px;
+	top:0px;
+	height: 50px;
+	background:#999;
+}
+.noRecCon{
+	width:100%;
+	height:150px;
+	margin-top:80px;
+	text-align:center;
+}
+.noRecCon p,
+.noRecCon span{
+	color:#999;
+}
+.noRecCon p{
+	font-size:14px;
+	margin-top:-15px;
+}
+.noRecCon span{
+	display:block;
+	font-size:16px;
+	margin-top:-20px;
+}
+.noListRec{
+	font-size:60px;
+	color:#ccc;
+}
+/* 可编辑下新增inpu文本框样式 */
+.comEditInp{
+	width:100%;
+	height:14px;
+	padding:9px 0px;
+	font-size:14px;
+	color:#666;
+}
+.subDataDiv{
+	height:50px;
+	line-height:40px;
+	color:#666;
+	font-size:14px;
+}
+.subDataDiv .margL{
+	margin-left:15px;
+}
+.subDataDiv input{
+	border:none;
+	border-bottom:1px solid #999;
+	color:#666;
+	font-size:14px;
+	width:300px;
+	height:18px;
+	padding:11px 0px;
+}
+/*------------ 新增入库单内容样end -------------------*/
+
+/* ------------浏览出库库单---st--------------------- */
+
+/* 查询层 */
+.queryDiv{
+	width:1198px;
+	margin:10px 0 20px 0px;
+	border:1px solid #ccc;
+	position:relative;
+}
+.queryDiv p.selCondP{
+	height:40px;
+	line-height:40px;
+	font-size:16px;
+	color:#333;
+	background:#f1f1f1;
+	margin-bottom:5px;
+	padding-left:10px
+}
+.queryDiv p label{
+	display:inline-block;
+	padding:0 5px;
+	position:relative;
+	text-indent:23px;
+	cursor:pointer;
+}
+.queryDiv p label.marglLab{
+	margin-left:15px;
+}
+.queryDiv p label .cirSpan,
+.comQueryDiv label .cirSpan{
+	width:22px;
+	height:22px;
+	border-radius:50%;
+	position:absolute;
+	left:0px;
+}
+.queryDiv p label i,
+.comQueryDiv label i{
+	position:absolute;
+	top:1px;
+	font-size:18px;
+	color:#00a3e4;
+}
+.queryDiv p label i{
+	left:-20px;
+}
+.comQueryDiv label i{
+	left:-25px;
+}
+.selSearIcon{
+	display:none;
+}
+.queryDiv p label .cirSpan{
+	border:1px solid #333;
+	top:8px;
+}
+.comQueryDiv label .cirSpan{
+	border:1px solid #999;
+	top:5px;
+}
+.queryDiv p label.active,
+.comQueryDiv label.active{
+	color:#00a3e4;
+}
+.queryDiv p label.active .cirSpan,
+.comQueryDiv label.active .cirSpan{
+	border:1px solid #00a3e4;
+}
+.queryDiv p label.active .selSearIcon{
+	display:block;
+}
+.queryDiv p label:hover,
+.comQueryDiv label:hover{
+	color:#00a3e4;
+}
+.comQueryDiv label input{
+	width:100%;
+	height:100%;
+	position:absolute;
+	left:0px;
+	top:0px;
+	z-index:2;
+	cursor:pointer;
+	opacity:0;
+	filter:alpha(opacity=0);
+}
+.queryBox{
+	width:599px;
+	position:relative;
+}
+.searchPurNum{
+	width:260px;
+	position:absolute;
+	left:165px;
+	top:66px;
+	height: 38px;
+	background:#fff;
+	border:1px solid #d8d8d8;
+	position: relative;
+	margin-left:15px;
+}
+.comQueryDiv{
+	width:570px;
+	height:35px;
+	line-height:35px;
+	margin-left:15px;
+	font-size:14px;
+	color:#666;
+	margin-bottom:8px;
+}
+.selQueryDiv{
+	width:258px;
+	height:100%;
+	float:left;
+	position:relative;
+}
+.selQueryDiv.specDiv{
+	width:330px;
+}
+.selQueryDiv input{
+	padding:8px 0px;
+	border:none;
+	font-size:14px;
+	color:#666;
+	border-bottom:1px solid #999;	
+	background:none;
+}
+.selQueryDiv input{
+	width:150px;
+	height:16px;
+}
+.selQueryDiv input#compNaInp{
+	width:225px;
+	height:16px;
+}
+.margLQu{
+	margin-left:20px;
+}
+.comQueryDiv label{
+	display:inline-block;
+	position:relative;
+	text-indent:28px;
+}
+.clearIcon{
+	font-size:24px;
+	color:#f00;
+	position:absolute;
+	right:28px;
+	cursor:pointer;
+	display:none;
+}
+.queryStaBtn{
+	width:100px;
+	height:35px;
+	line-height:35px;
+	float:right;
+	background:#68c7ec;
+	color:#fff;
+	text-align:center;
+	font-size:18px;
+	margin:0 260px 10px 0px; 
+}
+.queryStaBtn:hover{
+	background:#00a3e4;
+}
+.queryDiv .borSpan{
+	width:1px;
+	height:130px;
+	background:#ccc;
+	position:absolute;
+	left:599px;
+	top:68px;
+	z-index:5;
+}
+.searLayer{
+	width:599px;
+	height:179px;
+	position:absolute;
+	left:599px;
+	top:40px;
+	background:rgba(255,255,255,.8);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#C8ffffff,endColorstr=#C8ffffff);
+	z-index:4;
+}
+/* 浏览出库单数据层 */
+.outStOrdUl li.mainLi{
+	width:590px;
+	float:left;
+	padding-bottom:15px;
+}
+.mainBox{
+	border:1px solid #ccc;
+	border-bottom:none;
+	border-radius:4px 4px 0 0;
+	position:relative;
+}
+.oddMargL{
+	margin-left:20px;
+}
+.outStOrdUl li.mainLi h3{
+	height:40px;
+	line-height:40px;
+	background:#9EDCF6;
+	color:#fff;
+	font-size:18px;
+	font-weight:normal;
+	text-align:center;
+	position:relative;
+}
+.outStOrdUl li.mainLi h3 em{
+	position:absolute;
+	right:10px;
+	top:8px;
+	font-size:14px;
+	font-style:normal;
+}
+.outStTitDiv,
+.outStOrdLisTit li,
+.outStOrdLisCon li{
+	height:35px;
+	line-height:35px;
+	border-bottom:1px solid #ccc;
+	font-size:14px;
+	color:#666;
+}
+.outStOrdLisTit li{
+	background:#eaeaea;
+}
+.outStTitDiv p{
+	float:left;
+	border-right:1px solid #ccc;
+	text-indent:10px;
+}
+.outStTitDiv p.outStName{
+	width:120px;
+}
+.outStTitDiv p.outStUn{
+	width:280px;
+}
+.outStTitDiv p.outStOrdTim{
+	width:180px;
+}
+.outStTitDiv p.outStOrdNum{
+	width:286px;
+	border-right:none;
+}
+.outStOrdLisTit li,
+.outStOrdLisCon li{
+	float:left;
+	border-right:1px solid #ccc;
+	text-align:center;
+}
+.outStOrdLisTit li.noBorLi,
+.outStOrdLisCon li.noBorLi{
+	border-right:none;
+}
+/*.listLiWid1{
+	width:50px;
+}
+.listLiWid2{
+	width:180px;
+}
+.listLiWid4{
+	width:178px;
+}
+.listLiWid3{
+	width:40px;
+}
+.listLiWid5{
+	width:65px;
+}
+.listLiWid6{
+	width:70px;
+}*/
+.outStOrdBotDiv,
+.outStOrdBotDiv1,
+.outStOrdBotDiv2{
+	height:39px;
+	line-height:39px;
+	border-bottom:1px solid #ccc;
+	font-size:14px;
+	color:#666;
+}
+.outStOrdBotDiv p{
+	float:left;
+	margin-left:15px;
+}
+.outStOrdBotDiv1 p{
+	float:right;
+	margin-right:15px;
+}
+.outStOrdBotDiv2 p{
+	float:left;
+	margin-left:15px;
+}
+.outStOrdBotDiv2 a{
+	width:70px;
+	height:32px;
+	line-height:32px;
+	text-align:center;
+	background:#68c7ec;
+	color:#fff;
+	float:right;
+	margin:4px 10px 0 10px;
+	font-size:16px;
+}
+.outStOrdBotDiv2 a:hover{
+	background:#00a3e4;
+}

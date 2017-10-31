@@ -1,0 +1,180 @@
+//银行卡号当输入是字母时给删除了
+function clearWord(objEnter,objPattern){
+	var oBankNum = getId(objEnter);
+	var oPattBankNum = getId(objPattern);
+	oBankNum.value=oPattBankNum.value.replace(/\D/g,'');
+	oPattBankNum.value = oPattBankNum.value.replace(/\D/g,'').replace(/(\d{4})(?=\d)/g,"$1 ");
+}
+//银行账号的格式化
+function bankNumPattern(objEnter,objPattern){
+	var oBankNum = getId(objEnter);
+	var oPattBankNum = getId(objPattern);
+	var oBankTri = getId("bankTri");
+	oBankNum.onkeydown=function(e){
+		if(!isNaN(this.value.replace(/[ ]/g,""))){         
+			setTimeout(function(){
+				oPattBankNum.value =oBankNum.value.replace(/\s/g,'').replace(/(\d{4})(?=\d)/g,"$1 ");//四位数字一组，以空格分割     
+			},30);
+		}else{         
+			if(e.keyCode==8){//当输入非法字符时，禁止除退格键以外的按键输入
+				return true;         
+			}else{
+				return false;        
+			}
+		}
+	};
+	oBankNum.onfocus = function(){
+		oPattBankNum.style.display="block";
+		oBankTri.style.display = "block";
+		oPattBankNum.value =oBankNum.value.replace(/\s/g,'').replace(/(\d{4})(?=\d)/g,"$1 ");//四位数字一组，以空格分割     
+	};
+	oBankNum.onblur = function(){
+		oPattBankNum.style.display="none";
+		oBankTri.style.display = "none";
+	};
+}
+//选择银行
+function selBank(){
+	$(".addBankBox").show().animate({"opacity":0.9});
+	if($(".selBankDiv p").html() == ""){
+		$("#nowBank").html("暂未选择银行");
+	}
+	choiceOptionBankCard();
+}
+function closeSelBankWin(){
+	$(".addBankBox").animate({"opacity":0},function(){
+		$(".addBankBox").hide();
+		if($(".bankMidWinDiv li b").length > 0){
+			$(".bankMidWinDiv li").removeClass("active");
+			$(".bankMidWinDiv li b").remove();
+		}
+	});
+}
+//新增银行卡和更换银行卡
+function choiceOptionBankCard(){
+	$(".com_BankRdio").each(function(){
+		$(this).on("click",function(){
+			$(this).attr("checked",true);
+			$(".bankMidWinDiv li").removeClass("active");
+			$(this).parent("li").addClass("active");
+			$(this).parent("li").append("<b></b>").siblings().find('b').remove();
+			$("#nowBank").html($(this).val());
+		});
+	});
+}
+//添加往来单位类别
+function addBizType(){
+	var btName =  $("#btName").val();
+    var btRemark=  $("#btRemark").val();
+	$.ajax({
+		type:"post",
+		dataType:"json",
+		url:"bizcontact.do?action=addBizType&btName="+btName+"&btRemark="+btRemark,
+		success:function(json){
+			if(json==true){
+				alert("保存成功！");
+			}else{
+				alert("保存失败，请重试！");
+			}
+		}
+	});
+}
+//获取往来单位类别
+function listBizType(listEle){
+	$.ajax({
+		type:"post",
+		dataType:"json",
+		url:"bizcontact.do?action=listBizType",
+		success:function(json){
+			if(json==""){
+				$(".noInfoDiv").show();
+			}
+			var bizT="";
+			$.each(json, function(row, obj) {
+			  var btName=obj.btName;
+			  bizT+='<li onclick="addBiztype(this.innerHTML,'+obj.id+')">'+btName+'</li>';
+			});
+			$("#"+listEle).html(bizT);
+		}
+	});
+}
+//往来单位拼音码
+function getPinyinCode(){
+	var bcName=$("#bcName").val();
+	if(bcName==""){
+		alert("往来单位名称不能为空！");
+		return;
+	}
+	$.ajax({
+		type:"post",
+		dataType:"json",
+		url:"bizcontact.do?action=getPinyinCode&bcName="+bcName,
+		success:function(json){
+			$("#bc_py").val(json);
+		}
+	});
+}
+function addBiztype(btName,btID){
+	$("#nowCateg_unit").text(btName);
+	$("#bizTypeID").val(btID);
+}
+function saveBiztype(){
+	$("#new_bizType").text($("#nowCateg_unit").text());
+	closeSelCategWin();
+}
+//选择银行
+function saveNewBank(){
+	$("#bankName").text($("#nowBank").text());
+	closeSelBankWin();
+}
+//添加往来单位
+function addBizContact(){
+		var bcName = $("#bcName").val();
+		var bcTypeID = $("#bizTypeID").val();
+		var bcPy = $("#bc_py").val();
+		var bcAddress = $("#bcAddress").val();
+		var bcContact =$("#bcContact").val();
+		var bcTel = $("#bcTel").val();
+		var bcMobile = $("#bcMobile").val();
+		var bcFax =$("#bcFax").val();
+		var bcEmail = $("#bcEmail").val();
+		var bcBankName = $("#bankName").text();
+		var bcBankNo = $("#bankAcc").val();	
+	$.ajax({
+		type:"post",
+		dataType:"json",
+		url:"bizcontact.do?action=addBizContact&bcName="+bcName+"&bcTypeID="+bcTypeID+"&bcPy="+bcPy+"&bcAddress="+bcAddress+"&bcContact="+bcContact+"&bcTel="+bcTel+"&bcMobile="+bcMobile+"&bcFax="+bcFax+"&bcEmail="+bcEmail+"&bcBankName="+bcBankName+"&bcBankNo="+bcBankNo,
+		success:function(json){
+			if(json==true){
+				alert("保存成功！");
+			}else{
+				alert("保存失败，请重试！");
+			}
+		}
+	});
+}
+//获取往来单位列表
+function getBizContact(){
+	$.ajax({
+		type:"post",
+		dataType:"json",
+		url:"bizcontact.do?action=listBizContact",
+		success:function(json){
+			
+			var biz="";
+			$.each(json, function(row, obj) {
+				biz+='<li><p class="lsWid1_un bigWid1_un ellip">'+obj.bcName+'<p>';
+				biz+='<p class="lsWid2_un bigWid2_un">'+obj.bcPy+'<p>';
+				biz+='<p class="lsWid2_un bigWid2_un">'+obj.businessTypeInfo.btName+'</p>';
+				biz+='<p class="lsWid2_un bigWid2_un">'+obj.bcContact+'</p>';
+				biz+='<p class="lsWid3_un bigWid3_un">'+obj.bcTel+'</p>';
+				biz+='<p class="lsWid3_un bigWid3_un">'+obj.bcMobile+'</p>';
+				biz+='<p class="lsWid3_un bigWid3_un">'+obj.bcFax+'</p>';
+				biz+='<p class="lsWid3_un bigWid3_un ellip">'+obj.bcEmail+'<p>';
+				biz+='<p class="lsWid3_un bigWid3_un ellip">'+obj.bcBankName+'</p>'
+				biz+='<p class="lsWid2_un bigWid2_un"><a href="javascript:void(0)" onclick="">查看编辑</a><p></li>'
+			});
+			$("#listBiz").html(biz);
+		}
+	});
+}

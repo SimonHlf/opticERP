@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowViewLayout Version="1.2">
+  <StrutsActivity path="/login.do" location="50,50" dimension="263,104" />
+  <StrutsActivity path="/purchase.do" location="50,1250" dimension="284,104" />
+  <StrutsActivity path="/producttype.do" location="50,650" dimension="323,104" />
+  <StrutsActivity path="/productInfo.do" location="50,850" dimension="293,104" />
+  <StrutsActivity path="/bizcontact.do" location="650,1050" dimension="299,104" />
+  <StrutsActivity path="/index.jsp" location="950,50" dimension="88,53" />
+  <StrutsActivity path="/Module/basicInfo/jsp/addProCategory.jsp" location="650,450" dimension="283,53" />
+  <StrutsActivity path="/Module/purchase/jsp/goPurchase.jsp" location="650,1350" dimension="255,53" />
+  <StrutsActivity path="/basic.do.do" location="50,450" dimension="262,104" />
+  <StrutsActivity path="/Module/basicInfo/jsp/addProductInfo.jsp" location="650,650" dimension="278,53" />
+  <StrutsActivity path="/Module/basicInfo/jsp/addCorresponUnit.jsp" location="50,1050" dimension="295,53" />
+  <StrutsActivity path="/Module/account/loginPage/jsp/commonLogin.jsp" location="50,250" dimension="325,53" />
+  <StrutsActivity path="/Module/account/registerPage/register.jsp" location="650,250" dimension="281,53" />
+  <StrutsActivity path="/Module/basicInfo/jsp/addCorresponUnit.jsp.jsp" location="650,850" dimension="315,53" />
+  <StrutsActivity path="/Module/basicInfo/jsp/businessContact.jsp" />
+  <StrutsActivity path="/Module/basicInfo/jsp/whouse.jsp" />
+  <StrutsTransition id="/basic.do.do,storage,/Module/basicInfo/jsp/whouse.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="181,502" />
+      <AbsolutePoint location="0,0" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/basic.do.do,business,/Module/basicInfo/jsp/businessContact.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="181,502" />
+      <AbsolutePoint location="0,0" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/basic.do.do,proCategory,/Module/basicInfo/jsp/addProCategory.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="181,502" />
+      <AbsolutePoint location="791,476" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/login.do,welcome,/Module/basicInfo/jsp/addProCategory.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="313,118" />
+      <AbsolutePoint location="510,118" />
+      <AbsolutePoint location="510,476" />
+      <AbsolutePoint location="650,476" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/purchase.do,purchaseList,/Module/purchase/jsp/goPurchase.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="334,1302" />
+      <AbsolutePoint location="777,1302" />
+      <AbsolutePoint location="777,1350" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/login.do,loginOut,/index.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="313,76" />
+      <AbsolutePoint location="950,76" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/basic.do.do,product,/Module/basicInfo/jsp/addProductInfo.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="181,502" />
+      <AbsolutePoint location="789,676" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+</FlowViewLayout>
+

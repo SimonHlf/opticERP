@@ -1,0 +1,92 @@
+package com.optic.dao.impl;
+
+import java.util.List;
+
+import org.hibernate.Session;
+
+import com.optic.dao.PurchaseOrderInfoDao;
+import com.optic.module.PurchaseOrderInfo;
+
+@SuppressWarnings("unchecked")
+public class PurchaseOrderInfoDaoImpl implements PurchaseOrderInfoDao{
+
+	public PurchaseOrderInfo get(Session sess, int id) {
+		// TODO Auto-generated method stub
+		return (PurchaseOrderInfo)sess.load(PurchaseOrderInfo.class, id);
+	}
+
+	public void save(Session sess, PurchaseOrderInfo purchaseOrderInfo) {
+		// TODO Auto-generated method stub
+		sess.save(purchaseOrderInfo);
+	}
+
+	public void delete(Session sess, PurchaseOrderInfo purchaseOrderInfo) {
+		// TODO Auto-generated method stub
+		sess.delete(purchaseOrderInfo);
+	}
+
+	public void delete(Session sess, int id) {
+		// TODO Auto-generated method stub
+		sess.delete(this.get(sess, id));
+	}
+
+	public void update(Session sess, PurchaseOrderInfo purchaseOrderInfo) {
+		// TODO Auto-generated method stub
+		sess.update(purchaseOrderInfo);
+	}
+
+	public List<PurchaseOrderInfo> findInfoByOption(Session sess, String poNo, String poDate_s,
+			String poDate_e, Integer poStatus, Integer payStatus, Integer pageNo, Integer pageSize) {
+		// TODO Auto-generated method stub
+		String hql = " from PurchaseOrderInfo as po where 1 = 1";
+		//poNo和poDate二者只能选其一
+		if(!poNo.equals("null")){
+			hql += " and po.purONo = '"+poNo+"'";
+		}else{
+			if(!poDate_s.equals("null")){
+				hql += " and po.purDate >= '"+poDate_s+"' and po.purDate <= '"+poDate_e+"'";
+			}
+		}
+		if(poStatus != null){
+			hql += " and po.status = "+poStatus;
+		}
+		if(payStatus != null){
+			hql += " and po.payStatus = "+payStatus;
+		}
+		int offset = (pageNo - 1) * pageSize;
+		if (offset < 0) {
+			offset = 0;
+		}
+		List<PurchaseOrderInfo> l = sess.createQuery(hql).setFirstResult(offset).setMaxResults(pageSize).list();
+		return l;
+	}
+
+	public Integer getCountByOption(Session sess, String poNo, String poDate_s,
+			String poDate_e, Integer poStatus, Integer payStatus) {
+		// TODO Auto-generated method stub
+		String hql = "select count(po.id) from PurchaseOrderInfo as po where 1 = 1";
+		//poNo和poDate二者只能选其一
+		if(!poNo.equals("null")){
+			hql += " and po.purONo = '"+poNo+"'";
+		}else{
+			if(!poDate_s.equals("null")){
+				hql += " and po.purDate >= '"+poDate_s+"' and po.purDate <= '"+poDate_e+"'";
+			}
+		}
+		if(poStatus != null){
+			hql += " and po.status = "+poStatus;
+		}
+		if(payStatus != null){
+			hql += " and po.payStatus = "+payStatus;
+		}
+		long count = (Long) sess.createQuery(hql).uniqueResult();
+		return (int)count;
+	}
+
+	public Integer getMaxNumberByDate(Session sess,String currDate) {
+		// TODO Auto-generated method stub
+		String hql = "select count(po.id) from PurchaseOrderInfo as po where SUBSTR(po.purDate,1,10) = '"+currDate+"'";
+		long count = (Long) sess.createQuery(hql).uniqueResult();
+		return (int)count;
+	}
+}

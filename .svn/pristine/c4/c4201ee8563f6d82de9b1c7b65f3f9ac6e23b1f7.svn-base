@@ -1,0 +1,41 @@
+package com.optic.dao;
+
+import org.hibernate.Session;
+
+import com.optic.module.PLossInfo;
+
+public interface PLossInfoDao {
+	/**
+	 * 根据主键加载材料损耗信息实体
+	 * @param sess 持久化操作所需要的Hiberate Session
+	 * @param id 需要加载的材料损耗信息的主键值
+	 * @return 加载的材料损耗信息PO
+	 */
+	PLossInfo get(Session sess,int id);
+	
+	/**
+	 * 保存材料损耗信息实体，新增一条材料损耗信息记录
+	 * @param pLossInfo 保存的材料损耗信息实例
+	 */
+	void save(Session sess,PLossInfo pLossInfo);
+	
+	/**
+	 * 删除材料损耗信息实体，删除一条材料损耗信息记录
+	 * @param pLossInfo 删除的材料损耗信息实体
+	 */
+	void delete(Session sess,PLossInfo pLossInfo);
+	
+	/**
+	 * 根据主键删除材料损耗信息实体，删除一条材料损耗信息记录
+	 * @param id 需要删除材料损耗信息的主键
+	 */
+	void delete(Session sess,int id);
+	
+	/**
+	 * 更新一条材料损耗信息记录
+	 * @param pLossInfo 需要更新的材料损耗信息
+	 */
+	void update(Session sess,PLossInfo pLossInfo);
+	
+//	List<PLossInfo> findPageInfo
+}

@@ -1,0 +1,152 @@
+package com.optic.module;
+
+import java.sql.Timestamp;
+
+/**
+ * InStoreInfo entity. @author MyEclipse Persistence Tools
+ */
+
+public class InStoreInfo implements java.io.Serializable {
+
+	// Fields
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Integer id;
+	private WhStorageInfo whStorageInfo;
+	private BusinessContactInfo businessContactInfo;
+	private UserInfo userInfo;
+	private ProductInfo productInfo;
+	private String inONo;
+	private Integer inNumber;
+	private Timestamp inDate;
+	private Integer inStatus;
+	private String remark;
+
+	// Constructors
+
+	/** default constructor */
+	public InStoreInfo() {
+	}
+
+	/** minimal constructor */
+	public InStoreInfo(WhStorageInfo whStorageInfo,
+			BusinessContactInfo businessContactInfo, UserInfo userInfo,
+			ProductInfo productInfo, String inONo, Integer inNumber,
+			Timestamp inDate, Integer inStatus, String remark) {
+		this.whStorageInfo = whStorageInfo;
+		this.businessContactInfo = businessContactInfo;
+		this.userInfo = userInfo;
+		this.productInfo = productInfo;
+		this.inONo = inONo;
+		this.inNumber = inNumber;
+		this.inDate = inDate;
+		this.inStatus = inStatus;
+		this.remark = remark;
+	}
+
+	/** full constructor */
+	public InStoreInfo(Integer id,WhStorageInfo whStorageInfo,
+			BusinessContactInfo businessContactInfo, UserInfo userInfo,
+			ProductInfo productInfo, String inONo, Integer inNumber,
+			Timestamp inDate, Integer inStatus, String remark) {
+		this.id = id;
+		this.whStorageInfo = whStorageInfo;
+		this.businessContactInfo = businessContactInfo;
+		this.userInfo = userInfo;
+		this.productInfo = productInfo;
+		this.inONo = inONo;
+		this.inNumber = inNumber;
+		this.inDate = inDate;
+		this.inStatus = inStatus;
+		this.remark = remark;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public WhStorageInfo getWhStorageInfo() {
+		return whStorageInfo;
+	}
+
+	public void setWhStorageInfo(WhStorageInfo whStorageInfo) {
+		this.whStorageInfo = whStorageInfo;
+	}
+
+	public BusinessContactInfo getBusinessContactInfo() {
+		return businessContactInfo;
+	}
+
+	public void setBusinessContactInfo(BusinessContactInfo businessContactInfo) {
+		this.businessContactInfo = businessContactInfo;
+	}
+
+	public UserInfo getUserInfo() {
+		return userInfo;
+	}
+
+	public void setUserInfo(UserInfo userInfo) {
+		this.userInfo = userInfo;
+	}
+
+	public ProductInfo getProductInfo() {
+		return productInfo;
+	}
+
+	public void setProductInfo(ProductInfo productInfo) {
+		this.productInfo = productInfo;
+	}
+
+	public String getInONo() {
+		return inONo;
+	}
+
+	public void setInONo(String inONo) {
+		this.inONo = inONo;
+	}
+
+	public Integer getInNumber() {
+		return inNumber;
+	}
+
+	public void setInNumber(Integer inNumber) {
+		this.inNumber = inNumber;
+	}
+
+	public Timestamp getInDate() {
+		return inDate;
+	}
+
+	public void setInDate(Timestamp inDate) {
+		this.inDate = inDate;
+	}
+
+	public Integer getInStatus() {
+		return inStatus;
+	}
+
+	public void setInStatus(Integer inStatus) {
+		this.inStatus = inStatus;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	
+	// Property accessors
+
+	
+
+}

@@ -1,0 +1,92 @@
+package com.optic.service;
+
+import java.sql.Timestamp;
+import java.util.List;
+
+import com.optic.exception.WEBException;
+import com.optic.module.PLossInfo;
+
+public interface PLossInfoManager {
+	
+	/**
+	 * 增加材料损耗信息记录
+	 * @description
+	 * @author wm
+	 * @date 2017-6-21 下午03:20:39
+	 * @param issId
+	 * @param proId
+	 * @param sTime
+	 * @param batchNo
+	 * @param matchNum
+	 * @return
+	 * @throws WEBException
+	 */
+	Integer addPL(Integer issId,Integer proId,Timestamp sTime,String batchNo,Integer matchNum)throws WEBException;
+	
+	/**
+	 * 修改材料损耗的完品数量、损耗数量、完成状态并自动修改完品率
+	 * @description
+	 * @author wm
+	 * @date 2017-6-21 下午03:23:09
+	 * @param id 主键
+	 * @param comNum 完品数量（0不修改）
+	 * @param lossNum 损耗数量（0不修改）
+	 * @param comStatus 完成状态（0不修改）
+	 * @return
+	 * @throws WEBException
+	 */
+	boolean updatePLById(Integer id,Integer comNum,Integer lossNum,Integer comStatus)throws WEBException;
+	
+	/**
+	 * 根据条件分页获取材料损耗信息列表
+	 * @description
+	 * @author wm
+	 * @date 2017-6-21 下午03:26:16
+	 * @param proNo 材料编码(""为全部)
+	 * @param sDate 开始时间(开始和结束时间都不为空时进行查询)
+	 * @param eDate 结束时间
+	 * @param comStatus 完结状态（-1为全部）
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 * @throws WEBException
+	 */
+	List<PLossInfo> listPageInfoByOption(String proNo,String sDate,String eDate,
+			Integer comStatus,Integer pageNo,Integer pageSize)throws WEBException;
+	/**
+	 * 根据条件获取材料损耗记录条数
+	 * @description
+	 * @author wm
+	 * @date 2017-6-21 下午03:27:04
+	 * @param proNo 材料编码(""为全部)
+	 * @param sDate 开始时间(开始和结束时间都不为空时进行查询)
+	 * @param eDate 结束时间
+	 * @param comStatus 完结状态（-1为全部）
+	 * @return
+	 * @throws WEBException
+	 */
+	Integer getCountByOption(String proNo,String sDate,String eDate,Integer comStatus)throws WEBException;
+	
+	/**
+	 * 根据主键获取材料损耗信息列表
+	 * @description
+	 * @author wm
+	 * @date 2017-6-24 上午11:34:21
+	 * @param plId
+	 * @return
+	 * @throws WEBException
+	 */
+	List<PLossInfo> listInfoById(Integer plId)throws WEBException;
+	
+	/**
+	 * 根据材料损耗主表编号、部门编号获取材料损耗子表信息列表
+	 * @description
+	 * @author wm
+	 * @date 2017-6-26 下午03:54:29
+	 * @param plId  材料损耗主表编号
+	 * @param depId 部门编号
+	 * @return
+	 * @throws WEBException
+	 */
+	List<PLossInfo> listInfoByOption(Integer plId,Integer depId)throws WEBException;
+}

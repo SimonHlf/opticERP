@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appContext>
+	<app id="user_info_Web" class="com.optic.service.impl.UserInfoManagerImpl"/>
+	<app id="wh_type_info_Web" class="com.optic.service.impl.WhTypeInfoManagerImpl"/>
+	<app id="wh_storage_info_Web" class="com.optic.service.impl.WhStorageInfoManagerImpl"/>
+	<app id="user_dep_info_Web" class="com.optic.service.impl.UserDepartmentInfoManagerImpl"/>
+	<app id="dep_info_Web" class="com.optic.service.impl.DepartmentInfoManagerImpl"/>
+</appContext>

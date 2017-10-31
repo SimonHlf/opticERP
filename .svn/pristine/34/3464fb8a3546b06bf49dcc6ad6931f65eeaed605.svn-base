@@ -1,0 +1,80 @@
+package com.optic.module.json;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import com.optic.factory.AppFactory;
+import com.optic.module.BusinessContactInfo;
+import com.optic.module.InStoreInfo;
+import com.optic.module.InStoreSubInfo;
+import com.optic.module.ProductInfo;
+import com.optic.module.UserInfo;
+import com.optic.module.WhStorageInfo;
+import com.optic.module.WhTypeInfo;
+import com.optic.service.InstoreSubInfoManager;
+import com.optic.util.Constants;
+
+public class InStoreInfoJson {
+	private InStoreInfo isi;
+	private List<InStoreSubInfo> issList;
+	
+	
+	public InStoreInfo getIsi() {
+		return isi;
+	}
+
+
+	public void setIsi(InStoreInfo isi) {
+		this.isi = isi;
+	}
+
+
+	public List<InStoreSubInfo> getIssList() {
+		return issList;
+	}
+
+
+	public void setIssList(List<InStoreSubInfo> issList) {
+		this.issList = issList;
+	}
+
+	public InStoreInfoJson(){
+		
+	}
+	
+	public InStoreInfoJson(InStoreInfo isi,List<InStoreSubInfo> issList){
+		this.isi = isi;
+		this.issList = issList;
+	}
+
+	public List<InStoreInfoJson> getIsJson(List<InStoreInfo> isList) throws Exception{
+		InstoreSubInfoManager issm = (InstoreSubInfoManager) AppFactory.instance(null).getApp(Constants.WEB_IN_STORE_SUB_INFO);
+		List<InStoreInfoJson> result = new ArrayList<InStoreInfoJson>();
+		for(Iterator<InStoreInfo> it = isList.iterator() ; it.hasNext();){
+			InStoreInfo is = it.next();
+			BusinessContactInfo bc = is.getBusinessContactInfo();
+			BusinessContactInfo bc_new = new BusinessContactInfo(bc.getId(),bc.getBcName());
+			UserInfo user = is.getUserInfo();
+			UserInfo user_new = new UserInfo(user.getId(),user.getUserName());
+			InStoreInfo is_new = new InStoreInfo(is.getId(),bc_new, user_new,is.getInONo(),
+					is.getInDate(), is.getInStatus(),is.getRemark());
+			List<InStoreSubInfo> issList = issm.listInfoByIsId(is.getId());
+			List<InStoreSubInfo> result_1 = new ArrayList<InStoreSubInfo>();
+			for(Iterator<InStoreSubInfo> it_1 = issList.iterator() ; it_1.hasNext();){
+				InStoreSubInfo iss = it_1.next();
+				WhStorageInfo ws = iss.getWhStorageInfo();
+				WhTypeInfo wt = ws.getWhTypeInfo();
+				WhTypeInfo wt_new = new WhTypeInfo(wt.getId(),wt.getWhName(),wt.getWhRemark());
+				WhStorageInfo ws_new = new WhStorageInfo(ws.getId(),wt_new,ws.getWhsName(),ws.getWhsRemark());
+				ProductInfo pro = iss.getProductInfo();
+				ProductInfo pro_new = new ProductInfo(pro.getProNo(),pro.getProName(),pro.getProSpec(),pro.getProCz(),pro.getProUnit(),pro.getProNumber());
+				InStoreSubInfo iss_new = new InStoreSubInfo(iss.getId(),ws_new,pro_new,is_new,iss.getInNumber(),iss.getInDate(),iss.getBatchNo(),iss.getRemainNum());
+				result_1.add(iss_new);
+			}			
+			InStoreInfoJson isiJson = new InStoreInfoJson(is_new,result_1);
+			result.add(isiJson);
+		}
+		return result;
+	}
+}

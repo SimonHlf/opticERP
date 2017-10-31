@@ -1,0 +1,61 @@
+//添加产品类别
+function addProType(){
+	var ptID= $("#ptID").val();
+	var proTypeName = $("#proTypeName").val();
+	var proTypeRemark = $("#proTypeRemark").val();
+	if(ptID>0){
+		$.ajax({
+			type:"post",
+			dataType:"json",
+			url:"producttype.do?action=updateProductType&ptID="+ptID+"&proTypeName="+proTypeName+"&proTypeRemark="+proTypeRemark,
+			success:function(json){
+				if(json==true){
+					alert("保存成功！ttttt");
+					goBasicPage('goProCategoryPage',this);
+					closeAddCategWin();
+				}else{
+					alert("保存失败，请重试！ttt");
+				}
+			}
+		});
+	}else{
+		$.ajax({
+			type:"post",
+			dataType:"json",
+			url:"producttype.do?action=addProductType&proTypeName="+proTypeName+"&proTypeRemark="+proTypeRemark,
+			success:function(json){
+				if(json==true){
+					alert("保存成功！");
+					closeAddCategWin();
+				}else{
+					alert("保存失败，请重试！");
+				}
+			}
+		});
+	}
+}
+//获取产品类别
+function listProType(){
+	$.ajax({
+		type:"post",
+		dataType:"json",
+		url:"producttype.do?action=listProductType",
+		success:function(json){
+			if(json==""){
+				$(".noInfoDiv").show();
+			}else{
+				$(".noInfoDiv").hide();
+			}
+			var pt="";
+			$.each(json, function(row, obj) {
+				var typeRemark =obj.typeRemark==undefined?"无":obj.typeRemark;
+				var ptID= obj.id;
+				var typeName=obj.typeName;
+				pt+='<ul><li class="comTransition"><div class="categName"><strong>'+typeName+'</strong></div>';
+				pt+='<div class="remarkDiv"><strong>备注</strong><p>'+typeRemark+'</p></div><a class="editBtn" href="javascript:void(0)" onclick="categEditWin('+ptID+',\''+typeName+'\',\''+typeRemark+'\')">';
+				pt+='<span class="triSpan triR"><i class="iconfont icon-edit editIcon"></i></span></a></li></ul>';
+			});
+			$("#ptlist").append(pt);
+		}
+	});
+}

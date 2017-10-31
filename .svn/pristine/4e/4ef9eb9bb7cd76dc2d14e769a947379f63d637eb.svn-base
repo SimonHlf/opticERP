@@ -1,0 +1,173 @@
+package com.optic.service.impl;
+
+import java.sql.Timestamp;
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import com.optic.dao.BusinessContactInfoDao;
+import com.optic.dao.OutSellInfoDao;
+import com.optic.exception.WEBException;
+import com.optic.factory.DaoFactory;
+import com.optic.module.BusinessContactInfo;
+import com.optic.module.OutSellInfo;
+import com.optic.service.OutSellInfoManager;
+import com.optic.tools.HibernateUtil;
+import com.optic.util.Constants;
+
+public class OutSellInfoManagerImpl implements OutSellInfoManager{
+	private Transaction tran;
+	private OutSellInfoDao osDao;
+	public Integer addOS(String osNo, Integer bcId, String contactName,
+			Double allPrice, Integer outStatus, Integer outType,
+			Timestamp outDate, Integer outUserId, String outUserName, String expNo)
+			throws WEBException {
+		try {
+			osDao = (OutSellInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_OUT_SELL_INFO);
+			BusinessContactInfoDao bcDao = (BusinessContactInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_BUSINESS_CONTACT_INFO);
+			Session sess = HibernateUtil.currentSession();
+			tran = sess.beginTransaction();
+			OutSellInfo osInfo = new OutSellInfo();
+			osInfo.setOutSNo(osNo);
+			BusinessContactInfo businessContactInfo = bcDao.get(sess, bcId);
+			osInfo.setBusinessContactInfo(businessContactInfo);
+			osInfo.setBusUserName(contactName);
+			osInfo.setAllPrice(allPrice);
+			osInfo.setOutStatus(outStatus);
+			osInfo.setOutType(outType);
+			osInfo.setOutDate(outDate);
+			osInfo.setOutUserId(outUserId);
+			osInfo.setOutUserName(outUserName);
+			osInfo.setExpressNo(expNo);
+			osInfo.setActPrice(0.0);
+			osDao.save(sess, osInfo);
+			tran.commit();
+			return osInfo.getId();
+		} catch (Exception e) {
+			tran.rollback();
+			throw new WEBException("添加销售出库订单信息出现异常，请重试！");
+		}finally{
+			HibernateUtil.closeSession(); 
+		}
+	}
+
+	public List<OutSellInfo> listPageInfoByOption(String osNo, Integer bcId,
+			Integer oStatus, Integer oType, String sDate, String eDate,
+			String expNo, Integer pageNo, Integer pageSize) throws WEBException {
+		try {
+			osDao = (OutSellInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_OUT_SELL_INFO);
+			Session sess = HibernateUtil.currentSession();
+			return osDao.findPageInfoByOption(sess, osNo, bcId, oStatus, oType, sDate, eDate, expNo, pageNo, pageSize);
+		} catch (Exception e) {
+			throw new WEBException("列出销售,外协加工出库单信息时出现异常,请重试！");
+		}finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public Integer getCountByOption(String osNo, Integer bcId, Integer oStatus,
+			Integer oType, String sDate, String eDate, String expNo)
+			throws WEBException {
+		try {
+			osDao = (OutSellInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_OUT_SELL_INFO);
+			Session sess = HibernateUtil.currentSession();
+			return osDao.getCountByOption(sess, osNo, bcId, oStatus, oType, sDate, eDate, expNo);
+		} catch (Exception e) {
+			throw new WEBException("列出销售,外协加工出库单总记录数时出现异常,请重试！");
+		}finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public boolean updateOSInfoById(Integer id, String osNo, Timestamp outDate,
+			Integer outUserId, String outUserName, String expNo)
+			throws WEBException {
+		try {
+			osDao = (OutSellInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_OUT_SELL_INFO);
+			Session sess = HibernateUtil.currentSession();
+			tran = sess.beginTransaction();
+			OutSellInfo osinfo = osDao.get(sess, id);
+			if(!osNo.equals("null")){
+				osinfo.setOutSNo(osNo);
+				osinfo.setOutStatus(1);
+			}
+			osinfo.setOutStatus(0);
+			osinfo.setOutDate(outDate);
+			osinfo.setOutUserId(outUserId);
+			osinfo.setOutUserName(outUserName);
+			osinfo.setExpressNo(expNo);
+			osDao.update(sess, osinfo);
+			tran.commit();
+			return true;
+		} catch (Exception e) {
+			tran.rollback();
+			throw new WEBException("更新销售出库，外协出库信息时出现异常!");
+		}finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public List<OutSellInfo> getInfoByoNo(String oNo, Integer otype)
+			throws WEBException {
+		try {
+			osDao = (OutSellInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_OUT_SELL_INFO);
+			Session sess = HibernateUtil.currentSession();
+			return osDao.getInfoByoNo(sess, oNo, otype);
+		} catch (Exception e) {
+			throw new WEBException("列出出库单号,出库类型信息时出现异常,请重试！");
+		}finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public Integer getCurrOrdNum(Integer otype) throws WEBException {
+		try {
+			osDao = (OutSellInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_OUT_SELL_INFO);
+			Session sess = HibernateUtil.currentSession();
+			return osDao.getCurrOrdNum(sess, otype);
+		} catch (Exception e) {
+			throw new WEBException("获取销售，加工出库当天出库记录数时出现异常,请重试！");
+		}finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public Double getPriceSum(String osNo, Integer bcId,
+			Integer oStatus, Integer oType, String sDate, String eDate,String sign)
+			throws WEBException {
+		try {
+			osDao = (OutSellInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_OUT_SELL_INFO);
+			Session sess = HibernateUtil.currentSession();
+			return osDao.getPriceSum(sess, osNo, bcId, oStatus, oType, sDate, eDate,sign);
+		} catch (Exception e) {
+			throw new WEBException("根据条件获取销售,外协加工价格时出现异常,请重试！");
+		}finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public boolean updateOSInfoByActPrice(Integer osId, Double actPrice)
+			throws WEBException {
+		try {
+			osDao = (OutSellInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_OUT_SELL_INFO);
+			Session sess = HibernateUtil.currentSession();
+			tran = sess.beginTransaction();
+			OutSellInfo osinfo = osDao.get(sess, osId);
+			Double ap = osinfo.getAllPrice();
+			Double acp = osinfo.getActPrice();
+			if((ap-acp)==actPrice){
+				osinfo.setOutStatus(1);
+			}
+			osinfo.setActPrice(acp+actPrice);
+			osDao.update(sess, osinfo);
+			tran.commit();
+			return true;
+		} catch (Exception e) {
+			tran.rollback();
+			throw new WEBException("根据主键更新实付金额时出现异常!");
+		}finally{
+			HibernateUtil.closeSession();
+		}
+	}
+}

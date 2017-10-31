@@ -1,0 +1,94 @@
+package com.optic.service;
+
+import java.sql.Timestamp;
+import java.util.List;
+
+import com.optic.exception.WEBException;
+import com.optic.module.InStoreSubInfo;
+
+public interface InstoreSubInfoManager {
+	
+	/**
+	 * 增加入库详细信息
+	 * @description
+	 * @author wm
+	 * @date 2017-6-7 下午04:18:02
+	 * @param isId 入库主表编号
+	 * @param proId 产品编号
+	 * @param inNumber 入库数量
+	 * @param whsId 入库货架编号
+	 * @param inDate 入库日期
+	 * @param batchNo 批次号（一年清01）
+	 * @return
+	 * @throws WEBException
+	 */
+	Integer addISS(Integer isId,Integer proId,Integer inNumber,Integer whsId,Timestamp inDate,String batchNo) throws WEBException;
+	
+	/**
+	 * 根据入库编号获取入库详细记录列表
+	 * @description
+	 * @author wm
+	 * @date 2017-6-7 下午04:18:52
+	 * @param isId 入库编号
+	 * @return
+	 * @throws WEBException
+	 */
+	List<InStoreSubInfo> listInfoByIsId(Integer isId) throws WEBException;
+	
+	/**
+	 * 根据入库子表主键编号获取详细记录列表
+	 * @description
+	 * @author wm
+	 * @date 2017-6-23 下午04:31:14
+	 * @param issId 入库子表主键编号
+	 * @return
+	 * @throws WEBException
+	 */
+	List<InStoreSubInfo> listInfoByIssId(Integer issId) throws WEBException;
+	
+	/**
+	 * 获取指定商品最后一次的入库记录
+	 * @description
+	 * @author wm
+	 * @date 2017-6-10 上午08:44:43
+	 * @param proId 商品编号
+	 * @return
+	 * @throws WEBException
+	 */
+	List<InStoreSubInfo> listLastInfoByProId(Integer proId) throws WEBException;
+	
+	/**
+	 * 根据产品编号获取产品入库记录
+	 * @description
+	 * @author wm
+	 * @date 2017-6-14 下午02:28:04
+	 * @param proId 产品编号
+	 * @param inYear 进货年份
+	 * @return
+	 * @throws WEBException
+	 */
+	List<InStoreSubInfo> listLastInfoByOption(Integer proId,String inYear) throws WEBException;
+	
+	/**
+	 * 根据主键修改加工剩余数量
+	 * @description
+	 * @author wm
+	 * @date 2017-6-14 下午03:40:26
+	 * @param id
+	 * @param newAddNum 每次加工领料的数量
+	 * @return
+	 * @throws WEBException
+	 */
+	boolean updateRemainNumById(Integer id,Integer newAddNum) throws WEBException;
+	
+	/**
+	 * 根据材料编号获取加工剩余数量和入库数量相同的信息记录列表
+	 * 作用：获取当前材料没有进行加工的记录
+	 * @description
+	 * @author wm
+	 * @date 2017-6-29 下午05:02:53
+	 * @param proId 材料编号
+	 * @return
+	 */
+	List<InStoreSubInfo> listInfoByProId(Integer proId) throws WEBException;
+}

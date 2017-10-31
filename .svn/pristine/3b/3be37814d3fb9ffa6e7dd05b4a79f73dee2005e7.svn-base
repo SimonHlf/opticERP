@@ -1,0 +1,86 @@
+package com.optic.dao;
+
+import java.util.List;
+
+import org.hibernate.Session;
+
+import com.optic.module.OutInfo;
+
+
+public interface OutInfoDao {
+	/**
+	 * 根据主键加载出库信息实体
+	 * @param sess 持久化操作所需要的Hiberate Session
+	 * @param id 需要加载的出库信息的主键值
+	 * @return 加载的出库信息PO
+	 */
+	OutInfo get(Session sess,int id);
+	
+	/**
+	 * 保存出库实体，新增一条出库信息记录
+	 * @param OutInfo 保存的出库信息实例
+	 */
+	void save(Session sess,OutInfo outInfo);
+	
+	
+	
+	/**
+	 * 根据主键删除出库实体，删除一条出库信息记录
+	 * @author zong
+	 * @param id 需要删除出库信息的主键
+	 */
+	void delete(Session sess,int id);
+	
+	/**
+	 * 更新一条出库信息记录
+	 * @author zong
+	 * @param OutInfo 需要更新的出库信息
+	 */
+	void update(Session sess,OutInfo outInfo);
+	
+	/**
+	 * 根据编号获取出库信息列表
+	 * @description
+	 * @author zong
+	 * @param id 编号
+	 * @return
+	 */
+	List<OutInfo> getInfoById(Session sess,Integer id);
+	
+	/**
+	 * 获取出库信息列表
+	 * @param sess
+	 * @param o_no 出库单号
+	 * @param proName 产品名称
+	 * @param o_sta 领料状态
+	 * @param app_date 申请时间
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 */
+	List<OutInfo> getOutSubInfoList(Session sess,String o_no , Integer proid,Integer o_sta,String sDate,String eDate,int pageNo, int pageSize);
+	/**
+	 * 获取指定条件的出库信息数
+	 * @param sess
+	 * @param o_no 出库单号
+	 * @param proName 产品名称
+	 * @param o_sta 领料状态
+	 * @param app_date 申请时间
+	 * @return
+	 */
+	Integer getOutSubInfoCount(Session sess,String o_no , Integer proid,Integer o_sta,String sDate,String eDate);
+	/**
+	 * 获取普通出库最后一条记录
+	 * @param sess
+	 * @return
+	 */
+	List<OutInfo> getLastInfo(Session sess);
+	/**
+	 * 根据普通出库单号查询
+	 * @param sess
+	 * @param oName
+	 * @return
+	 */
+	List<OutInfo> getInfoByoNo(Session sess,String outNo);
+	
+}

@@ -1,0 +1,100 @@
+package com.optic.service;
+
+import java.util.List;
+
+import com.optic.exception.WEBException;
+import com.optic.module.PurchaseOrderInfo;
+import com.optic.module.PurchaseOrderSubInfo;
+
+public interface PurchaseOrderSubInfoManager {
+	
+	/**
+	 * 增加采购订单详细信息
+	 * @description
+	 * @author wm
+	 * @date 2017-4-19 上午10:52:34
+	 * @param poId 采购订单编号
+	 * @param bId 供应商编号
+	 * @param pId 商品编号
+	 * @param pNum 采购数量
+	 * @param pMoney 采购单价
+	 * @param pTotalMoney 总金额
+	 * @return
+	 * @throws WEBException
+	 */
+	Integer addPOS(Integer poId,Integer bId,Integer pId,Integer pNum,float pMoney,float pTotalMoney)throws WEBException;
+	
+	/**
+	 * 修改指定的采购订单详细信息
+	 * @description
+	 * @author wm
+	 * @date 2017-4-19 上午10:54:52
+	 * @param posId
+	 * @param bId
+	 * @param pId
+	 * @param pNum
+	 * @param pMoney
+	 * @param pTotalMoney
+	 * @return
+	 * @throws WEBException
+	 */
+	boolean updatePOS(Integer posId,Integer bId,Integer pId,Integer pNum,float pMoney,float pTotalMoney)throws WEBException;
+	
+	/**
+	 * 删除指定的采购订单详细信息（只有采购中的采购单才能作废、删除。已付款、已入库的单子不能作废和删除。）
+	 * @description
+	 * @author wm
+	 * @date 2017-4-19 上午10:55:42
+	 * @param posId
+	 * @return
+	 * @throws WEBException
+	 */
+	boolean delPOS(Integer posId)throws WEBException;
+	
+	/**
+	 * 删除指定采购订单下所有的子订单（标记状态为采购中）
+	 * @description
+	 * @author wm
+	 * @date 2017-4-21 上午11:33:51
+	 * @param poId
+	 * @return
+	 * @throws WEBException
+	 */
+	boolean delAllPOSByPoId(Integer poId)throws WEBException;
+	
+	/**
+	 * 根据采购订单获取所有的采购订单详细信息
+	 * @description
+	 * @author wm
+	 * @date 2017-4-19 上午10:58:53
+	 * @param poId
+	 * @return
+	 * @throws WEBException
+	 */
+	List<PurchaseOrderSubInfo> listInfoByPoId(Integer poId)throws WEBException;
+	
+	
+	/**
+	 * 根据商品编号、供应商编号、入库数量小于商品采购数量的且订单状态不为2的记录
+	 * @description
+	 * @author wm
+	 * @date 2017-5-23 上午09:06:36
+	 * @param proId 商品编号
+	 * @param bcId 供应商编号
+	 * @return
+	 * @throws WEBException
+	 */
+	List<PurchaseOrderSubInfo> listInfoByOption(Integer proId,Integer bcId) throws WEBException;
+	
+	/**
+	 * 修改指定采购订单详细信息的实际入库数量
+	 * @description
+	 * @author wm
+	 * @date 2017-5-23 上午10:20:39
+	 * @param posId 采购订单详细信息编号
+	 * @param newInNum 新增入库记录
+	 * @return
+	 * @throws WEBException
+	 */
+	boolean updateRealInNumById(Integer posId,Integer newInNum) throws WEBException;
+}

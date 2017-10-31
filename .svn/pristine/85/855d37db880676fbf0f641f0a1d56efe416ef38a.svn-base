@@ -1,0 +1,51 @@
+@charset "utf-8";
+
+/*------------ 新增入库单内容样式st -------------------*/
+.outStWid1{
+	width:40px;
+}
+.outStWid2{
+	width:200px;
+}
+.outStWid3{
+	width:140px;
+}
+.outStWid4{
+	width:183px;
+}
+.outStWid5{
+	width:65px;
+}
+.outStWid6{
+	width:50px;	
+}
+.outStWid8{
+	width:150px;
+}
+.outStWid9{
+	width:60px;	
+}
+.outStWid10{
+	width:170px;
+}
+/*------------ 新增入库单内容样end -------------------*/
+
+/* ------------浏览出库库单---st--------------------- */
+.listLiWid1{
+	width:50px;
+}
+.listLiWid2{
+	width:180px;
+}
+.listLiWid4{
+	width:178px;
+}
+.listLiWid3{
+	width:40px;
+}
+.listLiWid5{
+	width:65px;
+}
+.listLiWid6{
+	width:70px;
+}

@@ -1,0 +1,36 @@
+package com.optic.module.json;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import com.optic.module.BusinessContactInfo;
+import com.optic.module.InStoreInfo;
+import com.optic.module.ProductInfo;
+import com.optic.module.UserInfo;
+import com.optic.module.WhStorageInfo;
+import com.optic.module.WhTypeInfo;
+
+public class InStoreInfoJson {
+	
+	public List<InStoreInfo> getIsJson(List<InStoreInfo> isList){
+		List<InStoreInfo> result = new ArrayList<InStoreInfo>();
+		for(Iterator<InStoreInfo> it = isList.iterator() ; it.hasNext();){
+			InStoreInfo is = it.next();
+			WhStorageInfo ws = is.getWhStorageInfo();
+			WhTypeInfo wt = ws.getWhTypeInfo();
+			WhTypeInfo wt_new = new WhTypeInfo(wt.getId(),wt.getWhName(),wt.getWhRemark());
+			WhStorageInfo ws_new = new WhStorageInfo(ws.getId(),wt_new,ws.getWhsName(),ws.getWhsRemark());
+			BusinessContactInfo bc = is.getBusinessContactInfo();
+			BusinessContactInfo bc_new = new BusinessContactInfo(bc.getId(),bc.getBcName());
+			UserInfo user = is.getUserInfo();
+			UserInfo user_new = new UserInfo(user.getId(),user.getUserName());
+			ProductInfo pro = is.getProductInfo();
+			ProductInfo pro_new = new ProductInfo(pro.getProNo(),pro.getProName(),pro.getProSpec(),pro.getProCz(),pro.getProUnit(),pro.getProNumber());
+			InStoreInfo is_new = new InStoreInfo(is.getId(),ws_new,bc_new, user_new,pro_new,
+					is.getInONo(), is.getInNumber(),is.getInDate(), is.getInStatus(),is.getRemark());
+			result.add(is_new);
+		}
+		return result;
+	}
+}

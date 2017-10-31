@@ -1,0 +1,94 @@
+@charset "utf-8";
+/* CSS Document */
+
+/** 清除内外边距 **/
+body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,dl,dt,dd,input,select,textarea{margin:0;padding:0;}
+
+/** 设置默认字体 **/
+body{font:12px/1.5 "Microsoft YaHei",Verdana,Tahoma,Arial,Helvetica,sans-serif;}
+
+/** 重置图片元素 **/
+img{border:none;vertical-align:top;}
+
+/** 重置列表元素 **/
+li{list-style:none;}
+
+/** 重置超链接元素 **/
+a{text-decoration:none;}
+
+/** 去除textarea的resize属性 **/
+textarea{resize:none;}
+
+/** input textarea fontFamily select **/
+input,textarea,select{font-family: "microsoft yahei";outline: none;}
+
+/**通用浮动类元素 **/
+.fl{float:left;}
+.fr{float:right;}
+
+/*清浮动*/
+.clearfix{zoom:1;}
+.clearfix:after{content:"";display:block;clear:both;}
+
+/* 公共样式 */
+.w1200{width:1200px;margin:0 auto;}
+
+.ellip{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;	
+}
+.triSpan{
+	width:0px;
+	height:0px;
+	position:absolute;
+}
+.comTransition{
+	-webkit-transition: 0.5s;
+	-moz-transition: 0.5s;
+	-ms-transition: 0.5s;
+	transition:0.5s;
+}
+/* 遮罩层 */
+.layer,
+#layer{
+	width:100%;
+	height:100%;
+	display:none;
+	position:fixed;
+	left:0;
+	top:0;
+	z-index:980;
+	background:#000;
+	opacity:0.5;
+	filter:alpha(opacity=50);
+}
+/* 模拟alert弹层 */
+.alertWin{
+	position: absolute;
+	z-index:1100;
+	padding:10px 12px;
+	border-radius: 4px;
+	color: #fff;
+	display: none;
+	opacity: 1;
+	filter:alpha(opacity=0);
+}
+.alertWin em{
+	font-size:16px;
+	margin-top:6px;
+	font-style:normal;
+}
+.cryIcon,
+.smileIcon{
+	font-size:28px;
+	margin-right:5px;
+}
+.succBg{
+	background:rgba(0,167,245,0.8);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#C800a7f5,endColorstr=#C800a7f5);
+}
+.errBg{
+	background:rgba(243,46,46,0.8);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#C8f32e2e,endColorstr=#C8f32e2e);
+}

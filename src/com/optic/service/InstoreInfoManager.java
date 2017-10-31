@@ -1,0 +1,96 @@
+package com.optic.service;
+
+import java.sql.Timestamp;
+import java.util.List;
+
+import com.optic.exception.WEBException;
+import com.optic.module.InStoreInfo;
+
+public interface InstoreInfoManager{
+ 
+	/**
+	 * 增加入库单
+	 * @description
+	 * @author wm
+	 * @date 2017-5-10 下午04:31:09
+	 * @param bcId 供应商编号
+	 * @param inNo 入库单编号
+	 * @param userId 入库人员编号
+	 * @param inDate 入库时间
+	 * @param inStatus 入库状态
+	 * @param remark 备注
+	 * @return
+	 * @throws WEBException
+	 */
+	Integer addINS(Integer bcId,String inNo,Integer userId,Timestamp inDate,Integer inStatus,String remark) throws WEBException;
+	
+	/**
+	 * 删除指定订单（如果订单中的产品被部分领用，则不能删除）
+	 * @description
+	 * @author wm
+	 * @date 2017-5-10 下午04:33:23
+	 * @param inId
+	 * @return
+	 * @throws WEBException
+	 */
+	boolean delINS(Integer inId) throws WEBException;
+	
+	/**
+	 * 根据条件分页获取入库单信息记录条数
+	 * @description
+	 * @author wm
+	 * @date 2017-5-10 下午04:36:10
+	 * @param isNo 入库单编号（""表示全部）
+	 * @param isDate_s 入库开始时间（""表示全部）
+	 * @param isDate_e 入库结束时间（""表示全部）
+	 * @param inStatus 录入状态 （-1表示全部）
+	 * @param proId 产品编号 （0表示全部）
+	 * @param bcId 单位编号（0表示全部）
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 * @throws WEBException
+	 */
+	List<InStoreInfo> listPageInfoByOption(String isNo,String isDate_s,String isDate_e,Integer inStatus,
+			Integer proId,Integer bcId,Integer pageNo,Integer pageSize) throws WEBException;
+	
+	/**
+	 * 根据条件分页获取入库单信息记录条数
+	 * @description
+	 * @author wm
+	 * @date 2017-5-10 下午04:37:18
+	 * @param isNo 入库单编号（""表示全部）
+	 * @param isDate_s 入库开始时间（""表示全部）
+	 * @param isDate_e 入库结束时间（""表示全部）
+	 * @param inStatus 录入状态 （-1表示全部）
+	 * @param proId 产品编号 （0表示全部）
+	 * @param bcId 单位编号（0表示全部）
+	 * @return
+	 * @throws WEBException
+	 */
+	Integer getCountByOption(String isNo,String isDate_s,String isDate_e,Integer inStatus,Integer proId,Integer bcId) throws WEBException;
+	
+	/**
+	 * 计算总页数
+	 * @description
+	 * @author wm
+	 * @date 2016-4-10 上午10:24:57
+	 * @param count 总记录数
+	 * @param pageSize 每页记录数
+	 * @return 总页数
+	 * @throws WEBException
+	 */
+	Integer getPageCount(int count, int pageSize) throws WEBException;
+	
+	/**
+	 * 获取最后一条入库记录（方便以后自动获取入库单号）
+	 * @description
+	 * @author wm
+	 * @date 2017-5-10 下午04:38:49
+	 * @return
+	 * @throws WEBException
+	 */
+	List<InStoreInfo> listLastInfo() throws WEBException;
+	
+	
+}

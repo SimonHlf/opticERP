@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+  <data-sources />
+  <form-beans />
+  <global-exceptions />
+  <global-forwards />
+  <action-mappings >
+  	<!-- 用户登录 -->
+    <action path="/login" parameter="action"  type="com.optic.action.user.UserLoginAction" scope="request">
+      <forward name="welcome" path="/Module/basicInfo/jsp/addProCategory.jsp"></forward>
+      <forward name="loginOut" path="/index.jsp"></forward>
+    </action>
+    <!-- 基本信息 -->
+    <action path="/basic" parameter="action" type="com.optic.action.basic.BasicInfoAction" scope="request">
+      <forward name="proCategory" path="/Module/basicInfo/jsp/addProCategory.jsp"></forward>
+      <forward name="product" path="/Module/basicInfo/jsp/addProductInfo.jsp"></forward>
+      <forward name="business" path="/Module/basicInfo/jsp/addCorresponUnit.jsp"></forward>
+      <!--<forward name="business" path="/Module/basicInfo/jsp/businessContact.jsp"></forward>-->
+      <forward name="storage" path="/Module/basicInfo/jsp/whouse.jsp"></forward>
+      <forward name="purchaseList" path="/Module/purchase/jsp/goPurchase.jsp"></forward>
+      <forward name="instorePage" path="/Module/inStore/jsp/inStore.jsp"></forward>
+    </action>
+    <!-- 入库 -->
+    <action path="/inStore" parameter="action"  type="com.optic.action.instore.InstoreAction" scope="request">
+    	 <forward name="instorePage" path="/Module/inStore/jsp/inStore.jsp"></forward>
+    </action>
+    <!-- 采购信息  -->
+    <action path="/purchase" parameter="action"  type="com.optic.action.purchase.PurchaseAction" scope="request">
+     	 <forward name="purchaseList" path="/Module/purchase/jsp/goPurchase.jsp"></forward>
+    </action>
+    <!-- 出库 -->
+    <action path="/outStore" parameter="action" type="com.optic.action.outstore.OutstoreAction" scope="request">
+      <forward name="pickingOutStore" path="/Module/outStore/jsp/pickingOutStore.jsp"></forward>
+    </action>
+    <!-- 材料损耗 -->
+    <action path="/proLoss" parameter="action" type="com.optic.action.proloss.ProLossAction" scope="request">
+      
+    </action>
+    <action path="/producttype" parameter="action" type="com.optic.action.producttype.ProductTypeAction" scope="request">
+      <set-property property="cancellable" value="true" />
+    </action>
+    <action path="/productInfo" parameter="action" type="com.optic.action.product.ProductInfoAction" scope="request">
+      <set-property property="cancellable" value="true" />
+    </action>
+    <action path="/bizcontact" parameter="action"  type="com.optic.action.bizContact.BizcontactAction" scope="request">
+      <set-property property="cancellable" value="true" />
+    </action>
+  </action-mappings>
+
+  <message-resources parameter="com.yourcompany.struts.ApplicationResources" />
+</struts-config>
+

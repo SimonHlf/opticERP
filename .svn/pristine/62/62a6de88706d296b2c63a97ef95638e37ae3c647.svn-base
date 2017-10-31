@@ -1,0 +1,58 @@
+package com.optic.module.json;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import com.optic.module.DepartmentInfo;
+import com.optic.module.InStoreSubInfo;
+import com.optic.module.PLossInfo;
+import com.optic.module.PLossSubInfo;
+import com.optic.module.ProductInfo;
+
+public class PLossJson {
+	/**
+	 * 封装材料损耗信息表
+	 * @description
+	 * @author wm
+	 * @date 2017-6-22 上午10:44:16
+	 * @param plList
+	 * @return
+	 */
+	public List<PLossInfo> getPLJson(List<PLossInfo> plList){
+		List<PLossInfo> result = new ArrayList<PLossInfo>();
+		for(Iterator<PLossInfo> it = plList.iterator() ; it.hasNext();){
+			PLossInfo pl = it.next();
+			InStoreSubInfo iss = pl.getIss();
+			InStoreSubInfo iss_new = new InStoreSubInfo(iss.getId());
+			ProductInfo pro = pl.getPro();
+			ProductInfo pro_new = new ProductInfo(pro.getId(),pro.getProNo(),pro.getProSpec(),pro.getProCz());
+			PLossInfo pl_new = new PLossInfo(pl.getId(), iss_new, pro_new,
+					pl.getStartTime(), pl.getEndTime(), pl.getBatchNo(), pl.getMatchNum(),
+					pl.getComNum(), pl.getLossNum(), pl.getComRate(), pl.getComStatus());
+			result.add(pl_new);
+		}
+		return result;
+	}
+	
+	/**
+	 * 封装材料损耗信息子表
+	 * @description
+	 * @author wm
+	 * @date 2017-6-28 下午03:44:46
+	 * @param plsList
+	 * @return
+	 */
+	public List<PLossSubInfo> getPLossSubJson(List<PLossSubInfo> plsList){
+		List<PLossSubInfo> result = new ArrayList<PLossSubInfo>();
+		for(Iterator<PLossSubInfo> it = plsList.iterator() ; it.hasNext();){
+			PLossSubInfo pls = it.next();
+			DepartmentInfo dep = pls.getDepartmentInfo();
+			DepartmentInfo dep_new = new DepartmentInfo(dep.getId(),dep.getDepName());
+			PLossSubInfo pls_new = new PLossSubInfo(pls.getId(),dep_new,null,pls.getOutNumber(),pls.getOutDate(),
+					pls.getComNumber(),pls.getLossNumber(),pls.getAssume(),pls.getRemark(),pls.getOrderNum());
+			result.add(pls_new);
+		}
+		return result;
+	}
+}

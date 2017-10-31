@@ -1,0 +1,86 @@
+package com.optic.dao;
+
+import java.util.List;
+
+import org.hibernate.Session;
+
+import com.optic.module.InStoreInfo;
+
+public interface InstoreInfoDao {
+	/**
+	 * 根据主键加载入库信息实体
+	 * @param sess 持久化操作所需要的Hiberate Session
+	 * @param id 需要加载的入库信息的主键值
+	 * @return 加载的入库信息PO
+	 */
+	InStoreInfo get(Session sess,int id);
+	
+	/**
+	 * 保存入库信息实体，新增一条入库信息记录
+	 * @param inStoreInfo 保存的入库信息实例
+	 */
+	void save(Session sess,InStoreInfo inStoreInfo);
+	
+	/**
+	 * 删除入库信息实体，删除一条入库信息记录
+	 * @param inStoreInfo 删除的入库信息实体
+	 */
+	void delete(Session sess,InStoreInfo inStoreInfo);
+	
+	/**
+	 * 根据主键删除入库信息实体，删除一条入库信息记录
+	 * @param id 需要删除入库信息的主键
+	 */
+	void delete(Session sess,int id);
+	
+	/**
+	 * 更新一条入库信息记录
+	 * @param inStoreInfo 需要更新的入库信息
+	 */
+	void update(Session sess,InStoreInfo inStoreInfo);
+
+	/**
+	 * 根据条件分页获取入库单信息列表
+	 * @description
+	 * @author wm
+	 * @date 2017-5-10 下午03:55:44
+	 * @param sess
+	 * @param isNo 入库单编号（""表示全部）
+	 * @param isDate_s 入库开始时间（""表示全部）
+	 * @param isDate_e 入库结束时间（""表示全部）
+	 * @param inStatus 录入状态 （-1表示全部）
+	 * @param proId 产品编号 （0表示全部）
+	 * @param bcId 单位编号（0表示全部）
+	 * @param pageNo 页码
+	 * @param pageSize 每页记录条数
+	 * @return
+	 */
+	List<InStoreInfo> findPageInfoByOption(Session sess,String isNo,String isDate_s,String isDate_e,Integer inStatus,
+			Integer proId,Integer bcId,Integer pageNo,Integer pageSize);
+	
+	/**
+	 * 根据条件分页获取入库单信息记录条数
+	 * @description
+	 * @author wm
+	 * @date 2017-5-10 下午03:55:44
+	 * @param sess
+	 * @param isNo 入库单编号（""表示全部）
+	 * @param isDate_s 入库开始时间（""表示全部）
+	 * @param isDate_e 入库结束时间（""表示全部）
+	 * @param inStatus 录入状态 （-1表示全部）
+	 * @param proId 产品编号 （0表示全部）
+	 * @param @param bcId 单位编号（0表示全部）
+	 * @return
+	 */
+	Integer getCountByOption(Session sess,String isNo,String isDate_s,String isDate_e,Integer inStatus,Integer proId,Integer bcId);
+	
+	/**
+	 * 获取最后一条入库记录（方便以后自动获取入库单号）
+	 * @description
+	 * @author wm
+	 * @date 2017-5-10 下午04:13:23
+	 * @param sess
+	 * @return
+	 */
+	List<InStoreInfo> findLastInfo(Session sess);
+}

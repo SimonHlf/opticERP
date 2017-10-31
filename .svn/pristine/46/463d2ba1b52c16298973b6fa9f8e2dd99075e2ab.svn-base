@@ -1,0 +1,108 @@
+
+//添加产品类别
+function addProType(){
+	var ptID= $("#ptID").val();
+	var proTypeName = $("#proTypeName").val();
+	var proTypeRemark = $("#proTypeRemark").val();
+	var proTypeName_base = $("#proTypeName").attr("alt");
+	if(proTypeName_base == proTypeName){//类别没修改不用判断重复
+		if(proTypeName == ""){
+			$("#categNaDiv").show();
+			$("#proNameInfo").html("产品类型名称不能为空");
+			return;
+		}else{
+			$("#categNaDiv").hide(); 
+			 $("#proNameInfo").html("");
+		}
+	}else{
+		if(checkExistByName("proTypeName","proType")){
+			$("#categNaDiv").show();
+			$("#proNameInfo").html("产品类型名称重复！");
+			return;
+		}else{
+			$("#categNaDiv").hide();
+			$("#proNameInfo").html("");
+		}
+		if(proTypeName==""){
+			$("#categNaDiv").show();
+			 $("#proNameInfo").html("产品类型名称不能为空！");
+			return;
+		}else{
+			$("#categNaDiv").hide(); 
+			 $("#proNameInfo").html("");
+		}
+	}
+	
+	if(ptID!=0){
+		$.ajax({
+			type:"post",
+			dataType:"json",
+			async:false,
+			data:{ptID:ptID,
+				 proTypeName:escape(proTypeName),
+				 proTypeRemark:escape(proTypeRemark)
+				 },
+			url:"producttype.do?action=updateProductType",
+			success:function(json){
+				if(json==true){
+					commonTipInfoFn($("body"),$(".alertWin"),true,"更新成功",function(){
+						goBasicPage('goProCategoryPage',this);
+						closeAddCategWin();
+					});
+					
+				}else{
+					commonTipInfoFn($("body"),$(".alertWin"),false,"更新失败，请重试");
+				}
+			}
+		});
+	}else{
+		$.ajax({
+			type:"post",
+			dataType:"json",
+			async:false,
+			data:{proTypeName:escape(proTypeName),proTypeRemark:escape(proTypeRemark)},
+			url:"producttype.do?action=addProductType",
+			success:function(json){
+				if(json==true){
+					commonTipInfoFn($("body"),$(".alertWin"),true,"保存成功",function(){
+						goBasicPage('goProCategoryPage',this);
+						closeAddCategWin();
+					});
+				}else{
+					commonTipInfoFn($("body"),$(".alertWin"),false,"更新失败，请重试");
+				}
+			}
+		});
+	}
+}
+//获取产品类别                              
+function listProType(){
+	var tPy =$("#searInput").val();
+	if(tPy=='请输入产品类别拼音码'){
+		tPy='';
+	}
+	$.ajax({
+		type:"post",
+		dataType:"json",
+		async:false,
+		data:{typePy:escape(tPy)},
+		url:"producttype.do?action=listProductType",
+		success:function(json){
+			if(json!=""){
+				$(".noInfoDiv").hide();
+			}else{
+				$(".noInfoDiv").show();
+			}
+			var pt="";
+			$.each(json, function(row, obj) {
+				var typeRemark =obj.typeRemark==undefined?"无":obj.typeRemark;
+				var ptID= obj.id;
+				var typeName=obj.typeName;
+				pt+='<ul><li class="comTransition"><div class="categName"><strong>'+typeName+'</strong></div>';
+				pt+='<div class="remarkDiv"><strong>备注</strong><p>'+typeRemark+'</p></div><a class="editBtn" href="javascript:void(0)" onclick="categEditWin('+ptID+',\''+typeName+'\',\''+typeRemark+'\')">';
+				pt+='<span class="triSpan triR"><i class="iconfont icon-edit editIcon"></i></span></a></li></ul>';
+			});
+			$("#ptlist").html(pt);
+		}
+	});
+}

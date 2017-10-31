@@ -1,0 +1,444 @@
+//单击行选择复选框事件
+function selPro(index){
+	if($("#"+index).is(":checked")){
+		$("#"+index).attr("checked",false);
+		$("#"+index).parent().find("i").remove();
+		$("#"+index).parent().parent().parent().removeClass("oddBgColor1");
+	}else{
+		$("#"+index).attr("checked",true);
+		$("#"+index).parent().append("<i class='iconfont icon-duihao choiceAct'></i>");
+		$("#"+index).parent().parent().parent().addClass("oddBgColor1");
+	}
+}
+//选择产品下的全选
+function selectAllPro(){
+	if(!$("#selAllPro").is(":checked")){
+		$("#selAllPro").attr("checked",false);
+		$(".selAllLab").find("i").remove();
+		$("#dataListTab_pro tr input").attr("checked",false);
+		$("#dataListTab_pro tr i").remove();
+		$("#dataListTab_pro tr").removeClass("oddBgColor1");
+		$(".selAllTxt").html("全选");
+	}else{
+		$("#selAllPro").attr("checked",true);
+		$(".selAllLab").append("<i class='iconfont icon-duihao choiceAct'></i>");
+		$("#dataListTab_pro tr input").attr("checked",true);
+		if($("#dataListTab_pro tr i").length > 0){
+			$("#dataListTab_pro tr i").remove();
+		}
+		$("#dataListTab_pro tr input").parent().append("<i class='iconfont icon-duihao choiceAct'></i>");
+		$("#dataListTab_pro tr").addClass("oddBgColor1");
+		$(".selAllTxt").html("取消");
+	}
+}
+//
+function clearOption1(){
+	$("#sTime").val("").attr("placeholder","请选择开始时间");
+	$("#eTime").val("").attr("placeholder","请选择结束时间");
+	$(":radio").removeAttr("checked");
+	$(":radio").parent().find("i").remove();
+	clearProName();
+}
+//清除浏览材料名称
+function clearProName(){
+	$("#o_proid").val("-1");
+	$("#proNaInp").val("");
+	$("#delPro").hide();
+}
+//单击行选一项事件
+function selSpro(index){	
+	if($("#"+index).is(":checked")){
+		$("#"+index).attr("checked",false);
+		$("#"+index).parent().find("i").remove();
+	}else{
+		$(":radio").removeAttr("checked");
+		$("#"+index).attr("checked",true);
+		$(":radio").parent().find("i").remove();
+		$("#"+index).parent().append("<i class='iconfont icon-duihao choiceAct1'></i>");
+	}
+}
+//将选择的产品插入采购订单列表中
+function insertProList(){
+	var trNum = $("#dataListTab_pro tr").length;
+	var flag = true;
+	if(trNum == 0){
+		commonTipInfoFn($("body"),$(".alertWin"),false,"请先选择产品类别");
+	}else{
+		var obj = $("input[name='proId']:checked"); 
+		if(obj.length > 0){
+			var selecProInfo = "";
+			for(var i = 0; i < obj.length; i++){ 
+				selecProInfo += obj[i].value + ":";
+			}
+			if(selecProInfo != ""){
+				selecProInfo = selecProInfo.substring(0,selecProInfo.length - 1);
+			}
+			/**if($("#selAll").is(":hidden")){
+				var selVal = selecProInfo.split(",");
+				$("#o_proid").val(selVal[0]);
+				$("#proNaInp").val(selVal[1]);
+			}else{**/
+				//将选择的产品编号插入采购订单列表中
+				$("#nullTr").remove();
+				var num = $("#outStListTab tr").length + 1;
+				var proArray = selecProInfo.split(":");
+				var proLength = proArray.length;
+				if(pickOption == "comOut"){//普通领料
+					flag = true;
+				}else if(pickOption == "madeOut"){//加工领料
+					if(proLength > 1){
+						commonTipInfoFn($("body"),$(".alertWin"),false,"暂支持一种材料加工");
+						flag = false;
+					}else if(proLength == 1){
+						flag = true;
+					}else if(proLength == 0){
+						flag = false;
+					}
+				}
+				if(flag){
+					for(var i = 0 ; i < proLength ; i++){
+						var strTrTd = "<tr>";
+						var proInfo = proArray[i].split(",");
+						strTrTd += "<td class='outStWid1' align='center'>"+ num++ +"</td>";//序号
+						strTrTd +="<td class='outStWid2 proNameTd' align='center'><p id='proName' class='proIdClass' alt='"+proInfo[0]+"'>"+proInfo[2]+"</p><i class='iconfont icon-more moreIcon' title='选择产品' onclick='showCorrUnProInfDiv(1)'></i></td>";
+						strTrTd +="<td class='outStWid3 proNumCodeTd' align='center'>"+proInfo[1]+"</td>";
+						strTrTd +="<td class='outStWid4' align='center'>"+proInfo[3]+"</td>";
+						strTrTd +="<td class='outStWid8' align='center'>"+proInfo[4]+"</td>";
+						strTrTd +="<td class='outStWid9' align='center'>"+proInfo[6]+"</td>";
+						strTrTd +="<td id='storeNum_"+ proInfo[0] +"' class='outStWid5 aNumClass' align='center'>"+proInfo[5]+"</td>";//库存量
+						if(pickOption == "comOut"){//普通领料
+							strTrTd +="<td id='td_piOutSt_"+ proInfo[0] +"' class='outStWid5 pNumClass' align='center' ondblclick=editElement(this,'"+proInfo[0]+"',2,'pickStOut')>0</td>";//出库量
+						}else if(pickOption == "madeOut"){//加工领料
+							strTrTd +="<td id='td_piOutSt_"+ proInfo[0] +"' class='outStWid5 pNumClass' align='center'>"+proInfo[5]+"</td>";//出库量
+						}
+						
+						strTrTd += "<td class='outStWid6 noBorR' align='center'><i class='iconfont icon-delete deleteIcon' title='删除' onclick='clearCurrPro(this)'></i></td>";
+						strTrTd +="</tr>";
+						$("#outStListTab").append(strTrTd);
+						$("#outStListTab tr:odd").addClass("oddBgColor");//增加隔行换色
+					}
+					closeAlertWin($('.outStInfoDiv'));
+					if($("#proNaInp").val() != ""){
+						$("#delPro").show();
+					}
+				}
+			//}
+		}else{
+			commonTipInfoFn($("body"),$(".alertWin"),false,"请先选择产品");
+		}
+		
+	}
+}
+//删除产品
+function clearCurrPro(obj){
+	$(obj).parent().parent().remove();
+}
+//新增出库单选按钮（普通领料 加工领料）
+function convert(){
+	$(".comCategStyInp").each(function(){
+		$(this).on("click",function(){
+			if($(this).attr("id")=="commOutStIn"){
+				$("#commOutStIn").attr("checked","checked");
+				$("#madeOutStInp").removeAttr("checked");
+				$("#otSta").val("0");
+				$("#newMadeInfo").hide();
+				pickOption = "comOut";
+			}else if($(this).attr("id")=="madeOutStInp"){
+				$("#madeOutStInp").attr("checked","checked");
+				$("#commOutStIn").removeAttr("checked");
+				$("#otSta").val("1");
+				$("#newMadeInfo").show();
+				//加工领料暂支持一种材料加工(如果存在1种以上的材料，给出提示，减少至1种材料)
+				var num = $("#outStListTab tr").length;//采购产品记录条数
+				if(num > 1){
+					commonTipInfoFn($("body"),$(".alertWin"),false,"暂支持一种材料加工");
+				}
+				pickOption = "madeOut";//加工领料
+			}else if($(this).attr("id")=="commOutStIn_vie"){
+				$("#commOutStIn_vie").attr("checked","checked");
+				$("#madeOutStInp_vie").removeAttr("checked");
+				$("#otSta").val("0");
+			}else if($(this).attr("id")=="madeOutStInp_vie"){
+				$("#commOutStInp_vie").attr("checked","checked");
+				$("#madeOutStIn_vie").removeAttr("checked");
+				$("#otSta").val("1");
+			}
+			$(this).parent("label").append("<i class='iconfont icon-duihao choiceAct'></i>").siblings().find('i').remove();
+		});
+	});
+	
+}
+//判断出库单号是否重复
+function checkOutNo(outNo){
+	var flag = false;
+	$.ajax({
+		type:"post",
+		async:false,
+		dataType:"json",
+		data:{oiNo:outNo},
+		url:"outStore.do?action=checkOutNo",
+		success:function(json){
+			flag=json;
+		}
+	});
+	return flag;
+}
+//添加出库信息
+function addOutInfo(){
+	var o_suff=$("#preSuffix").val();
+	var outNo=$("#o_no").val();
+	var oNo=o_suff+"_"+outNo; //出库单编号
+	var proIdStr=""; //材料编号
+	var pNumStr=""; //出库量
+	var appUser=$("#applyUser").val(); //申请人
+	var remark=$("#remark").val(); // 备注
+	var otSta= $("#otSta").val();//领料状态
+	var num = $("#outStListTab tr").length;//采购产品记录条数
+	var newMadeCode = $("#newMadeCode").val().replace(/\s+/g, "");//新加工后产品编码
+	var allPNum_tr_flag = true;
+	var allPNum_tr_status = "succ";
+	var flag_final = false;
+	$(".pNumClass").each(function(i){
+		if(otSta == 1){//加工领料出库--出库量必须和库存量相同
+			if($(".pNumClass").eq(i).html() == "" ||　$(".pNumClass").eq(i).html()　== 0){
+				allPNum_tr_status = "noFull";//不完整
+				return false;
+			}else if($(".pNumClass").eq(i).html() != $(".aNumClass").eq(i).html()){
+				allPNum_tr_status = "fail";//不完整
+				return false;
+			}
+		}else{
+			if($(".pNumClass").eq(i).html() == "" ||　$(".pNumClass").eq(i).html()　== 0){
+	    		allPNum_tr_flag = false;
+				return false;
+			}
+		}
+    	
+    });
+	if(checkOutNo(oNo)){
+		commonTipInfoFn($("body"),$(".alertWin"),false,"填写出库单编号已存在！");
+		return;
+	}
+	if(oNo == ""){
+		commonTipInfoFn($("body"),$(".alertWin"),false,"请填写出库单编号");
+	}else if(appUser == ""){
+		commonTipInfoFn($("body"),$(".alertWin"),false,"请填写申请人");
+	}else if(checkExistByName("newMadeCode","proCode") && otSta == 1){
+		commonTipInfoFn($("body"),$(".alertWin"),false,"该产品编码已存在");
+	}else if(otSta == -1){
+		commonTipInfoFn($("body"),$(".alertWin"),false,"请选择领料类型");
+	}else if(otSta == 1 && newMadeCode == ""){
+		commonTipInfoFn($("body"),$(".alertWin"),false,"请填写新产品编码");
+	}else if(num == 0){
+		commonTipInfoFn($("body"),$(".alertWin"),false,"出库记录不能为空");
+	}else if(num > 1 && otSta == 1){
+		commonTipInfoFn($("body"),$(".alertWin"),false,"暂支持一种材料加工");
+	}else if(!allPNum_tr_flag || allPNum_tr_status == "noFull"){
+		commonTipInfoFn($("body"),$(".alertWin"),false,"请填写出库产品完整信息");
+	}else if(allPNum_tr_status == "fail"){
+		commonTipInfoFn($("body"),$(".alertWin"),false,"加工领料时出库量必须和库存量相等");
+	}else{
+		$(".proIdClass").each(function(i){
+			proIdStr += $(".proIdClass").eq(i).attr("alt")+",";
+		});
+		
+		proIdStr = proIdStr.substring(0,proIdStr.length - 1);
+		
+		$(".pNumClass").each(function(i){
+			pNumStr += $(".pNumClass").eq(i).html()+",";
+			
+		});
+		pNumStr = pNumStr.substring(0,pNumStr.length - 1);
+		if(otSta == 1){
+			//检查该材料是否正在加工（正在加工的材料不能进行再次加工）
+			if(checkSpecProMadeInfo(proIdStr)){
+				flag_final = true;
+				commonTipInfoFn($("body"),$(".alertWin"),false,"该材料正在进行加工，不能进行加工领料");
+			}
+		}
+		var comStr = proIdStr+":"+pNumStr;//材料编号+出库量+申请人+备注
+		if(!flag_final){
+			$.ajax({
+				type:"post",
+				async:false,
+				dataType:"json",
+				data:{oNo:oNo,
+					otSta:otSta,
+					appUser:appUser,
+					remark:remark,
+					comStr:comStr,
+					newMadeCode,newMadeCode},
+				url:"outStore.do?action=addOutStore",
+				success:function(json){
+					if(json){
+						commonTipInfoFn($("body"),$(".alertWin"),true,"增加出库单成功",function(){
+		        			window.location.reload();
+		        		});
+					  //window.location.href="outStore.do?action=goPickingOutStore";	
+					}
+				}
+			});
+		}
+	}
+	
+}
+
+//检查制定产品的加工损耗状态(正在加工：true,加工完成或者未加工:false)
+function checkSpecProMadeInfo(proId){
+	var flag = false;
+	$.ajax({
+		type:"post",
+		async:false,
+		dataType:"json",
+		url:"outStore.do?action=checkProMadeInfo&proId="+proId,
+		success:function(json){
+			flag = json["result"]
+		}
+	});
+	return flag;
+}
+
+//列出领料出库信息
+function  listOutStore(pageNo){
+	var oNo="";//出库单号
+	var otSta = -1 ;
+	var sTime = "" ;
+	var eTime = "";
+	var o_proid = -1 ;
+	
+	if(selOption=="Otheropt"){
+		otSta = $("#otSta").val(); //领料状态
+	    sTime = $("#sTime").val();
+		eTime = $("#eTime").val();
+		o_proid = $("#o_proid").val();
+		oNo="";
+	}else if(selOption=="orderopt"){
+		oNo=$("#queryInsNum").val();
+		if(oNo=="请输入出库单号"){
+			//alert("出库单号不能为空!");
+			commonTipInfoFn($("body"),$(".alertWin"),false,"出库单号不能为空");
+			return;
+		}
+	}
+	$.ajax({
+		type:"post",
+		async:false,
+		dataType:"json",
+		data:{o_no:oNo,
+			o_sta:otSta,
+			sDate:sTime,
+			eDate:eTime,
+			pageNo:pageNo,
+			proid:o_proid},
+		url:"outStore.do?action=listOutStore",
+		success:function(json){
+			var maincon="";
+			var count;
+			if(json.length != 0){
+				$("#pagViewTurn").show();
+				$.each(json, function(row, obj) {
+					maincon+='<li class="mainLi"><div class="mainBox">';	
+					maincon+='<h3><span>出库单 OutStoring Order</span><em>制单日期：'+getLocalDate(obj.outInfo.applyDate)+'</em></h3><div class="outStTitDiv">';
+					maincon+='<p class="outStName outStOrdTim">申请人：'+obj.outInfo.applyUser+'</p><p class="outStOrdNum">出库编号：'+obj.outInfo.outNo+'</p>'	;
+					maincon+='</div><ul class="outStOrdLisTit clearfix"><li class="listLiWid1">编号</li><li class="listLiWid2">物料名称</li>';	
+					maincon+='<li class="listLiWid6">材质</li><li class="listLiWid4">规格</li><li class="listLiWid3">单位</li><li class="listLiWid5 noBorLi">出库数量</li></ul>';
+					$.each(obj.osInfo, function(row1, obj1) {
+						maincon+='<ul class="outStOrdLisCon clearfix"><li class="listLiWid1">1</li>';	
+						maincon+='<li class="listLiWid2">'+obj1.productInfo.proName+'</li><li class="listLiWid6">'+obj1.productInfo.proCz+'</li>';	
+						maincon+='<li class="listLiWid4">'+obj1.productInfo.proSpec+'</li><li class="listLiWid3">'+obj1.productInfo.proUnit+'</li>';	
+						maincon+='<li class="listLiWid5 noBorLi">'+obj1.proNumber+'</li></ul>';	
+					});
+					maincon+='<div class="outStOrdBotDiv">';
+					if(obj.outInfo.outStatus==1){
+					  maincon+='<p>领料状态：加工领料</p>';	
+					}else if(obj.outInfo.outStatus==0){
+					  maincon+='<p>领料状态：普通领料</p>';	
+					}
+				     maincon+='</div><div class="outStOrdBotDiv1"><p>制单人：'+obj.outInfo.userInfo.userName+'</p></div></div></li>';		
+				});
+				$("#purOrdUl").html(maincon);
+				waterFall("purOrdUl","mainLi");
+				
+			}else{
+				$("#purOrdUl").html("<div class='noRecCon'><i class='iconfont icon-noListRec noListRec_1'></i><span>暂无领料出库记录</span></div>");
+				$("#pagViewTurn").hide();
+			}
+
+		}
+	});
+}
+//总条数
+function listOsCount(){
+	var oNo="";//出库单号
+	var otSta = -1 ;
+	var sTime = "" ;
+	var eTime = "";
+	var o_proid = -1 ;
+	
+	if(selOption=="Otheropt"){
+		otSta = $("#otSta").val(); //领料状态
+	    sTime = $("#sTime").val();
+		eTime = $("#eTime").val();
+		o_proid = $("#o_proid").val();
+		oNo="";
+	}else if(selOption=="orderopt"){
+		oNo=$("#queryInsNum").val();
+		if(oNo=="请输入出库单号"){
+			commonTipInfoFn($("body"),$(".alertWin"),false,"出库单号不能为空");
+			return;
+		}
+	}
+	var proCount=0;
+	$.ajax({
+		type:"post",
+		async:false,
+		dataType:"json",
+		data:{o_no:oNo,
+			o_sta:otSta,
+			sDate:sTime,
+			eDate:eTime,
+			proid:o_proid},
+		url:"outStore.do?action=listOutStoreCount",
+		success:function(json){
+			proCount=json;
+		}
+	});
+	return proCount;
+}
+
+//分页显示往来单位
+function listoutstorePage(){
+	var pc=listOsCount();
+	$("#pagination").pagination(pc,{
+        callback: pageselectCallback,  //PageCallback() 为翻页调用次函数。
+        prev_text: "上一页",
+        next_text: "下一页 ",
+        items_per_page:10,
+        ellipse_text:"...",
+        num_edge_entries: 2,       //两侧首尾分页条目数
+        num_display_entries: 10  //连续分页主体部分分页条目数
+    });
+	function pageselectCallback(page_index, jq){
+		listOutStore(page_index+1);
+	}
+	 $("#pagination").css({
+   	 	"left":parseInt(($("#pagViewTurn").width() - $("#pagination").width())/2),
+   	 	"top":0
+	 });
+}
+//生成订单编号
+function genOrder(){
+	$.ajax({
+		type:"post",
+		async:false,
+		dataType:"json",
+		url:"outStore.do?action=genoNum",
+		success:function(json){
+			var insOrderArray = json.split("_");
+			var preSuffix = insOrderArray[0];
+			var lastNum = insOrderArray[1];
+			$("#preSuffix").val(preSuffix);
+			$("#o_no").val(lastNum);
+		}
+	});
+}

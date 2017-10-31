@@ -1,0 +1,173 @@
+package com.optic.service.impl;
+
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import com.optic.dao.InstoreSubInfoDao;
+import com.optic.dao.PLossInfoDao;
+import com.optic.dao.ProductInfoDao;
+import com.optic.exception.WEBException;
+import com.optic.factory.DaoFactory;
+import com.optic.module.InStoreSubInfo;
+import com.optic.module.PLossInfo;
+import com.optic.module.ProductInfo;
+import com.optic.service.PLossInfoManager;
+import com.optic.tools.Convert;
+import com.optic.tools.CurrentTime;
+import com.optic.tools.HibernateUtil;
+import com.optic.util.Constants;
+
+public class PLossInfoManagerImpl implements PLossInfoManager{
+
+	public Integer addPL(Integer issId, Integer proId, Integer proNewId, Timestamp sTime,
+			String batchNo, Integer matchNum) throws WEBException {
+		// TODO Auto-generated method stub
+		InstoreSubInfoDao issDao = null;
+		ProductInfoDao proDao = null;
+		PLossInfoDao plDao = null;
+		Transaction tran = null;
+		try {
+			plDao = (PLossInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_LOSS_INFO);
+			proDao = (ProductInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_INFO);
+			issDao = (InstoreSubInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_IN_STORE_SUB_INFO);
+			Session sess = HibernateUtil.currentSession();
+			tran = sess.beginTransaction();
+			InStoreSubInfo iss = issDao.get(sess, issId);
+			ProductInfo pro = proDao.get(sess, proId);
+			PLossInfo pl = new PLossInfo(iss, pro,proNewId,sTime, null, batchNo, matchNum,0,0, 0.00, 0);
+			plDao.save(sess, pl);
+			tran.commit();
+			return pl.getId();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new WEBException("初始增加材料损耗信息时出现异常!");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public boolean updatePLById(Integer id, Integer comNum, Integer lossNum,
+			Integer comStatus) throws WEBException {
+		// TODO Auto-generated method stub
+		PLossInfoDao plDao = null;
+		Transaction tran = null;
+		try {
+			plDao = (PLossInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_LOSS_INFO);
+			Session sess = HibernateUtil.currentSession();
+			tran = sess.beginTransaction();
+			PLossInfo pl = plDao.get(sess, id);
+			if(pl != null){
+				if(comNum > 0){
+					pl.setComNum(pl.getComNum()+comNum);
+				}
+				if(lossNum > 0){
+					pl.setLossNum(pl.getLossNum()+lossNum);
+				}
+				if(comNum > 0 || lossNum > 0){
+					//重新计算完品率
+					double rate = pl.getComNum() * 100d / pl.getMatchNum();
+					Double comRate = Double.parseDouble(Convert.convertInputNumber_1(rate));
+					pl.setComRate(comRate);
+				}
+				if(comStatus.equals(1)){
+					pl.setComStatus(1);
+					pl.setEndTime(CurrentTime.getCurrentTime1());
+				}
+				plDao.update(sess, pl);
+				tran.commit();
+				return true;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new WEBException("修改材料损耗信息时（完品数量、损耗数量、完成状态）出现异常!");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+		return false;
+	}
+
+	public List<PLossInfo> listPageInfoByOption(String proNo, String sDate,
+			String eDate, Integer comStatus, Integer pageNo, Integer pageSize)
+			throws WEBException {
+		// TODO Auto-generated method stub
+		PLossInfoDao plDao = null;
+		try {
+			plDao = (PLossInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_LOSS_INFO);
+			Session sess = HibernateUtil.currentSession();
+			return plDao.findPageInfoByOption(sess, proNo, sDate, eDate, comStatus, pageNo, pageSize);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new WEBException("根据条件分页获取材料损耗信息列表出现异常!");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public Integer getCountByOption(String proNo, String sDate, String eDate,
+			Integer comStatus) throws WEBException {
+		// TODO Auto-generated method stub
+		PLossInfoDao plDao = null;
+		try {
+			plDao = (PLossInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_LOSS_INFO);
+			Session sess = HibernateUtil.currentSession();
+			return plDao.getCountByOption(sess, proNo, sDate, eDate, comStatus);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new WEBException("根据条件获取材料损耗信息列表记录条数时出现异常!");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public List<PLossInfo> listInfoById(Integer plId) throws WEBException {
+		// TODO Auto-generated method stub
+		PLossInfoDao plDao = null;
+		try {
+			plDao = (PLossInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_LOSS_INFO);
+			Session sess = HibernateUtil.currentSession();
+			return plDao.findInfoById(sess, plId);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new WEBException("获取指定材料损耗信息列表出现异常!");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public List<PLossInfo> listInfoByOption(Integer plId, Integer depId)
+			throws WEBException {
+		// TODO Auto-generated method stub
+		PLossInfoDao plDao = null;
+		try {
+			plDao = (PLossInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_LOSS_INFO);
+			Session sess = HibernateUtil.currentSession();
+			return plDao.findInfoById(sess, plId);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new WEBException("根据材料损耗主表编号、部门编号获取材料损耗子表信息列表出现异常!");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public List<PLossInfo> listUnComInfoByProId(Integer pId)
+			throws WEBException {
+		// TODO Auto-generated method stub
+		PLossInfoDao plDao = null;
+		try {
+			plDao = (PLossInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_LOSS_INFO);
+			Session sess = HibernateUtil.currentSession();
+			return plDao.findUnComInfoByProId(sess, pId);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new WEBException("根据材料损耗主表编号获取未完结状态的材料损耗信息列表出现异常!");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+}

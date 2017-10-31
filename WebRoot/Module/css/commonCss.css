@@ -1,0 +1,728 @@
+@charset "utf-8";
+.headWrap{
+	width:100%;
+	height:60px;
+	background:#282e3a;
+	position:relative;
+	z-index:3;
+	box-shadow: 2px 0px 12px #282e3a;
+}
+.headWrap .logo{
+	margin:10px 0 0 10px;
+}
+.perInfoBox{
+	width:290px;
+	height:60px;
+	background:#1c2028;
+}
+.perInfo img{
+	margin-top:10px;
+}
+.perInfo p{
+	color:#ddd;
+	font-size:14px;
+	line-height: 60px;
+	margin-left:10px;
+}
+.exit{
+	width:80px;
+	height: 100%;
+	display:inline-block;
+	border-left:1px solid #d8d8d8;	
+	position:relative;
+}
+.exitIcon{
+	font-size:36px;
+	color:#fff;
+	position:absolute;
+	right:20px;
+	top:5px;
+}
+.exit:hover .exitIcon{
+	color:#f00;
+}
+/* 主体 */
+.mainWrap{
+	width:100%;
+	position:relative;
+	z-index:2;
+}
+.leftPart{
+	width:50px;
+	height:100%;
+	background:#00a3e4;
+	position:absolute;
+	left:0;
+	top:0;
+	z-index:2;
+}
+.leftPart li{
+	width:50px;
+	height:80px;
+	position:relative;
+	cursor:pointer;
+}
+.liTxt{
+	width:135px;
+	height:80px;
+	background:#f8f8f8;
+	position:absolute;
+	right:-200px;
+	top:0px;
+	color:#00a3e4;
+	font-size:18px;
+	line-height:80px;
+	text-align:center;
+	display:none;
+	filter:alpha(opacity:0); 
+	opacity:0;
+}
+.tri,
+.liTxtTri{
+	width:0px;
+	height:0px;  
+	position:absolute;
+    border-width:8px;  
+    border-style:solid solid dashed dashed;  
+    border-color:transparent #f8f8f8 transparent transparent;
+}
+.tri{
+	right:0px;
+	top:32px;
+	display:none;
+}
+.leftPart li.active .tri{
+	display:block;
+}
+.liTxtTri{
+	left:-16px;
+	top:32px;
+}
+.navIcon{
+	width:32px;
+	position:absolute;
+	left:9px;
+	background:url(../basicInfo/images/nav.png) no-repeat;
+}
+.one{
+	height:27px;
+	background-position:0 0;
+	top:26px;
+}
+.leftPart li:hover .one,
+.leftPart li.active .one{
+	background-position:0 -151px;
+}
+.two{
+	height:30px;
+	background-position:0 -28px;
+	top:25px;
+}
+.leftPart li:hover .two,
+.leftPart li.active .two{
+	background-position:0 -179px;
+}
+.three{
+	height:32px;
+	background-position:0 -58px;
+	top:24px;
+}
+.leftPart li:hover .three,
+.leftPart li.active .three{
+	background-position:0 -209px;
+}
+.four{
+	height:32px;
+	background-position:0 -89px;
+	top:24px;
+}
+.leftPart li:hover .four,
+.leftPart li.active .four{
+	background-position:0 -240px;
+}
+.five{
+	height:30px;
+	background-position:0 -121px;
+	top:25px;
+}
+.leftPart li:hover .five,
+.leftPart li.active .five{
+	background-position:0 -272px;
+}
+.leftSmallNav{
+	width:150px;
+	height:100%;
+	float:left;
+	border-left:1px solid #d8d8d8;
+	border-right:1px solid #d8d8d8;
+	margin-left:50px;
+	color:#666;
+	background:#eaeaea;
+}
+.leftSmallNav li{
+	font-size:14px;
+	height: 40px;
+	line-height: 40px;
+	position:relative;
+	text-indent: 25px;
+	cursor: pointer;
+}
+.leftSmallNav li a{
+	color:#666;
+}
+.leftSmallNav li.active,
+.leftSmallNav li.active a,
+.leftSmallNav li:hover{
+	color:#00a3e4;
+}
+.leftSmallNav li span{
+	width: 8px;
+	height: 8px;
+	background:#666;
+	border-radius:50%;
+	position:absolute;
+	top:16px;
+	left:10px;
+}
+.rightPart{
+	height:100%;
+	position:relative;
+	z-index:1;
+	overflow:auto;
+	overflow-x:hidden;
+}
+.noSmaNav{
+	margin-left:50px;
+}
+.hasSmaNav{
+	margin-left:202px;
+}
+.mainConWrap{
+	width: 100%;
+	overflow: auto;
+	overflow-x:hidden;
+}
+.comMainWid{
+	width: 1200px;
+	margin:0px auto;
+}
+
+/* input提示文本信息 */
+.tipDiv{
+	border:1px solid #dbdbdb;
+	padding:1px 10px;
+	border-radius:4px;
+	position:absolute;
+	left:85px;
+	top:-20px;
+	line-height: 22px;
+	color: #f32e2e;
+	display: none;
+	background:#fff;
+}
+.tipTriSpan{
+	width: 21px;
+	height: 11px;
+	background: #fff url(../basicInfo/images/triangle.png) no-repeat;
+	position: absolute;
+	left:15px;
+	bottom:-11px;
+}
+.sucInfoIcon,
+.sucInfoIcon1,
+.sucInfoIcon2{
+	font-size: 22px;
+	color: #00a3e4;
+	position: absolute;
+	top:5px;
+	display: none;
+}
+.sucInfoIcon{
+	right:12px;
+}
+.sucInfoIcon1{
+	right:58px;
+}
+.sucInfoIcon2{
+	right:50px;
+}
+/* 银行卡号格式化层 */
+.patternDiv{
+	width: 220px;
+	height: 35px;
+	line-height: 35px;
+	background:#68c7ec;
+	position: absolute;
+	bottom:-41px;
+	border:none;
+	font-size:16px;
+	font-weight: bold;
+	text-align: center;
+	display: none;
+	color: #333;
+}
+.posInp1{
+	left:40px;
+}
+.posInp2{
+	left:80px;
+}
+.bankNumTri{
+	width: 0px;
+	height: 0px;
+	position:absolute;
+	left:140px;
+	top:32px;
+	border-style:dashed dashed solid dashed;
+	border-color:transparent transparent #68c7ec transparent;
+	border-width: 10px;
+	display: none;
+}
+.bankMidWinDiv{
+	position: absolute;
+	left:0px;
+	top:0px;
+}
+.bankMidWinDiv li{
+	float:left;
+	height: 38px;
+	line-height: 40px;
+	position: relative;
+	font-size: 14px;
+	text-indent: 40px;
+	border:1px dotted #ccc;
+}
+.bankMidWinDiv li:hover,
+.bankMidWinDiv li.active{
+	border:1px dotted #00a3e4;
+}
+.bankMidWinDiv li .comBankIcon{
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	left:5px;
+	top:5px;
+	background: url(../basicInfo/images/bankIcon.png) no-repeat;
+}
+.bankMidWinDiv li .icbcIcon{
+	background-position:0 0;
+}
+.bankMidWinDiv li .abcIcon{
+	background-position:0 -30px;
+}
+.bankMidWinDiv li .ccbIcon{
+	background-position:0 -60px;
+}
+.bankMidWinDiv li .cmbIcon{
+	background-position:0 -300px;
+}
+.bankMidWinDiv li .bocIcon{
+	background-position:0 -150px;
+}
+.bankMidWinDiv li .psbcIcon{
+	background-position:0 -270px;
+}
+.bankMidWinDiv li .commIcon{
+	background-position:0 -210px;
+}
+.bankMidWinDiv li .citicIcon{
+	background-position:0 -330px;
+}
+.bankMidWinDiv li .cmbcIcon{
+	background-position:0 -180px;
+}
+.bankMidWinDiv li .cebIcon{
+	background-position:0 -390px;
+}
+.bankMidWinDiv li .cibIcon{
+	background-position:0 -120px;
+}
+.bankMidWinDiv li .spdbIcon{
+	background-position:0 -240px;
+}
+.bankMidWinDiv li .gdbIcon{
+	background-position:0 -360px;
+}
+.bankMidWinDiv li .hxbankIcon{
+	background-position:0 -90px;
+}
+.bankMidWinDiv li .com_BankRdio{
+	width:100%;
+	height:40px;
+	position:absolute;
+	right:0px;
+	top:0px;
+	z-index:5;
+	opacity:0;
+	filter:alpha(opacity=50);
+	cursor: pointer;
+}
+.bankMidWinDiv li .comCirSpan,
+.bankMidWinDiv li b{
+	position:absolute;
+	border-radius:50%;
+}
+.bankMidWinDiv li .comCirSpan{
+	width:23px;
+	height:23px;
+	border:1px solid #ddd;
+	z-index:1;
+	right:10px;
+	top:8px;
+}
+.bankMidWinDiv li b{
+	width:29px;
+	height:29px;
+	background:url(../basicInfo/images/selectIcon.png) no-repeat;	
+	z-index:2;
+	right:8px;
+	top:6px;
+}
+/* 供应商数据弹窗 产品类别数据弹窗 仓库货架数据类别弹窗左侧导航的公共样式 */
+.categDataUl{
+	width:100%;
+	position:absolute;
+	left:0px;
+	top:0px;
+	border-left:1px dotted #999;
+}
+.categDataUl li{
+	height:30px;
+	line-height:30px;
+	position:relative;
+	cursor:pointer;
+}
+.categDataUl li:hover,
+.categDataUl li.active p,
+.categDataUl li.active .cardIcon,
+.categDataUl li.active .proIcon,
+.categDataUl li.active .whIcon{
+	color:#00a3e4;
+}
+.categDataUl li p{
+	width:120px;
+	max-width:120px;
+	position:absolute;
+	left:32px;
+}
+.categDataUl li span{
+	width:12px;
+	height:1px;
+	border-bottom:1px dotted #999;
+	position:absolute;
+	left:0px;
+	top:14px;
+}
+.cardIcon,
+.proIcon,
+.whIcon{
+	font-size:18px;
+	position:absolute;
+	left:12px;
+	top:1px;
+}
+.cardIcon{
+	color:#999;
+}
+.proIcon,
+.whIcon{
+	color:#ccc;
+}
+/* 浏览下的隐藏和显示公共样式 */
+.selCondP a{
+	width:70px;
+	height:100%;
+	line-height:40px;
+	position:relative;
+	text-indent:25px;
+	color:#333;
+}
+.selCondP em{
+	width:21px;
+	height:16px;
+	background:url(../purchase/images/showHide.png) no-repeat;
+	position:absolute;
+	left:0px;
+	top:12px;
+}
+.roataEmUp{
+	-webkit-transform:rotate(180deg);
+	-moz-transform:rotate(180deg);
+	-ms-transform:rotate(180deg);
+	transform:rotate(180deg);
+}
+.roataEmDown{
+	-webkit-transform:rotate(0deg);
+	-moz-transform:rotate(0deg);
+	-ms-transform:rotate(0deg);
+	transform:rotate(0deg);
+}
+.comTurnPagDiv{
+	width:100%;
+	position:relative;
+	margin-bottom:10px;
+	z-index:3;
+}
+#purOrdUl{
+	position:relative;
+}
+/* 应付款 实付款 未付款统计 */
+.payStatisDiv{
+	width:100%;
+	height:48px;
+	line-height:50px;
+	border:1px solid #ccc;
+	font-size:16px;
+	color:#666;
+	position:relative;
+	display:none;
+}
+.payStatisDiv p{
+	text-indent:10px;
+}
+.payStatisDiv p span{
+	font-weight:bold;
+}
+.actSp,
+.totSp{
+	color:#00a3e4;
+}
+.noPaySp{
+	color:#f00;
+}
+.payStatisDiv a{
+	position:absolute;
+	right:10px;
+	top:7px;
+	width:80px;
+	height:35px;
+	line-height:35px;
+	background:#68c7ec;
+	color:#fff;
+	font-size:16px;
+	text-align:center;
+}
+.payStatisDiv a:hover{
+	background:#00a3e4;
+}
+/* 未付款 未付清窗口 */
+.goPayDiv{
+	width:400px;
+	height:230px;
+	background:#fff;
+	position:absolute;
+	left:50%;
+	top:50%;
+	margin-left:-200px;
+	margin-top:-115px;
+	z-index:1000;
+	border-radius:4px;
+	display:none;
+}
+.goPayTit{
+	height:40px;
+	background:#68c7ec;
+	color:#fff;
+	font-size:16px;
+	border-radius:4px 4px 0 0;
+}
+.goPayTit .icon-fukuan{
+	font-size:24px;
+	float:left;
+	margin:3px 0 0 10px;
+}
+.goPayTit span{
+	float:left;
+	margin:8px 0 0 2px;
+}
+.comGoPayDiv{
+	margin:0px auto 0px;
+	font-size:16px;
+	color:#666;
+	width:238px;
+	height:35px;
+	line-height:35px;
+}
+.payMargT{
+	margin-top:15px;
+}
+.comGoPayDiv input{
+	width:173px;
+	height:33px;
+	line-height:35px;
+	font-size:14px;
+	color:#666;
+	box-shadow:2px 2px 3px #ccc inset;
+	border:1px solid #dadada;
+	padding-left:3px;
+}
+.comGoPayDiv a{
+	display:inline-block;
+	width:50px;
+	height:35px;
+	line-height:35px;
+	background:#68c7ec;
+	color:#fff;
+	text-align:center;
+	font-size:14px;
+	cursor:pointer;
+}
+.comGoPayDiv a:hover{
+	background:#00a3e4;
+}
+.closeGoPay{
+	position:absolute;
+	right:5px;
+	font-size:36px;
+	cursor:pointer;
+	color:#fff;
+	top:-5px;
+}
+.closeGoPay:hover{
+	color:#f00;
+	-webkit-transform:rotate(180deg);
+	-moz-transform:rotate(180deg);
+	-ms-transform:rotate(180deg);
+	transform:rotate(180deg);
+	transform-origin:center center;
+}
+/* 去付款input提示信息 */
+.goPayTipInfo{
+	color:#f00;
+	font-size:14px;
+	margin-left:82px;
+	display:none;
+}
+.goPayTipInfo i{
+	font-size:20px;
+	float:left;
+}
+.goPayTipInfo span{
+	display:inline-block;
+	margin-top:3px;
+}
+/* 查看付款记录层 */
+.payHisLayer{
+	width:100%;
+	position:absolute;
+	left:0px;
+	top:40px;
+	background:rgba(0,0,0,.7);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#C8000000,endColorstr=#C8000000);
+	color:#fff;
+	display:none;
+}
+.payHisTit{
+	height:39px;
+	line-height:39px;
+	font-size:14px;
+	border-bottom:1px solid #fff;
+}
+.payHisTit p{
+	float:left;
+}
+.payHisNum{
+	margin-left:170px;
+}
+.payHisAcc{
+	margin-left:15px;
+}
+.comPayHisDiv{
+	position:relative;
+	overflow:hidden;
+}
+.comPayHisDiv ul{
+	width:100%;
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+.payHisLayer li,
+.payHisLisTit{
+	height:29px;
+	line-height:29px;
+	border-bottom:1px dotted #fff;
+}
+.payHisLisTit span{
+	display:inline-block;
+}
+.payHisLayer li p,
+.payHisLisTit span{
+	float:left;
+	vertical-align:middle;
+	text-align:center;
+	font-size:14px;
+}
+.payHisLayer li p.widOne,
+.payHisLisTit span.widOne{
+	width:190px;
+}
+.payHisLayer li p.widTwo,
+.payHisLisTit span.widTwo{
+	width:294px;
+}
+.oddColor{
+	background:#8A8A8A;
+}
+.closePayLayDiv{
+	height:35px;
+	line-height:35px;
+	text-align:center;
+	cursor:pointer;
+}
+.payHisClose{
+	font-size:26px;
+}
+.parScrollHis,
+.sonScrollHis{
+	width:5px;
+	position:absolute;
+	right:0px;
+	top:0px;
+	border-radius:20px;
+}
+.sonScrollHis{
+	height:50px;
+	background:#fff;
+}
+/* 导出excel按钮公共样式 */
+.excelBtn{
+	width: 122px;
+	margin-top:14px;
+	height: 39px;
+	line-height: 39px;
+	background:#fff;
+	display: inline-block;
+	font-size: 16px;
+	color: #666;
+}
+.excelBtn .excelIcon{
+	color: #00a3e4;
+	font-size: 26px;
+	margin:0 3px 0 15px;
+}
+.searBox p a.excelBtn:hover,
+.excelBtn:hover{
+	background: #00a3e4;
+	color:#fff;
+}
+.searBox p a.excelBtn:hover .excelIcon,
+.excelBtn:hover .excelIcon{
+	color:#fff;
+}
+/* 暂无付款记录 */
+.noPayHisDiv{
+	width:100%;
+	height:100%;
+	text-align:center;
+	color:#fff;
+}
+.noPayHisDiv i{
+	font-size:80px;
+	display:inline-block;
+	margin-top:10px;
+}
+.noPayHisDiv p{
+	font-size:16px;
+	margin-top:-20px;
+}

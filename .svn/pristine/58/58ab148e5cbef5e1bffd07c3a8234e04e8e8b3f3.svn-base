@@ -1,0 +1,153 @@
+package com.optic.module;
+
+import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * OutInfo entity. @author MyEclipse Persistence Tools
+ */
+
+public class OutInfo implements java.io.Serializable {
+
+	// Fields
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Integer id;
+	private DepartmentInfo departmentInfo;
+	private ProductInfo productInfo;
+	private String outNo;
+	private String applyUser;
+	private Timestamp applyDate;
+	private Integer outNumber;
+	private Integer outStatus;
+	private String remark;
+	private Set<PLossInfo> proLossInfos = new HashSet<PLossInfo>();
+
+	// Constructors
+
+	/** default constructor */
+	public OutInfo() {
+	}
+
+	/** minimal constructor */
+	public OutInfo(DepartmentInfo departmentInfo, ProductInfo productInfo,
+			String outNo, String applyUser, Timestamp applyDate, Integer outNumber,
+			Integer outStatus, String remark) {
+		this.departmentInfo = departmentInfo;
+		this.productInfo = productInfo;
+		this.outNo = outNo;
+		this.applyUser = applyUser;
+		this.applyDate = applyDate;
+		this.outNumber = outNumber;
+		this.outStatus = outStatus;
+		this.remark = remark;
+	}
+
+	/** full constructor */
+	public OutInfo(Integer id,DepartmentInfo departmentInfo, ProductInfo productInfo,
+			String outNo, String applyUser, Timestamp applyDate, Integer outNumber,
+			Integer outStatus, String remark) {
+		this.id = id;
+		this.departmentInfo = departmentInfo;
+		this.productInfo = productInfo;
+		this.outNo = outNo;
+		this.applyUser = applyUser;
+		this.applyDate = applyDate;
+		this.outNumber = outNumber;
+		this.outStatus = outStatus;
+		this.remark = remark;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public DepartmentInfo getDepartmentInfo() {
+		return departmentInfo;
+	}
+
+	public void setDepartmentInfo(DepartmentInfo departmentInfo) {
+		this.departmentInfo = departmentInfo;
+	}
+
+	public ProductInfo getProductInfo() {
+		return productInfo;
+	}
+
+	public void setProductInfo(ProductInfo productInfo) {
+		this.productInfo = productInfo;
+	}
+
+	public String getOutNo() {
+		return outNo;
+	}
+
+	public void setOutNo(String outNo) {
+		this.outNo = outNo;
+	}
+
+	public String getApplyUser() {
+		return applyUser;
+	}
+
+	public void setApplyUser(String applyUser) {
+		this.applyUser = applyUser;
+	}
+
+	public Timestamp getApplyDate() {
+		return applyDate;
+	}
+
+	public void setApplyDate(Timestamp applyDate) {
+		this.applyDate = applyDate;
+	}
+
+	
+
+	public Integer getOutNumber() {
+		return outNumber;
+	}
+
+	public void setOutNumber(Integer outNumber) {
+		this.outNumber = outNumber;
+	}
+
+	public Integer getOutStatus() {
+		return outStatus;
+	}
+
+	public void setOutStatus(Integer outStatus) {
+		this.outStatus = outStatus;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public Set<PLossInfo> getProLossInfos() {
+		return proLossInfos;
+	}
+
+	public void setProLossInfos(Set<PLossInfo> proLossInfos) {
+		this.proLossInfos = proLossInfos;
+	}
+
+	
+	
+	// Property accessors
+
+	
+
+}

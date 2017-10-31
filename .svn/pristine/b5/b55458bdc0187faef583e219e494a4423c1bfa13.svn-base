@@ -1,0 +1,47 @@
+package com.optic.service;
+
+import java.sql.Timestamp;
+import java.util.List;
+
+import com.optic.exception.WEBException;
+import com.optic.module.InStoreSubInfo;
+
+public interface InstoreSubInfoManager {
+	
+	/**
+	 * 增加入库详细信息
+	 * @description
+	 * @author wm
+	 * @date 2017-6-7 下午04:18:02
+	 * @param isId 入库主表编号
+	 * @param proId 产品编号
+	 * @param inNumber 入库数量
+	 * @param whsId 入库货架编号
+	 * @param inDate 入库日期
+	 * @return
+	 * @throws WEBException
+	 */
+	Integer addISS(Integer isId,Integer proId,Integer inNumber,Integer whsId,Timestamp inDate) throws WEBException;
+	
+	/**
+	 * 根据入库编号获取入库详细记录列表
+	 * @description
+	 * @author wm
+	 * @date 2017-6-7 下午04:18:52
+	 * @param isId 入库编号
+	 * @return
+	 * @throws WEBException
+	 */
+	List<InStoreSubInfo> listInfoByIsId(Integer isId) throws WEBException;
+	
+	/**
+	 * 获取指定商品最后一次的入库记录
+	 * @description
+	 * @author wm
+	 * @date 2017-6-10 上午08:44:43
+	 * @param proId 商品编号
+	 * @return
+	 * @throws WEBException
+	 */
+	List<InStoreSubInfo> listLastInfoByProId(Integer proId) throws WEBException;
+}

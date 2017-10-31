@@ -1,0 +1,263 @@
+package com.optic.module;
+
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * ProductInfo entity. @author MyEclipse Persistence Tools
+ */
+
+public class ProductInfo implements java.io.Serializable {
+
+	// Fields
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	Integer id;
+	ProductTypeInfo productTypeInfo;
+	private String proNo;
+	private String proName;
+	private String proPy;
+	private String proSpec;
+	private String proCz;
+	private String proUnit;
+	private String proType2;
+	private Float proPriceL;
+	private Float proPriceH;
+	private Float proPriceA;
+	private Integer proNumber;
+	private Integer proValNum;
+	private String proRemark;
+	private Set<PurchaseOrderSubInfo> purchaseOrderSubInfos = new HashSet<PurchaseOrderSubInfo>();
+	private Set<InStoreInfo> inStoreInfos = new HashSet<InStoreInfo>();
+	private Set<OutSellSubInfo> outSellSubInfos = new HashSet<OutSellSubInfo>();
+	private Set<OutSubInfo> outSubInfos = new HashSet<OutSubInfo>();
+	private Set<ReturnInfo> returnInfos = new HashSet<ReturnInfo>();
+
+	// Constructors
+
+	/** default constructor */
+	public ProductInfo() {
+	}
+
+	/** minimal constructor */
+	public ProductInfo(ProductTypeInfo productTypeInfo,String proNo,
+			String proName,String proPy,String proSpec,String proCz,
+			String proUnit,String proType2,Float proPriceL,Float proPriceH,Float proPriceA,
+			Integer proNumber,Integer proValNum,String proRemark) {
+		this.productTypeInfo = productTypeInfo;
+		this.proNo = proNo;
+		this.proName = proName;
+		this.proPy = proPy;
+		this.proSpec = proSpec;
+		this.proCz = proCz;
+		this.proUnit = proUnit;
+		this.proType2 = proType2;
+		this.proPriceL = proPriceL;
+		this.proPriceH = proPriceH;
+		this.proPriceA = proPriceA;
+		this.proNumber = proNumber;
+		this.proValNum = proValNum;
+		this.proRemark = proRemark;
+	}
+
+	public ProductInfo(String proNo,String proName,String proSpec,String proCz,String proUnit,Integer proNumber) {
+		this.proNo = proNo;
+		this.proName = proName;
+		this.proSpec = proSpec;
+		this.proCz = proCz;
+		this.proUnit = proUnit;
+		this.proNumber = proNumber;
+	}
+	
+	/** full constructor */
+	public ProductInfo(Integer id,ProductTypeInfo productTypeInfo,String proNo,
+			String proName,String proPy,String proSpec,String proCz,
+			String proUnit,String proType2,Float proPriceL,Float proPriceH,Float proPriceA,
+			Integer proNumber,Integer proValNum,String proRemark) {
+		this.id = id;
+		this.productTypeInfo = productTypeInfo;
+		this.proNo = proNo;
+		this.proName = proName;
+		this.proPy = proPy;
+		this.proSpec = proSpec;
+		this.proCz = proCz;
+		this.proUnit = proUnit;
+		this.proType2 = proType2;
+		this.proPriceL = proPriceL;
+		this.proPriceH = proPriceH;
+		this.proPriceA = proPriceA;
+		this.proNumber = proNumber;
+		this.proValNum = proValNum;
+		this.proRemark = proRemark;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public ProductTypeInfo getProductTypeInfo() {
+		return productTypeInfo;
+	}
+
+	public void setProductTypeInfo(ProductTypeInfo productTypeInfo) {
+		this.productTypeInfo = productTypeInfo;
+	}
+
+	public String getProNo() {
+		return proNo;
+	}
+
+	public void setProNo(String proNo) {
+		this.proNo = proNo;
+	}
+
+	public String getProName() {
+		return proName;
+	}
+
+	public void setProName(String proName) {
+		this.proName = proName;
+	}
+
+	public String getProPy() {
+		return proPy;
+	}
+
+	public void setProPy(String proPy) {
+		this.proPy = proPy;
+	}
+
+	public String getProSpec() {
+		return proSpec;
+	}
+
+	public void setProSpec(String proSpec) {
+		this.proSpec = proSpec;
+	}
+
+	public String getProCz() {
+		return proCz;
+	}
+
+	public void setProCz(String proCz) {
+		this.proCz = proCz;
+	}
+
+	public String getProUnit() {
+		return proUnit;
+	}
+
+	public void setProUnit(String proUnit) {
+		this.proUnit = proUnit;
+	}
+
+	public String getProType2() {
+		return proType2;
+	}
+
+	public void setProType2(String proType2) {
+		this.proType2 = proType2;
+	}
+
+	public Float getProPriceL() {
+		return proPriceL;
+	}
+
+	public void setProPriceL(Float proPriceL) {
+		this.proPriceL = proPriceL;
+	}
+
+	public Float getProPriceH() {
+		return proPriceH;
+	}
+
+	public void setProPriceH(Float proPriceH) {
+		this.proPriceH = proPriceH;
+	}
+
+	public Float getProPriceA() {
+		return proPriceA;
+	}
+
+	public void setProPriceA(Float proPriceA) {
+		this.proPriceA = proPriceA;
+	}
+
+	public Integer getProNumber() {
+		return proNumber;
+	}
+
+	public void setProNumber(Integer proNumber) {
+		this.proNumber = proNumber;
+	}
+
+	public String getProRemark() {
+		return proRemark;
+	}
+
+	public void setProRemark(String proRemark) {
+		this.proRemark = proRemark;
+	}
+
+	public Set<PurchaseOrderSubInfo> getPurchaseOrderSubInfos() {
+		return purchaseOrderSubInfos;
+	}
+
+	public void setPurchaseOrderSubInfos(
+			Set<PurchaseOrderSubInfo> purchaseOrderSubInfos) {
+		this.purchaseOrderSubInfos = purchaseOrderSubInfos;
+	}
+
+	public Set<InStoreInfo> getInStoreInfos() {
+		return inStoreInfos;
+	}
+
+	public void setInStoreInfos(Set<InStoreInfo> inStoreInfos) {
+		this.inStoreInfos = inStoreInfos;
+	}
+
+	public Set<OutSellSubInfo> getOutSellSubInfos() {
+		return outSellSubInfos;
+	}
+
+	public void setOutSellSubInfos(Set<OutSellSubInfo> outSellSubInfos) {
+		this.outSellSubInfos = outSellSubInfos;
+	}
+
+	public Set<OutSubInfo> getOutSubInfos() {
+		return outSubInfos;
+	}
+
+	public void setOutSubInfos(Set<OutSubInfo> outSubInfos) {
+		this.outSubInfos = outSubInfos;
+	}
+
+	public Set<ReturnInfo> getReturnInfos() {
+		return returnInfos;
+	}
+
+	public void setReturnInfos(Set<ReturnInfo> returnInfos) {
+		this.returnInfos = returnInfos;
+	}
+
+	public Integer getProValNum() {
+		return proValNum;
+	}
+
+	public void setProValNum(Integer proValNum) {
+		this.proValNum = proValNum;
+	}
+
+	
+	// Property accessors
+
+	
+
+}

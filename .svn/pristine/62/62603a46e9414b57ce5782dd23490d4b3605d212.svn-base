@@ -1,0 +1,238 @@
+//提交销售、外协加工出库
+function addSellOut(){
+	var bcId = $("#purVal").attr("alt");
+	var contactName = $("#contactName").val();
+	var totalPrice = $("#totalPrice").val();
+	var allPrice_tr_flag = true;
+	//var outNo = $("#outNo").val();//出库单编号
+	//var expNo = $("#expNo").val();//出库单编号
+	var num = $("#purListTable tr").length;//产品出库记录条数
+	var proIdStr = "";
+	var proPriceStr = "";
+	var proNumStr = "";
+	var proTotalPriceStr = "";
+	$(".cAllPrice").each(function(i){
+		if($(".cAllPrice").eq(i).html() == 0.00){
+			allPrice_tr_flag = false;
+			return false;
+		}
+	});
+	if(bcId == 0){
+		commonTipInfoFn($("body"),$(".alertWin"),false,"请先选择供应商");
+	}else if(contactName == ""){
+		commonTipInfoFn($("body"),$(".alertWin"),false,"请填写客户名称");
+	}
+	/*else if(outStatus == 2 && outNo == ""){
+		commonTipInfoFn($("body"),$(".alertWin"),false,"出库单编号不能为空");
+	}else if(outStatus == 2 && expNo == ""){
+		commonTipInfoFn($("body"),$(".alertWin"),false,"快递单号不能为空");
+	}*/
+	else if(num == 0){
+		commonTipInfoFn($("body"),$(".alertWin"),false,"出库记录不能为空");
+	}else if(!allPrice_tr_flag){
+		commonTipInfoFn($("body"),$(".alertWin"),false,"请填写完整产品出库信息");
+	}else if(totalPrice == "" || totalPrice == "0.00"){
+		commonTipInfoFn($("body"),$(".alertWin"),false,"合同价格不能为空或合同价格出错");
+	}else if(!checkInputNumberOrFloat(totalPrice)){
+		commonTipInfoFn($("body"),$(".alertWin"),false,"合同价格应为大于0的小数或整数");
+	}else{
+		$(".proIdClass").each(function(i){
+			proIdStr += $(".proIdClass").eq(i).attr("alt")+",";
+		});
+		proIdStr = proIdStr.substring(0,proIdStr.length - 1);
+		$(".proPriceClass").each(function(i){
+			proPriceStr += $(".proPriceClass").eq(i).html()+",";
+		});
+		proPriceStr = proPriceStr.substring(0,proPriceStr.length - 1);
+		$(".proNumClass").each(function(i){
+			proNumStr += $(".proNumClass").eq(i).html()+",";
+		});
+		$(".cAllPrice").each(function(i){
+			proTotalPriceStr += $(".cAllPrice").eq(i).html()+",";
+		});
+		proTotalPriceStr = proTotalPriceStr.substring(0,proTotalPriceStr.length - 1);
+		var posStr = proIdStr + ":" + proPriceStr + ":" + proNumStr + ":" + proTotalPriceStr;//出库详情列表(格式为商品编号,单价,出库数量,总价 )
+		$.ajax({
+			type:"post",
+			async:false,
+			dataType:"json",
+			data:{/*outNo:outNo,*/bId:bcId,bUserName:escape(contactName),aPrice:totalPrice,oType:outStatus,/*expNo:expNo,*/posStr:posStr},
+			url:"outStore.do?action=addSellOut",
+			success:function(json){
+				if(outStatus==1){
+				   switchNav($("#sellOut"),1);
+				}else if(outStatus==0){//外协
+				   switchNav($("#madeOut"),0);
+				}
+			}
+		});
+	}
+}
+//浏览销售出库和外协加工出库
+function listSellOut(pageNo){
+	var sTime = "" ;
+	var eTime = "";
+	var oSta=-1;
+	var bcId=-1;
+	var oNo="";
+	if(sel_option == "otherOpt"){
+		sTime = $("#sTime").val();
+		eTime = $("#eTime").val();
+		oSta=$("input[name='compStaInp']:checked").val();
+		if(oSta==undefined){
+			oSta=-1;
+		}
+		bcId=$("#compNaInp").attr("alt");
+	}else if(sel_option == "orderOpt"){
+		oNo=$("#queryOutStNum").val();
+		if(oNo=="请输入销售出库单号"){
+			alert("出库单号不能为空!");
+			return;
+		}
+	}
+	$.ajax({
+		type:"post",
+		async:false,
+		dataType:"json",
+		data:{osNo:oNo,
+			sDate:sTime,
+			eDate:eTime,
+			o_sta:oSta,
+			bid:bcId,
+			pageNo:pageNo,
+			oType:outStatus},
+		url:"outStore.do?action=listOutSellInfo",
+		success:function(json){
+			var maincon="";
+			$.each(json, function(row, obj) {
+				maincon+='<li class="mainLi"><div class="mainBox"><h3><span>出库单 OutStoring Order</span><em>制单日期：'+getLocalDate(obj.osInfo.outDate)+'</em></h3>';
+				maincon+='<div class="outStTitDiv"><p class="outStUn">To：'+obj.osInfo.businessContactInfo.bcName+'</p>';
+				if(roleName=="库房"){
+					maincon+='<p class="outStOrdNum">出库单编号：<input id="outStNumInp'+obj.osInfo.id+'" class="comOutStInp" type="text"/><span id="outStNumSpa"></span><i class="iconfont icon-edit editIcon" title="填写" onclick="showEditInp(1,'+obj.osInfo.id+')"></i></p></div>';	
+				}else if(roleName=="外协"){
+					maincon+='<p class="outStOrdNum">出库单编号：<span>'+obj.osInfo.outSNo+'</span></p></div>';	
+				}
+				maincon+='<ul class="outStOrdLisTit clearfix"><li class="listLiWid1">编号</li><li class="listLiWid2">物料名称</li><li class="listLiWid6">材质</li>';
+				maincon+='<li class="listLiWid4">规格</li><li class="listLiWid3">单位</li><li class="listLiWid5 noBorLi">出库数量</li></ul>';
+				$.each(obj.ossInfo, function(row1, obj1) {
+					var count = row1+1;
+					maincon+='<ul class="outStOrdLisCon clearfix"><li class="listLiWid1">'+count+'</li>';
+					maincon+='<li class="listLiWid2">'+obj1.productInfo.proName+'</li>';
+					maincon+='<li class="listLiWid6">'+obj1.productInfo.proCz+'</li>';
+					maincon+='<li class="listLiWid4">'+obj1.productInfo.proSpec+'</li>';
+					maincon+='<li class="listLiWid3">'+obj1.productInfo.proUnit+'</li><li class="listLiWid5 noBorLi">'+obj1.proNumber+'</li></ul>';
+				});
+				maincon+='<div class="outStOrdBotDiv">';
+				if(roleName=="库房"){
+					maincon+='<p>快递单号：<input id="expInp'+obj.osInfo.id+'" class="comOutStInp" type="text"/><span id="expSpan"></span><i class="iconfont icon-edit editIcon" title="填写" onclick="showEditInp(2,'+obj.osInfo.id+')"></i></p>';	
+				}else if(roleName=="外协"){
+					maincon+='<p>快递单号：<span>'+obj.osInfo.expressNo+'</span></p>';	
+				}
+				if(obj.osInfo.outStatus==0){
+				 maincon+='<p>完成状态：未完成</p></div>';
+				}else if(obj.osInfo.outStatus==1){
+					maincon+='<p>完成状态：完成</p></div>';
+				}
+				maincon+='<div class="outStOrdBotDiv2"><p>制单人：'+obj.osInfo.outUserName+'</p><p>出库人：'+obj.osInfo.outUserName+'</p>';
+				maincon+='<p>出库时间：'+getLocalDate(obj.osInfo.outDate)+'</p>';
+				if(roleName=="库房"){
+					maincon+='<a href="javascript:void(0)" onclick="updateOutSell('+obj.osInfo.id+')">保存</a></div></div>';	
+				}else if(roleName=="外协"){
+					maincon+='</div></div>';	
+				}
+			});
+			$("#purOrdUl").html(maincon);
+		}
+	});
+}
+//总条数
+function listOutSellCount(){
+	var sTime = "" ;
+	var eTime = "";
+	var oSta=-1;
+	var bcId=-1;
+	var oNo="";
+	if(sel_option == "otherOpt"){
+		sTime = $("#sTime").val();
+		eTime = $("#eTime").val();
+		oSta=$("input[name='compStaInp']:checked").val();
+		if(oSta==undefined){
+			oSta=-1;
+		}
+		bcId=$("#compNaInp").attr("alt");
+	}else if(sel_option == "orderOpt"){
+		oNo=$("#queryOutStNum").val();
+		if(oNo=="请输入销售出库单号"){
+			alert("出库单号不能为空!");
+			return;
+		}
+	}
+	var proCount=0;
+	$.ajax({
+		type:"post",
+		async:false,
+		dataType:"json",
+		data:{osNo:oNo,
+			sDate:sTime,
+			eDate:eTime,
+			o_sta:oSta,
+			bid:bcId,
+			oType:outStatus},
+		url:"outStore.do?action=outSellCount",
+		success:function(json){
+			proCount=json;
+		}
+	});
+	return proCount;
+}
+
+//分页显示往来单位
+function listoutSellPage(){
+	var pc=listOutSellCount();
+	$("#pagination").pagination(pc,{
+        callback: pageselectCallback,  //PageCallback() 为翻页调用次函数。
+        prev_text: "上一页",
+        next_text: "下一页 ",
+        items_per_page:10,
+        ellipse_text:"...",
+        num_edge_entries: 2,       //两侧首尾分页条目数
+        num_display_entries: 10  //连续分页主体部分分页条目数
+    });
+	function pageselectCallback(page_index, jq){
+		listSellOut(page_index+1);
+	}
+}
+//清除
+function clearcomp(){
+	$("#compNaInp").val("");
+	$("#compNaInp").attr("alt","-1");
+}
+//更新销售 外协出库单
+function updateOutSell(osID){
+	var osNo =$("#outStNumInp"+osID).val();
+	var expNo =$("#expInp"+osID).val();
+	if(osNo==""){
+		alert("出库单号不能为空!");
+		return;
+	}
+	if(expNo==""){
+		alert("快递单号不能为空！");
+		return;
+	}
+	$.ajax({
+		type:"post",
+		async:false,
+		dataType:"json",
+		data:{osID:osID,
+			osNo:osNo,
+			expNo:expNo},
+		url:"outStore.do?action=updateOutSell",
+		success:function(json){
+			if(json){
+				alert("更新成功！");
+			}else{
+				alert("更新失败！");
+			}
+		}
+	});
+}

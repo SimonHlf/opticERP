@@ -1,0 +1,8 @@
+#Tue Mar 28 11:39:27 CST 2017
+eclipse.preferences.version=1
+encoding//src/com/optic/action/base/InitServlet.java=UTF-8
+encoding//src/com/optic/action/base/MyActionServlet.java=UTF-8
+encoding//src/com/optic/action/base/Transcode.java=UTF-8
+encoding//src/com/optic/exception/WEBException.java=UTF-8
+encoding//src/com/optic/factory/AppFactory.java=UTF-8
+encoding/<project>=UTF-8

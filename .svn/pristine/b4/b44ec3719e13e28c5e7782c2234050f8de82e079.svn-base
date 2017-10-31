@@ -1,0 +1,22 @@
+package com.optic.module.json;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import com.optic.module.ProductInfo;
+import com.optic.module.ProductTypeInfo;
+
+public class ProductInfoJson {
+	public List<ProductInfo> getPiJson(List<ProductInfo> piList){
+		List<ProductInfo> result = new ArrayList<ProductInfo>();
+		for(Iterator<ProductInfo> it = piList.iterator() ; it.hasNext();){
+			ProductInfo pi = it.next();
+			ProductTypeInfo pti = pi.getProductTypeInfo();
+			ProductTypeInfo pti_new = new ProductTypeInfo(pti.getId(), pti.getTypeName(), pti.getTypeRemark(),pti.getTypePy());
+			ProductInfo pi_new = new ProductInfo(pi.getId(),pti_new, pi.getProNo(), pi.getProName(), pi.getProPy(), pi.getProSpec(), pi.getProCz(),pi.getProUnit(),pi.getProType2(), pi.getProPriceL(), pi.getProPriceH(),pi.getProPriceA(), pi.getProNumber(), pi.getProRemark());
+			result.add(pi_new);
+		}
+		return result;
+	}
+}

@@ -1,0 +1,23 @@
+package com.optic.service.impl;
+
+import java.util.List;
+
+import com.optic.exception.WEBException;
+import com.optic.module.OutSellSubInfo;
+import com.optic.service.OutSellSubInfoManager;
+
+public class OutSellSubInfoManagerImpl implements OutSellSubInfoManager{
+
+	public Integer addOSS(Integer osId, Integer proId, Integer proNumber,
+			Double proPrice, Double totalPrice) throws WEBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<OutSellSubInfo> listInfoByOsId(Integer osId)
+			throws WEBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

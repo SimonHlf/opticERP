@@ -1,0 +1,1303 @@
+@charset "utf-8";
+/* 搜索框公共 */
+.searWrap{
+	width: 100%;
+	height: 69px;
+	background:#eaeaea;
+	border-bottom:1px solid #d8d8d8;
+}
+.searBox{
+	height: 100%;
+}
+.searBox p{
+	font-size: 24px;
+	color: #666;
+	line-height:69px;
+}
+.searBox p a{
+	color:#666;
+}
+.searBox p a:hover,
+.searBox p a.active{
+	color:#00a3e4;
+}
+/* 新增采购单 */
+.newAddPurDiv{
+	display:block;
+}
+.viewPurDiv{
+	display:none;
+	position:relative;
+	margin-top:10px;
+}
+/*------------ 新增采购单内容样式st -------------------*/
+
+/* 选择供应商 填写采购单编号 */
+.selBusDiv{
+	font-size:14px;
+	color:#666;
+}
+.comSelDiv{
+	width:340px;
+	height:46px;
+	line-height:46px;
+	margin-top:26px;
+	position:relative;
+}
+.comSelDiv.margRSel{
+	margin-right:40px;
+}
+.comSelDiv input,
+.selQueryDiv #unNaInp{
+	height:19px;
+	padding:8px 0px;
+	border:none;
+	font-size:14px;
+	color:#666;
+	border-bottom:1px solid #999;	
+	background:none;
+}
+.comSelDiv input{
+	width:235px;
+}
+.selQueryDiv #unNaInp{
+	width:190px;	
+}
+.clearIcon{
+	font-size:24px;
+	color:#f00;
+	position:absolute;
+	cursor:pointer;
+	top:0px;
+	right:0px;
+	display:none;
+}
+.corrUnIcon{
+	font-size:28px;
+	position:absolute;
+	right:10px;
+	top:2px;
+	cursor:pointer;
+	color:#00a3e4;
+}
+/* 采购详情数据层 */
+.purListDataDiv{
+	width:1198px;
+	min-height:400px;
+	margin-top:30px;
+	position:relative;
+	border:1px solid #ccc;
+}
+.purListWid1{
+	width:53px;
+}
+.purListWid2{
+	width:239px;
+	position:relative;
+}
+.purListWid3{
+	width:208px;
+}
+.purListWid4{
+	width:100px;
+}
+.purListWid5{
+	width:156px;
+}
+.purListWid6{
+	width:80px;
+}
+.purListWid7{
+	width:100px;
+}
+.purListTit{
+	border-bottom:1px solid #ccc;
+}
+.purListTab,
+.dataListTab{
+	border-collapse: collapse;
+}
+.purListTab tr,
+.dataListTab tr{
+	border-bottom:1px solid #ccc;
+}
+.purListTab td,
+.purListTit td,
+.dataTitTab td,
+.dataListTab td{
+	border-right:1px solid #ccc;
+	color:#666;
+}
+.purListTab td,
+.purListTit td{
+	font-size:14px;
+}
+.purListTit td{
+	height:30px;
+	background:#eaeaea;
+}
+.purListTab td{
+	height:36px;
+}
+.purListTab td a{
+	color:#666;
+}
+.purListTab td a:hover{
+	color:#f00;
+}
+.purListTit td.noBorR,
+.purListTab td.noBorR,
+.dataTitTab td.noBorR,
+.dataListTab td.noBorR{
+	border-right:0px;
+}
+.oddBgColor{
+	background:#f1f1f1;
+}
+.oddBgColor1{
+	background:#eaeaea;
+}
+.moreIcon{
+	font-size:28px;
+	position:absolute;
+	top:-2px;
+	color:#666;
+	cursor:pointer;
+}
+.posMore{
+	right:5px;
+}
+.posMore1{
+	right:-25px;
+}
+.moreIcon:hover,
+.noRecDiv a:hover{
+	color:#00a3e4;
+}
+.deleteIcon{
+	font-size:20px;
+	cursor:pointer;
+}
+.deleteIcon:hover{
+	color:#f00;
+}
+.cursorTd{
+	cursor:pointer;
+}
+/* 可编辑下新增inpu文本框样式 */
+.comEditInp{
+	width:96px;
+	height:14px;
+	padding:9px 0px;
+	font-size:14px;
+	color:#666;
+}
+/* 暂无记录 提示添加 */
+.noRecDiv{
+	position:absolute;
+	left:50%;
+	top:50%;
+	margin-left:-70px;
+	margin-top:-70px;
+	text-align:center;
+}
+.noRecIcon{
+	font-size:90px;
+	color:#ccc;
+}
+.noRecDiv a{
+	display:block;
+	color:#999;
+}
+.noRecDiv a span{
+	display:block;
+	font-size:18px;
+	margin-top:-15px;
+}
+#totaMoney{
+	font-weight:bold;
+}
+/* 增加一条采购数据btn */
+.addTrDiv{
+	width:100%;
+	height:25px;
+	position:relative;
+	display:none;
+}
+.addTrBtn{
+	width:46px;
+	height:20px;
+	position:absolute;
+	left:50%;
+	margin-left:-23px;
+	top:0px;
+	cursor:pointer;
+}
+
+/* 采购数据提交层 */
+.subPurDataDiv{
+	height:50px;
+	line-height:50px;
+	color:#666;
+	font-size:14px;
+}
+.subPurDataDiv .margL{
+	margin-left:15px;
+}
+.payStatusLab,
+.invoLab{
+	float: left;
+	display: inline-block;
+	height: 100%;
+	font-size: 14px;
+	position: relative;
+}
+.payStatusLab.marglLab,
+.invoLab.marglLab{
+	margin-left:10px;
+}
+.payStatusLab input,
+.invoLab input{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left:0px;
+	top:0px;
+	z-index: 2;
+	opacity: 0;
+	filter:alpha(opacity=0);
+	cursor: pointer;
+}
+.payStatusLab em,
+.invoLab em{
+	font-style: normal;
+	float:left;
+}
+.payStatusLab.active em,
+.categStyLab.active em,
+.invoLab.active em{
+	color:#00a3e4;
+}
+.payStatusLab .cirSpan,
+.invoLab .cirSpan{
+	width: 20px;
+	height: 20px;
+	border:1px solid #999;
+	border-radius: 50%;
+	float:left;
+	margin:15px 0 0 5px;
+}
+.payStatusLab.active .cirSpan,
+.categStyLab.active .cirSpan,
+.invoLab.active .cirSpan{
+	border:1px solid #00a3e4;
+}
+.payStatusLab i,
+.invoLab i{
+	color: #00a3e4;
+	font-size: 18px;
+	position: absolute;
+	top:2px;
+}
+.payStatusLab i{
+	left:49px;
+}
+.invoLab i{
+	left:20px;
+}
+.submitPurBtn,
+.saveDataBtn,
+.saveCategBtn,
+.saveCorInfoBtn,
+.selCategBtn{
+	width:120px;
+	height:38px;
+	line-height:38px;
+	background:#68c7ec;
+	color:#fff;
+	text-align:center;
+	font-size:18px;
+}
+.submitPurBtn:hover,
+.saveDataBtn:hover,
+.saveCategBtn:hover,
+.saveCorInfoBtn:hover,
+.selCategBtn:hover{
+	background:#00a3e4;
+}
+/* 供应商数据层弹窗 */
+.comAlertDiv{
+	width:950px;
+	height:500px;
+	background:#fff;
+	position:absolute;
+	left:50%;
+	top:50%;
+	margin-left:-475px;
+	margin-top:-250px;
+	z-index:1000;
+	border-radius:4px;
+	overflow:hidden;
+}
+.purDataDiv{
+	display:none;
+}
+.proInfoDiv{
+	display:none;
+}
+.comDataDiv{
+	position:relative;
+}
+.comDataTop{
+	background:#fff;
+	height: 49px;
+	border-bottom:1px solid #dbdbdb;
+	font-size: 16px;
+	color: #666;
+	position: relative;
+	z-index:6;
+}
+.comDataTop p{
+	line-height: 49px;
+	border-bottom:1px solid #f90;
+	float:left;
+	padding:0 5px;
+	margin-left:15px;
+}
+.closeIcon{
+	position:absolute;
+	right:5px;
+	font-size:36px;
+	cursor:pointer;
+}
+.closeIcon{
+	color:#999;
+	top:0px;
+}
+.closeGoPay{
+	color:#fff;
+	top:-5px;
+}
+.closeIcon:hover{
+	color:#f00;
+	-webkit-transform:rotate(180deg);
+	-moz-transform:rotate(180deg);
+	-ms-transform:rotate(180deg);
+	transform:rotate(180deg);
+	transform-origin:center center;
+}
+.searLay{
+	height:50px;
+	background:#eaeaea;
+	padding-top:10px;	
+	border-bottom:1px solid #dbdbdb;
+	position:relative;
+	z-index:4;
+}
+.searchDiv,
+.searchPurNum{
+	height: 38px;
+	background:#fff;
+	border:1px solid #d8d8d8;
+	position: relative;
+	margin-left:15px;
+}
+.searchDiv{
+	width: 220px;
+}
+.searchPurNum{
+	width:260px;
+	position:absolute;
+	left:165px;
+	top:66px;
+}
+.addCategUnitBtn,
+.addCategBtn{
+	position:absolute;
+	top:10px;
+}
+.addCategUnitBtn{
+	right:10px;
+}
+.addCategBtn{
+	right:170px;
+}
+.addCategBtn,
+.addCategUnitBtn{
+	height: 39px;
+	line-height: 39px;
+	background:#fff;
+	display: inline-block;
+	font-size: 16px;
+	color: #666;
+}
+.addCategBtn{
+	width: 122px;
+}
+.addCategUnitBtn{
+	width: 150px;
+	margin-left:15px;
+}
+.addCategBtn:hover,
+.addCategUnitBtn:hover{
+	background: #00a3e4;
+	color:#fff;
+}
+.addCategBtn:hover .addCaIcon,
+.addCategUnitBtn:hover .addCaIcon{
+	color:#fff;
+}
+.addCaIcon{
+	color: #00a3e4;
+	font-size: 26px;
+	margin:0 3px 0 15px;
+}
+.searInp,
+.searInp_purNum{
+	border:none;
+	height:20px;
+	padding:9px 0 9px 5px;
+	background:none;
+	font-size:16px;
+	color:#999;
+}
+.searInp{
+	width: 170px;
+}
+.searInp_purNum{
+	width: 210px;
+}
+.searA{
+	width: 45px;
+	height: 38px;
+	display: inline-block;
+	position:relative;
+}
+.searIcon{
+	color: #00a3e4;
+	font-size: 24px;
+	position:absolute;
+	right:10px;
+	top:2px;
+}
+.searA:hover{
+	background:#00a3e4;
+}
+.searA:hover .searIcon{
+	color:#fff;
+}
+/* 核心数据层 */
+.comLeftData{
+	width:165px;
+	height:389px;
+	border-right:1px solid #dbdbdb;
+	padding-left:15px;
+	font-size:14px;
+	color:#666;	
+}
+.categTit{
+	width:100%;
+	height:35px;
+	line-height:35px;
+	position:relative;
+}
+.categTit span{
+	position:absolute;
+	left:24px;
+}
+.categIcon{
+	font-size:22px;
+	color:#999;
+	position:absolute;
+	left:0px;
+	top:3px;
+}
+.categDataDiv{
+	height:340px;
+	margin:-5px 0 0 10px;
+	overflow:hidden;
+	position:relative;
+}
+.noRecCon,
+.noRecCon1{
+	width:100%;
+	height:150px;
+	text-align:center;
+}
+.noRecCon1{
+	margin:50px 0 0 180px;
+}
+.noRecCon p,
+.noRecCon span,
+.noRecCon1 p,
+.noRecCon1 span{
+	color:#999;
+}
+.noRecCon p,
+.noRecCon1 p{
+	font-size:14px;
+	margin-top:-15px;
+}
+.noRecCon span,
+.noRecCon1 span{
+	display:block;
+	font-size:16px;
+	margin-top:-20px;
+}
+.noListRec{
+	font-size:60px;
+	color:#ccc;
+}
+.noListRec_1{
+	font-size:100px;
+	color:#ccc;
+}
+.cardIcon{
+	font-size:18px;
+	position:absolute;
+	left:12px;
+	top:1px;
+	color:#999;
+}
+.tabData{
+	width:746px;
+	height:306px;
+	border:1px solid #ccc;
+	margin:10px 0 0 10px;
+	font-size:12px;
+}
+.dataTitTab{
+	height:30px;
+	background:#eaeaea;
+	border-bottom:1px solid #ccc;
+}
+.dataListTab tr:hover{
+	cursor:pointer;
+	background:#eaeaea;
+}
+.dataListTab td{
+	height:34px;
+}
+.listDataWid1{
+	width:41px;
+}
+.listDataWid2{
+	width:122px;
+	max-width:122px;
+}
+.listDataWid3{
+	width:60px;
+}
+.listDataWid4{
+	width:90px;
+}
+.listDataWid5{
+	width:154px;
+	max-width:154px;
+}
+.lisDaWid1{
+	width:50px;
+}
+.lisDaWid2{
+	width:119px;
+}
+.lisDaWid3{
+	width:104px;
+}
+.tabLabel{
+	width:100%;
+	height:100%;
+	display:inline-block;
+	position:relative;
+}
+.tabLabel input,
+.selAllLab input{
+	/*width:100%;*/
+	height:100%;
+	position:absolute;
+	left:0px;
+	top:0px;
+	/*z-index:2;*/
+	opacity:0;
+	filter:alpha(opacity=0);
+	cursor:pointer;
+}
+.tabLabel .checkSpan,
+.selAllLab .checkSpan{
+	width:18px;
+	height:18px;
+	border:1px solid #ccc;
+	position:absolute;
+	left:15px;
+	top:7px;
+}
+.tabLabel .choiceAct,
+.selAllLab .choiceAct{
+	font-size:16px;
+	color: #00a3e4;
+	position:absolute;
+	left:18px;
+}
+.tabLabel .choiceAct{
+	top:6px;
+}
+.selAllLab .choiceAct{
+	top:0px;
+}
+.botDiv{
+	height:35px;
+	line-height:35px;
+	margin-top:15px;
+	position:relative;
+}
+.selAllLab{
+	position:absolute;
+	left:10px;
+	cursor:pointer;
+}
+.selAllTxt{
+	font-size:14px;
+	color:#666;
+	padding-left:38px;
+}
+.saveDataBtn{
+	display:inline-block;
+}
+.saveDataBtn.saveMargT{
+	margin:15px 0 0 300px;
+}
+
+/* 增加单位类别和单位基本信息 */
+.addNewDataDiv{
+	width:100%;
+	height:450px;
+	position:absolute;
+	left:0px;
+	top:-400px;
+	z-index:5;
+	border-radius:0 0 4px 4px;
+	background:rgba(255,255,255,.9);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#C8ffffff,endColorstr=#C8ffffff);
+	display:none;
+}
+/* 增加往来单位类别 产品类别层 */
+.addCorrUnDiv,
+.addProCategDiv{
+	width:400px;
+	height:100%;
+	position:absolute;
+	left:50%;
+	top:0px;
+	margin-left:-200px;
+	display:none;
+}
+.comCategDiv{
+	width: 300px;
+	height: 46px;
+	line-height: 46px;
+	margin:20px auto 0px;
+	font-size:14px;
+	color:#666;
+	position:relative;
+}
+.margT_cate{
+	margin-top:130px;
+}
+.comInp_add {
+	width: 226px;
+	height: 19px;
+	padding:8px 0px;
+	border:none;
+	border-bottom:1px solid #999;
+	font-size:14px;
+	color:#666;
+}
+.saveCategBtn{
+	display:inline-block;
+	margin:25px 0 0 100px;
+}
+.addCorrUnInfo,
+.addProInfoDiv{
+	height:100%;
+	margin:0 auto;
+	position:relative;
+	display:none;
+}
+.comAddDiv,
+.comAddDiv1,
+.comAddDiv2{
+	height: 46px;
+	line-height: 46px;
+	margin:20px auto 0px;
+	font-size:14px;
+	color:#666;
+	float: left;
+	position:relative;
+}
+.comAddDiv{
+	width: 310px;
+}
+.comAddDiv .comInp_add,
+.comAddDiv1 .comInp_add1{
+	height: 19px;
+	padding:8px 0px;
+	border:none;
+	font-size:14px;
+	color:#666;
+	border-bottom:1px solid #999;
+}
+.comAddDiv .comInp_add,
+.selCategDiv_pro,
+.selProTechDiv,
+.selCategDiv_un,
+.selBankDiv{
+	width: 220px;
+}
+.comAddDiv1 .comInp_add1{
+	width: 530px;
+}
+.comAddDiv span,
+.comAddDiv1 span{
+	margin-left:15px;
+}
+.margT{
+	margin-top:40px;
+}
+.blank{
+	width: 7px;
+	display: inline-block;
+}
+.selCategDiv_pro,
+.selProTechDiv,
+.selCategDiv_un,
+.selBankDiv{
+	height: 40px;
+	line-height: 47px;
+	border-bottom:1px solid #999;
+	position: relative;
+}
+.classifyA{
+	width: 35px;
+	height: 35px;
+	position:absolute;
+	right:0px;
+	top:0px;
+}
+.classifyIcon{
+	color:#00a3e4;
+	font-size: 34px;
+}
+.saveCorInfoBtn{
+	display:inline-block;
+	margin:25px 0 0 365px;
+}
+.cancelBtn{
+	display:inline-block;
+	background:#dbdbdb;
+	width:100px;
+	height:38px;
+	line-height:38px;
+	text-align:center;
+	font-size:18px;
+	color:#666;
+	margin-left:10px;
+}
+.cancelBtn:hover{
+	text-decoration:underline;
+}
+.selCategLay,
+.selBankLay,
+.selProCategLay,
+.selProTechLay{
+	width:100%;
+	height:100%;
+	background:#fff;
+	position:absolute;
+	left:0px;
+	top:0px;
+	z-index:2;
+	display:none;
+	opacity:0;
+	filter:alpha(opacity=0);
+}
+.selCategLay p,
+.selBankLay p.nowBankP,
+.selProCategLay p,
+.selProTechLay p{
+	height:30px;
+	line-height:30px;
+	font-size:14px;
+	color:#00a3e4;
+	z-index: 2;
+	margin-top:5px;
+	text-indent:15px;
+}
+#selCategWrap_un,
+#selCategWrap_pro,
+#selProTechData,
+.bankDiv{
+	width: 100%;
+	margin-top:5px;
+	color: #666;
+	overflow: hidden;
+	position:relative;
+	z-index:2;
+}
+.bankDiv{
+	height:320px;
+}
+#selCategWrap_un,
+#selCategWrap_pro,
+#selProTechData{
+	height:350px;
+}
+#selCategUl,
+#selCategUl_pro,
+#selCategUl_made,
+#selCategUl_un,
+.bankMidWinDiv{
+	position:absolute;
+	left:0;
+	top:0;
+}
+.parScroll_pro,
+.sonScroll_pro{
+	width:5px;
+	border-radius:20px;
+	position:absolute;
+	top:0px;
+}
+.parScroll_pro{
+	height:100%;
+	right:2px;
+}
+.sonScroll_pro{
+	height:50px;
+	left:0px;
+	background:#999;
+}
+#selCategWrap_un li,
+#selCategWrap_pro li,
+#selProTechData li{
+	width: 109px;
+	max-width: 109px;
+	height: 35px;
+	line-height: 35px;
+	float: left;
+	text-align: center;
+	font-size: 14px;
+	cursor: pointer;
+	margin:0 0 10px 8px;
+}
+#selCategWrap_un li.active,
+#selCategWrap_pro li.active,
+#selProTechData li.active,
+#selCategWrap_un li:hover,
+#selCategWrap_pro li:hover,
+#selProTechData li:hover{
+	background:#00a3e4;
+	color: #fff;
+}
+.selCategBtn{
+	display:inline-block;
+	margin:10px 0 0 365px;
+}
+.selBankLay li{
+	width: 260px;
+	margin:8px 0 15px 40px;
+}
+/* 增加产品信息下类别类型层 */
+/* 类别类型 */
+.categStyLab{
+	float: left;
+	display: inline-block;
+	height: 100%;
+	width: 80px;
+	font-size: 14px;
+	position: relative;
+	text-indent: 15px;
+}
+.categStyLab input{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left:0px;
+	top:0px;
+	z-index: 2;
+	opacity: 0;
+	filter:alpha(opacity=0);
+	cursor: pointer;
+}
+.categStyLab em{
+	font-style: normal;
+}
+.categStyLab .cirSpan{
+	width: 20px;
+	height: 20px;
+	border:1px solid #999;
+	border-radius: 50%;
+	position: absolute;
+	right:10px;
+	top:12px;
+}
+.categStyLab i{
+	color: #00a3e4;
+	font-size: 18px;
+	position: absolute;
+	left:35px;
+	top:1px;
+}
+/* 模拟滚动条 */
+.parScroll,
+.sonScroll{
+	width: 5px;
+	position:absolute;
+	border-radius:10px;
+}
+.parScroll{
+	left:15px;
+	top:35px;
+	height: 340px;
+	background:#d8d8d8;
+}
+.sonScroll{
+	left:0px;
+	top:0px;
+	height: 50px;
+	background:#999;
+}
+/*------------ 新增采购单内容样end -------------------*/
+
+/* ------------浏览采购单---st--------------------- */
+
+/* 查询层 */
+.queryDiv{
+	width:1198px;
+	margin:10px 0 10px 0px;
+	border:1px solid #ccc;
+	position:relative;
+}
+.queryDiv p.selCondP{
+	height:40px;
+	line-height:40px;
+	font-size:16px;
+	color:#333;
+	background:#f1f1f1;
+	padding-left:10px
+}
+.queryDiv p label{
+	display:inline-block;
+	padding:0 5px;
+	position:relative;
+	text-indent:23px;
+	cursor:pointer;
+}
+.timeCon{
+	margin-top:5px;
+}
+.timeCon input{
+	color:#666;
+	font-size:14px;
+}
+.queryDiv p label.marglLab{
+	margin-left:15px;
+}
+.queryDiv p label .cirSpan,
+.comQueryDiv label .cirSpan{
+	width:22px;
+	height:22px;
+	border-radius:50%;
+	position:absolute;
+	left:0px;
+}
+.queryDiv p label i,
+.comQueryDiv label i{
+	position:absolute;
+	top:1px;
+	font-size:18px;
+	color:#00a3e4;
+}
+.queryDiv p label i{
+	left:-20px;
+}
+.comQueryDiv label i{
+	left:-25px;
+}
+.selSearIcon{
+	display:none;
+}
+.queryDiv p label .cirSpan{
+	border:1px solid #333;
+	top:8px;
+}
+.comQueryDiv label .cirSpan{
+	border:1px solid #999;
+	top:5px;
+}
+.queryDiv p label.active,
+.comQueryDiv label.active{
+	color:#00a3e4;
+}
+.queryDiv p label.active .cirSpan,
+.comQueryDiv label.active .cirSpan{
+	border:1px solid #00a3e4;
+}
+.queryDiv p label.active .selSearIcon{
+	display:block;
+}
+.queryDiv p label:hover,
+.comQueryDiv label:hover{
+	color:#00a3e4;
+}
+.comQueryDiv label input{
+	width:100%;
+	height:100%;
+	position:absolute;
+	left:0px;
+	top:0px;
+	z-index:2;
+	cursor:pointer;
+	opacity:0;
+	filter:alpha(opacity=0);
+}
+.queryBox{
+	width:599px;
+	position:relative;
+}
+.comQueryDiv{
+	width:570px;
+	height:35px;
+	line-height:35px;
+	margin-left:15px;
+	font-size:14px;
+	color:#666;
+	margin-bottom:8px;
+}
+.comQueryDiv label{
+	display:inline-block;
+	position:relative;
+	text-indent:28px;
+}
+.selQueryDiv{
+	width:268px;
+	height:100%;
+	float:left;
+	position:relative;
+}
+.queryStaBtn{
+	width:100px;
+	height:35px;
+	line-height:35px;
+	float:right;
+	background:#68c7ec;
+	color:#fff;
+	text-align:center;
+	font-size:18px;
+	margin:0 260px 10px 0px; 
+}
+.queryStaBtn:hover{
+	background:#00a3e4;
+}
+.queryDiv .borSpan{
+	width:1px;
+	height:168px;
+	background:#ccc;
+	position:absolute;
+	left:599px;
+	top:68px;
+	z-index:5;
+}
+.searLayer{
+	width:599px;
+	height:222px;
+	position:absolute;
+	left:599px;
+	top:40px;
+	background:rgba(255,255,255,.8);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#C8ffffff,endColorstr=#C8ffffff);
+	z-index:4;
+}
+/* 新增浏览采购单核心内容li层 */
+
+.purOrdUl li.mainLi{
+	width:590px;
+	float:left;
+	padding-bottom:15px;
+}
+.mainBox{
+	border:1px solid #ccc;
+	border-bottom:none;
+	border-radius:4px 4px 0 0;
+	position:relative;
+}
+.purOrdUl li.mainLi:hover .mainBox{
+	box-shadow:0 0 12px #999;
+}
+.oddMargL{
+	margin-left:20px;
+}
+.purOrdUl li.mainLi h3{
+	height:40px;
+	line-height:40px;
+	background:#9EDCF6;
+	color:#fff;
+	font-size:18px;
+	font-weight:normal;
+	text-align:center;
+	position:relative;
+}
+.purOrdUl li.mainLi h3 em{
+	position:absolute;
+	right:10px;
+	top:8px;
+	font-size:14px;
+	font-style:normal;
+}
+.purTitDiv,
+.purOrdLisTit li,
+.purOrdLisCon li{
+	height:35px;
+	line-height:35px;
+	border-bottom:1px solid #ccc;
+	font-size:14px;
+	color:#666;
+}
+.purOrdLisTit li{
+	background:#eaeaea;
+}
+.purTitDiv p{
+	float:left;
+	border-right:1px solid #ccc;
+	text-indent:10px;
+}
+.purTitDiv p.purName{
+	width:236px;
+}
+.purTitDiv p.purOrdNa{
+	width:130px;
+}
+.purTitDiv p.purOrdNum{
+	width:220px;
+	border-right:none;
+}
+.purOrdLisTit li,
+.purOrdLisCon li{
+	float:left;
+	border-right:1px solid #ccc;
+	text-align:center;
+}
+.purOrdLisTit li.noBorLi,
+.purOrdLisCon li.noBorLi{
+	border-right:none;
+}
+.listLiWid1{
+	width:50px;
+}
+.listLiWid2{
+	width:119px;
+}
+.listLiWid4{
+	width:102px;
+}
+.listLiWid3{
+	width:62px;
+}
+.purOrdBotDiv,
+.purOrdBotDiv1{
+	height:39px;
+	line-height:39px;
+	border-bottom:1px solid #ccc;
+	font-size:14px;
+	color:#666;
+}
+.purOrdBotDiv p{
+	float:left;
+}
+.purOrdBotDiv1 p{
+	float:right;
+}
+.storgStaP{
+	margin:0 30px 0 10px;
+}
+.actualPay{
+	margin:0 50px 0 10px;
+	position:relative;
+	padding-right:28px;
+}
+.viewPayHisIcon,
+.exOut{
+	font-size:26px;
+	position:absolute;
+	cursor:pointer;
+	top:1px;
+}
+.viewPayHisIcon{
+	right:-6px;
+	color:#00a3e4;
+}
+.exOut{
+	right:-43px;
+	color:#f50;
+}
+.finPayBtn,
+.finAccPayBtn{
+	width:60px;
+	height:30px;
+	line-height:30px;
+	float:left;
+	background:#68c7ec;
+	color:#fff;
+	text-align:center;
+	margin-top:5px;
+	display:no-ne;
+}
+.finPayBtn:hover,
+.finAccPayBtn:hover{
+	background:#00a3e4;	
+}
+/* 是否确认报账confirm */
+.accountDiv{
+	width:220px;
+	height:120px;
+	background:#fff;
+	position:absolute;
+	left:50%;
+	top:50%;
+	margin-left:-110px;
+	margin-top:-60px;
+	z-index:1000;
+	border-radius:4px;
+	display:none;
+}
+.accountDiv p{
+	width:100%;
+	height:79px;
+	line-height:90px;
+	border-bottom:1px solid #ccc;
+	text-align:center;
+	font-size:16px;
+	color:#666;
+}
+.goPayAccDiv{
+	height:40px;
+}
+.goPayAccDiv a{
+	line-height:40px;
+	color:#666;
+	font-size:16px;
+	text-align:center;
+	float:left;
+}
+.goPayAccDiv a.sureAccBtn{
+	width:109px;
+	border-right:1px solid #ccc;
+}
+.goPayAccDiv a.sureAccBtn:hover{
+	color:#00a3e4;
+}
+.goPayAccDiv a.cancelAccBtn{
+	width:110px;
+}
+.goPayAccDiv a.cancelAccBtn:hover{
+	color:#f00;
+}

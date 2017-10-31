@@ -1,0 +1,79 @@
+//获取产品类别
+function listPt(listEle){
+	$.ajax({
+		type:"post",
+		dataType:"json",
+		url:"producttype.do?action=listProductType",
+		success:function(json){
+			if(json==""){
+				$(".noAddCateg").show();
+			}else{
+				$(".noAddCateg").hide();
+			}
+			var pt="";
+			$.each(json, function(row, obj) {
+				var typeName=obj.typeName;
+				pt+='<li onclick="addProtype(this.innerHTML,'+obj.id+')">'+typeName+'</li>';
+			});
+			$("#"+listEle).html(pt);
+		}
+	});
+}
+function addProtype(typeName,ptID){
+	$("#nowCateg_pro").text(typeName);
+	$("#ptID").val(ptID);
+}
+function saveprotype(){
+	$("#new_protype").text($("#nowCateg_pro").text());
+	closeSelCategWin();
+}
+//添加产品
+function addProduct(){
+   var proName =  $("#proName").val();
+   var ptID=  $("#ptID").val();
+   var pro_no=  $("#pro_no").val();
+   var pro_spec=  $("#pro_spec").val();
+   var pro_unit=  $("#pro_unit").val();
+   var pro_cz=  $("#pro_cz").val();
+   var pro_remark=  $("#pro_remark").val();
+   var pt_type = $("#pt_type").val();
+	$.ajax({
+		type:"post",
+		dataType:"json",
+		url:"productInfo.do?action=addProduct&proName="+proName+"&ptID="+ptID+"&pro_no="+pro_no+"&pro_spec="+pro_spec+"&pro_unit="+pro_unit+"&pro_cz="+pro_cz+"&pro_remark="+pro_remark+"&pt_type="+pt_type,
+		success:function(json){
+			if(json==true){
+				alert("保存成功！");
+				closeAddProdWin();
+			}else{
+				alert("保存失败，请重试！");
+			}
+		}
+	});
+}
+//产品列表
+function listProduct(){
+	$.ajax({
+		type:"post",
+		dataType:"json",
+		url:"productInfo.do?action=listProduct",
+		success:function(json){
+			var pi='';
+			$.each(json, function(row, obj) {
+				pi+='<li><p class="listWid1 bigWid1 ellip">'+obj.proName+'</p>';
+				pi+='<p class="listWid1 bigWid1">'+obj.productTypeInfo.typeName+'</p>';
+				pi+='<p class="listWid2 bigWid2">'+obj.proType2+'</p>';
+				pi+='<p class="listWid1 bigWid1">'+obj.proNo+'</p>';
+				pi+='<p class="listWid1 bigWid1">'+obj.proSpec+'</p>';
+				pi+='<p class="listWid2 bigWid2">'+obj.proUnit+'</p>';
+				pi+='<p class="listWid1 bigWid1 ellip">'+obj.proCz+'</p>';
+				pi+='<p class="listWid1 bigWid1 ellip">'+obj.proNumber+'/'+obj.proUnit+'</p>';
+				pi+='<p class="listWid3 bigWid3 ellip">'+obj.proPriceL+'元/'+obj.proPriceH+'元/'+obj.proPriceA+'元</p>';
+				var proRemark=obj.proRemark== undefined?"无":obj.proRemark;
+				pi+='<p class="listWid1 bigWid1 ellip">'+proRemark+'</p>';
+				pi+='<p class="listWid2 bigWid2"><a href="javascript:void(0)" onclick="">编辑</a></p></li>';
+			});
+			$("#proList").html(pi);
+		}
+	});
+}

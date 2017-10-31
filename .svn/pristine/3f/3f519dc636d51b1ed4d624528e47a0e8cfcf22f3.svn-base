@@ -1,0 +1,79 @@
+package com.optic.service.impl;
+
+import java.sql.Timestamp;
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import com.optic.dao.InstoreInfoDao;
+import com.optic.dao.InstoreSubInfoDao;
+import com.optic.dao.ProductInfoDao;
+import com.optic.dao.WhStorageInfoDao;
+import com.optic.exception.WEBException;
+import com.optic.factory.DaoFactory;
+import com.optic.module.InStoreSubInfo;
+import com.optic.service.InstoreSubInfoManager;
+import com.optic.tools.HibernateUtil;
+import com.optic.util.Constants;
+
+public class InstoreSubInfoManagerImpl implements InstoreSubInfoManager{
+
+	InstoreInfoDao isDao = null;
+	ProductInfoDao piDao = null;
+	WhStorageInfoDao wsDao = null;
+	InstoreSubInfoDao issDao = null;
+	Transaction tran = null;
+	public Integer addISS(Integer isId, Integer proId, Integer inNumber,
+			Integer whsId, Timestamp inDate) throws WEBException {
+		// TODO Auto-generated method stub
+		try {
+			isDao = (InstoreInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_IN_STORE_INFO);
+			piDao = (ProductInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_INFO);
+			wsDao = (WhStorageInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_WH_STORAGE_INFO);
+			issDao = (InstoreSubInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_IN_STORE_SUB_INFO);
+			Session sess = HibernateUtil.currentSession();
+			tran = sess.beginTransaction();
+			InStoreSubInfo iss = new InStoreSubInfo(wsDao.get(sess, whsId),piDao.get(sess, proId),isDao.get(sess, isId),inNumber,inDate);
+			issDao.save(sess, iss);
+			tran.commit();
+			return iss.getId();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new WEBException("增加入库详细信息异常");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public List<InStoreSubInfo> listInfoByIsId(Integer isId)
+			throws WEBException {
+		// TODO Auto-generated method stub
+		try {
+			issDao = (InstoreSubInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_IN_STORE_SUB_INFO);
+			Session sess = HibernateUtil.currentSession();
+			return issDao.findInfoByIsId(sess, isId);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new WEBException("根据指定入库单号获取入库详细信息异常");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public List<InStoreSubInfo> listLastInfoByProId(Integer proId)
+			throws WEBException {
+		// TODO Auto-generated method stub
+		try {
+			issDao = (InstoreSubInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_IN_STORE_SUB_INFO);
+			Session sess = HibernateUtil.currentSession();
+			return issDao.findLastInfoByProId(sess, proId);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new WEBException("获取指定商品最后一次的入库详细信息异常");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+}

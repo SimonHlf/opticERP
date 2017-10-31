@@ -1,0 +1,134 @@
+package com.optic.module.json;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import com.optic.module.InStoreSubInfo;
+import com.optic.module.PLossInfo;
+import com.optic.module.PLossSubInfo;
+import com.optic.module.ProductInfo;
+
+public class PLossJson {
+	private Integer madeNum;//加工数量
+	private Integer comNum;//完品数量
+	private Integer lossNum;//损耗数量
+	private Double comRate;//完品率
+	private Integer depId;//工序编号
+	private String depName;//工序名称
+	private String proNo;//物料编号
+	
+	public PLossJson(){
+		
+	}
+	
+	public PLossJson(Integer madeNum, Integer comNum, Integer lossNum,
+			Double comRate, Integer depId, String depName, String proNo) {
+		super();
+		this.madeNum = madeNum;
+		this.comNum = comNum;
+		this.lossNum = lossNum;
+		this.comRate = comRate;
+		this.depId = depId;
+		this.depName = depName;
+		this.proNo = proNo;
+	}
+
+
+
+	public Integer getMadeNum() {
+		return madeNum;
+	}
+
+	public void setMadeNum(Integer madeNum) {
+		this.madeNum = madeNum;
+	}
+
+	public Integer getComNum() {
+		return comNum;
+	}
+
+	public void setComNum(Integer comNum) {
+		this.comNum = comNum;
+	}
+
+	public Integer getLossNum() {
+		return lossNum;
+	}
+
+	public void setLossNum(Integer lossNum) {
+		this.lossNum = lossNum;
+	}
+
+	public Double getComRate() {
+		return comRate;
+	}
+
+	public void setComRate(Double comRate) {
+		this.comRate = comRate;
+	}
+
+	public Integer getDepId() {
+		return depId;
+	}
+
+	public void setDepId(Integer depId) {
+		this.depId = depId;
+	}
+
+	public String getDepName() {
+		return depName;
+	}
+
+	public void setDepName(String depName) {
+		this.depName = depName;
+	}
+
+	public String getProNo() {
+		return proNo;
+	}
+
+	public void setProNo(String proNo) {
+		this.proNo = proNo;
+	}
+
+	/**
+	 * 封装材料损耗信息表
+	 * @description
+	 * @author wm
+	 * @date 2017-6-22 上午10:44:16
+	 * @param plList
+	 * @return
+	 */
+	public List<PLossInfo> getPLJson(List<PLossInfo> plList){
+		List<PLossInfo> result = new ArrayList<PLossInfo>();
+		for(Iterator<PLossInfo> it = plList.iterator() ; it.hasNext();){
+			PLossInfo pl = it.next();
+			InStoreSubInfo iss = pl.getIss();
+			InStoreSubInfo iss_new = new InStoreSubInfo(iss.getId());
+			ProductInfo pro = pl.getPro();
+			ProductInfo pro_new = new ProductInfo(pro.getId(),pro.getProNo(),pro.getProSpec(),pro.getProCz());
+			PLossInfo pl_new = new PLossInfo(pl.getId(), iss_new, pro_new,
+					pl.getStartTime(), pl.getEndTime(), pl.getBatchNo(), pl.getMatchNum(),
+					pl.getComNum(), pl.getLossNum(), pl.getComRate(), pl.getComStatus());
+			result.add(pl_new);
+		}
+		return result;
+	}
+	
+	public List<PLossJson> getPLossSubJson(List<PLossSubInfo> plsList){
+		List<PLossJson> result = new ArrayList<PLossJson>();
+		Integer depIdArray[] =  new Integer[]{6,7,8,9,10,11,12,13,14};
+		String depNameArray[] = new String[]{"荒折","沙挂","研磨","洗净","芯取","镀膜","结合","涂墨","出货检"};
+		for(Iterator<PLossSubInfo> it = plsList.iterator() ; it.hasNext();){
+			PLossSubInfo pls = it.next();
+			Integer depId = pls.getDepartmentInfo().getId();
+			for(Integer i = 0 ; i < depIdArray.length ; i++){
+				if(depId.equals(depIdArray[i])){
+					break;
+				}
+			}
+		}
+		return null;
+	}
+}

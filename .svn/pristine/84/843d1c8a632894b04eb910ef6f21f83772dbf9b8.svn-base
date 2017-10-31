@@ -1,0 +1,282 @@
+@charset "utf-8";
+.headWrap{
+	width:100%;
+	height:60px;
+	background:#282e3a;
+	position:relative;
+	z-index:3;
+	box-shadow: 2px 0px 12px #282e3a;
+}
+.headWrap .logo{
+	margin:10px 0 0 10px;
+}
+.perInfoBox{
+	width:290px;
+	height:60px;
+	background:#1c2028;
+}
+.perInfo img{
+	margin-top:10px;
+}
+.perInfo p{
+	color:#ddd;
+	font-size:14px;
+	line-height: 60px;
+	margin-left:10px;
+}
+.exit{
+	width:80px;
+	height: 100%;
+	display:inline-block;
+	border-left:1px solid #d8d8d8;	
+	position:relative;
+}
+.exitIcon{
+	font-size:36px;
+	color:#fff;
+	position:absolute;
+	right:20px;
+	top:5px;
+}
+.exit:hover .exitIcon{
+	color:#f00;
+}
+/* 主体 */
+.mainWrap{
+	width:100%;
+	position:relative;
+	z-index:2;
+}
+.leftPart{
+	width:50px;
+	height:100%;
+	background:#00a3e4;
+	position:absolute;
+	left:0;
+	top:0;
+	z-index:2;
+}
+.leftSmallNav{
+	width:150px;
+	height:100%;
+	float:left;
+	border-left:1px solid #d8d8d8;
+	border-right:1px solid #d8d8d8;
+	margin-left:50px;
+	color:#666;
+	background:#eaeaea;
+}
+.leftSmallNav li{
+	font-size:14px;
+	height: 40px;
+	line-height: 40px;
+	position:relative;
+	text-indent: 25px;
+	cursor: pointer;
+}
+.leftSmallNav li.active,
+.leftSmallNav li:hover{
+	color:#00a3e4;
+}
+.leftSmallNav li span{
+	width: 8px;
+	height: 8px;
+	background:#666;
+	border-radius:50%;
+	position:absolute;
+	top:16px;
+	left:10px;
+}
+.rightPart{
+	height:100%;
+	position:relative;
+	z-index:1;
+	overflow:auto;
+	overflow-x:hidden;
+}
+.noSmaNav{
+	margin-left:50px;
+}
+.hasSmaNav{
+	margin-left:202px;
+}
+.mainConWrap{
+	width: 100%;
+	overflow: auto;
+	overflow-x:hidden;
+}
+.comMainWid{
+	width: 1200px;
+	margin:0px auto;
+}
+
+/* input提示文本信息 */
+.tipDiv{
+	border:1px solid #dbdbdb;
+	padding:1px 10px;
+	border-radius:4px;
+	position:absolute;
+	left:85px;
+	top:-20px;
+	line-height: 22px;
+	color: #f32e2e;
+	display: none;
+}
+.tipTriSpan{
+	width: 21px;
+	height: 11px;
+	background: #fff url(../basicInfo/images/triangle.png) no-repeat;
+	position: absolute;
+	left:15px;
+	bottom:-11px;
+}
+.sucInfoIcon,
+.sucInfoIcon1,
+.sucInfoIcon2{
+	font-size: 22px;
+	color: #00a3e4;
+	position: absolute;
+	top:5px;
+	display: none;
+}
+.sucInfoIcon{
+	right:12px;
+}
+.sucInfoIcon1{
+	right:58px;
+}
+.sucInfoIcon2{
+	right:50px;
+}
+/* 银行卡号格式化层 */
+.patternDiv{
+	width: 220px;
+	height: 35px;
+	line-height: 35px;
+	background:#68c7ec;
+	position: absolute;
+	bottom:-41px;
+	border:none;
+	font-size:16px;
+	font-weight: bold;
+	text-align: center;
+	display: none;
+	color: #333;
+}
+.posInp1{
+	left:40px;
+}
+.posInp2{
+	left:80px;
+}
+.bankNumTri{
+	width: 0px;
+	height: 0px;
+	position:absolute;
+	left:140px;
+	top:32px;
+	border-style:dashed dashed solid dashed;
+	border-color:transparent transparent #68c7ec transparent;
+	border-width: 10px;
+	display: none;
+}
+.bankMidWinDiv{
+	position: absolute;
+	left:0px;
+	top:0px;
+}
+.bankMidWinDiv li{
+	float:left;
+	height: 38px;
+	line-height: 40px;
+	position: relative;
+	font-size: 14px;
+	text-indent: 40px;
+	border:1px dotted #ccc;
+}
+.bankMidWinDiv li:hover,
+.bankMidWinDiv li.active{
+	border:1px dotted #00a3e4;
+}
+.bankMidWinDiv li .comBankIcon{
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	left:5px;
+	top:5px;
+	background: url(../basicInfo/images/bankIcon.png) no-repeat;
+}
+.bankMidWinDiv li .icbcIcon{
+	background-position:0 0;
+}
+.bankMidWinDiv li .abcIcon{
+	background-position:0 -30px;
+}
+.bankMidWinDiv li .ccbIcon{
+	background-position:0 -60px;
+}
+.bankMidWinDiv li .cmbIcon{
+	background-position:0 -300px;
+}
+.bankMidWinDiv li .bocIcon{
+	background-position:0 -150px;
+}
+.bankMidWinDiv li .psbcIcon{
+	background-position:0 -270px;
+}
+.bankMidWinDiv li .commIcon{
+	background-position:0 -210px;
+}
+.bankMidWinDiv li .citicIcon{
+	background-position:0 -330px;
+}
+.bankMidWinDiv li .cmbcIcon{
+	background-position:0 -180px;
+}
+.bankMidWinDiv li .cebIcon{
+	background-position:0 -390px;
+}
+.bankMidWinDiv li .cibIcon{
+	background-position:0 -120px;
+}
+.bankMidWinDiv li .spdbIcon{
+	background-position:0 -240px;
+}
+.bankMidWinDiv li .gdbIcon{
+	background-position:0 -360px;
+}
+.bankMidWinDiv li .hxbankIcon{
+	background-position:0 -90px;
+}
+.bankMidWinDiv li .com_BankRdio{
+	width:100%;
+	height:40px;
+	position:absolute;
+	right:0px;
+	top:0px;
+	z-index:5;
+	opacity:0;
+	filter:alpha(opacity=50);
+	cursor: pointer;
+}
+.bankMidWinDiv li .comCirSpan,
+.bankMidWinDiv li b{
+	position:absolute;
+	border-radius:50%;
+}
+.bankMidWinDiv li .comCirSpan{
+	width:23px;
+	height:23px;
+	border:1px solid #ddd;
+	z-index:1;
+	right:10px;
+	top:8px;
+}
+.bankMidWinDiv li b{
+	width:29px;
+	height:29px;
+	background:url(../basicInfo/images/selectIcon.png) no-repeat;	
+	z-index:2;
+	right:8px;
+	top:6px;
+}

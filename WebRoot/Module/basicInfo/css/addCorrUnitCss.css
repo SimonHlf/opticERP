@@ -1,0 +1,38 @@
+@charset "utf-8";
+.mainCon{
+	color:#666;
+}
+.bigWid1_un,
+.midWid1_un{
+	width: 200px;
+	max-width: 200px;
+}
+.bigWid2_un{
+	width: 100px;
+	max-width: 100px;
+}
+.bigWid3_un{
+	width: 120px;
+	max-width: 120px;
+}
+.midWid2_un,
+.smWid2_un{
+	width: 80px;
+	max-width: 80px;
+}
+.midWid3_un{
+	width: 116px;
+	max-width: 116px;
+}
+.smWid1_un{
+	width: 160px;
+	max-width: 160px;
+}
+.smWid3_un{
+	width: 104px;
+	max-width: 104px;
+}
+.addBankBox li{
+	width: 241px;
+	margin:0 0 15px 22px;
+}

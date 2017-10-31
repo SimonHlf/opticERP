@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appContext>
+	<app id="user_info_Web" class="com.optic.service.impl.UserInfoManagerImpl"/>
+	<app id="product_info_Web" class="com.optic.service.impl.ProductInfoManagerImpl"/>
+	<app id="product_type_info_Web" class="com.optic.service.impl.ProducttypeinfoManagerImpl"/>
+	<app id="business_contact_info_Web" class="com.optic.service.impl.BusinessContactInfoManagerImpl"/>
+	<app id="business_type_info_Web" class="com.optic.service.impl.BusinessTypeInfoManagerImpl"/>
+	<app id="wh_type_info_Dao" class="com.optic.service.impl.WhTypeInfoManagerImpl"/>
+	<app id="wh_type_info_Web" class="com.optic.service.impl.WhTypeInfoManagerImpl"/>
+	<app id="wh_storage_info_Web" class="com.optic.service.impl.WhStorageInfoManagerImpl"/>
+	<app id="user_dep_info_Web" class="com.optic.service.impl.UserDepartmentInfoManagerImpl"/>
+	<app id="dep_info_Web" class="com.optic.service.impl.DepartmentInfoManagerImpl"/>
+	<app id="purchase_order_info_Web" class="com.optic.service.impl.PurchaseOrderInfoManagerImpl"/>
+	<app id="purchase_order_sub_info_Web" class="com.optic.service.impl.PurchaseOrderSubInfoManagerImpl"/>
+	<app id="pay_purchase_info_Web" class="com.optic.service.impl.PayPurchaseInfoManagerImpl"/>
+	<app id="in_store_info_Web" class="com.optic.service.impl.InstoreInfoManagerImpl"/>
+</appContext>

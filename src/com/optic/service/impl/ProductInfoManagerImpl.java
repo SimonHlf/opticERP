@@ -1,0 +1,249 @@
+package com.optic.service.impl;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import com.optic.dao.DepartmentInfoDao;
+import com.optic.dao.ProductInfoDao;
+import com.optic.dao.ProductTypeInfoDao;
+import com.optic.exception.WEBException;
+import com.optic.factory.DaoFactory;
+import com.optic.module.DepartmentInfo;
+import com.optic.module.ProductInfo;
+import com.optic.module.ProductTypeInfo;
+import com.optic.service.ProductInfoManager;
+import com.optic.tools.CommonTools;
+import com.optic.tools.Convert;
+import com.optic.tools.HibernateUtil;
+import com.optic.util.Constants;
+
+public class ProductInfoManagerImpl implements ProductInfoManager {
+	private ProductInfoDao productInfoDao;
+	private Transaction tran;
+	
+	public Integer addProductInfo(String pNo, Integer pType, String pName,
+			String pPy, String pSpec, String pCz, String pUnit, String pType2,
+			Double pPriceL, Double pPriceH, Double pPriceA, Integer pNumber,Integer pvNumber,
+			String pRemark,Integer madeDepID) throws WEBException {
+		try {
+			productInfoDao = (ProductInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_INFO);
+			ProductTypeInfoDao ptInfoDao = (ProductTypeInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_TYPE_INFO);
+			DepartmentInfoDao dInfoDao = (DepartmentInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_DEP_INFO);
+			Session sess = HibernateUtil.currentSession();
+			tran = sess.beginTransaction();
+			ProductInfo productInfo = new ProductInfo();
+			ProductTypeInfo ptInfo = ptInfoDao.get(sess, pType);
+			productInfo.setProductTypeInfo(ptInfo);
+			productInfo.setProNo(pNo);
+			productInfo.setProName(pName);
+			productInfo.setProPy(pPy);
+			productInfo.setProSpec(pSpec);
+			productInfo.setProCz(pCz);
+			productInfo.setProUnit(pUnit);
+			productInfo.setProType2(pType2);
+			productInfo.setProPriceL(pPriceL);
+			productInfo.setProPriceH(pPriceH);
+			productInfo.setProPriceA(pPriceA);
+			productInfo.setProNumber(pNumber);
+			productInfo.setProValNum(pvNumber);
+			productInfo.setProRemark(pRemark);
+			DepartmentInfo depInfo = dInfoDao.get(sess, madeDepID);
+			productInfo.setDepInfo(depInfo);
+			productInfoDao.save(sess, productInfo);
+			tran.commit();
+			return productInfo.getId();
+		} catch (Exception e) {
+			tran.rollback();
+			throw new WEBException("增加产品信息时出现异常!");
+		}finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public boolean deleteProductInfo(Integer id) throws WEBException {
+		try {
+			productInfoDao = (ProductInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_INFO);
+			Session sess = HibernateUtil.currentSession();
+			tran = sess.beginTransaction();
+			productInfoDao.delete(sess, id);
+			tran.commit();
+			return true;
+		} catch (Exception e) {
+			throw new WEBException("删除指定产品信息时出现异常!");
+		}finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public boolean updateProductInfo(Integer id, String pNo, Integer pType,
+			String pName, String pPy, String pSpec, String pCz, String pUnit,
+			String pType2, Double pPriceL, Double pPriceH, Double pPriceA,
+			Integer pNumber, String pRemark,Integer madeDepID) throws WEBException {
+		try {
+			productInfoDao = (ProductInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_INFO);
+			DepartmentInfoDao dInfoDao = (DepartmentInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_DEP_INFO);
+			Session sess = HibernateUtil.currentSession();
+			tran = sess.beginTransaction();
+			ProductInfo productInfo =productInfoDao.get(sess, id);
+			DepartmentInfo dep = dInfoDao.get(sess, madeDepID);
+			productInfo.setProNo(pNo);
+			productInfo.setProName(pName);
+			productInfo.setProPy(pPy);
+			productInfo.setProSpec(pSpec);
+			productInfo.setProCz(pCz);
+			productInfo.setProUnit(pUnit);
+			productInfo.setProType2(pType2);
+			if(pPriceL != null){
+				productInfo.setProPriceL(pPriceL);
+			}
+			if(pPriceH != null){
+				productInfo.setProPriceH(pPriceH);
+			}
+			if(pPriceA != null){
+				productInfo.setProPriceA(pPriceA);
+			}
+			if(pNumber != null){
+				productInfo.setProNumber(pNumber);
+			}
+			productInfo.setProRemark(pRemark);
+			productInfo.setDepInfo(dep);
+			productInfoDao.update(sess, productInfo);
+			tran.commit();
+			return true;
+		} catch (Exception e) {
+			throw new WEBException("更新产品信息时出现异常!");
+		}finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public List<ProductInfo> listProductInfo(Integer proTypeId , String proPy,boolean inNumStatus,boolean madeStatus,int pageNo, int pageSize) throws WEBException {
+		List<ProductInfo> result = new ArrayList<ProductInfo>();
+		try {
+			productInfoDao = (ProductInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_INFO);
+			Session sess = HibernateUtil.currentSession();
+			List<ProductInfo> ntlist = productInfoDao.getProductInfoList(sess, proTypeId, proPy, inNumStatus, madeStatus,pageNo, pageSize);
+			for (Iterator<ProductInfo> itr = ntlist.iterator(); itr.hasNext();) {
+				ProductInfo prInfo =itr.next();
+				result.add(prInfo);
+			}
+		} catch (Exception e) {
+			throw new WEBException("列出产品信息时出现异常,请重试！");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+		return result;
+	}
+
+	public Integer getProCount(Integer proTypeId, String proPy, boolean inNumStatus,boolean madeStatus)
+			throws WEBException {
+		try {
+			productInfoDao = (ProductInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_INFO);
+			Session sess = HibernateUtil.currentSession();
+			return productInfoDao.getProInfoCount(sess, proTypeId, proPy, inNumStatus, madeStatus);
+		
+		} catch (Exception e) {
+			throw new WEBException("列出产品记录数时出现异常,请重试！");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public List<ProductInfo> listProInfo(Integer proId) throws WEBException {
+		try {
+			productInfoDao = (ProductInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_INFO);
+			Session sess = HibernateUtil.currentSession();
+			return productInfoDao.getInfoById(sess, proId);
+		} catch (Exception e) {
+			throw new WEBException("列出产品信息时出现异常,请重试！");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public boolean updatePriceById(Integer proId,Double currPrice,String HLStr) throws WEBException {
+		// TODO Auto-generated method stub
+		try {
+			productInfoDao = (ProductInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_INFO);
+			Session sess = HibernateUtil.currentSession();
+			tran = sess.beginTransaction();
+			ProductInfo productInfo =productInfoDao.get(sess, proId);
+			if(HLStr.equals("h")){
+				productInfo.setProPriceH(currPrice);
+				productInfo.setProPriceA(CommonTools.getFinalDouble(Convert.convertInputNumber_1((currPrice +  productInfo.getProPriceL()) / 2)));
+			}else if(HLStr.equals("l")){
+				productInfo.setProPriceL(currPrice);
+				productInfo.setProPriceA(CommonTools.getFinalDouble(Convert.convertInputNumber_1((productInfo.getProPriceH() + currPrice) / 2)));
+			}else if(HLStr.equals("a")){
+				productInfo.setProPriceH(currPrice);
+				productInfo.setProPriceL(currPrice);
+				productInfo.setProPriceA(currPrice);
+			}
+			productInfoDao.update(sess, productInfo);
+			tran.commit();
+			return true;
+		} catch (Exception e) {
+			throw new WEBException("更新产品价格信息时出现异常!");
+		}finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public boolean checkExistByName(String proName) throws WEBException {
+		// TODO Auto-generated method stub
+		try {
+			productInfoDao = (ProductInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_INFO);
+			Session sess = HibernateUtil.currentSession();
+			return productInfoDao.checkExistByName(sess, proName);
+		} catch (Exception e) {
+			throw new WEBException("检查是否存在该产品信息时出现异常,请重试！");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public boolean updateProNumber(Integer proId, Integer proNum,Integer newProValNum)
+			throws WEBException {
+		// TODO Auto-generated method stub
+		try {
+			productInfoDao = (ProductInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_INFO);
+			Session sess = HibernateUtil.currentSession();
+			tran = sess.beginTransaction();
+			ProductInfo pro = productInfoDao.get(sess, proId);
+			if(pro != null){
+				if(!proNum.equals(0)){
+					pro.setProNumber(pro.getProNumber() + proNum);
+				}
+				if(!newProValNum.equals(0)){
+					pro.setProValNum(pro.getProValNum() + newProValNum);
+				}
+				productInfoDao.update(sess, pro);
+				tran.commit();
+				return true;
+			}
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WEBException("根据主键修改该产品库存量、可用数量信息时出现异常,请重试！");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public boolean checkExistByCode(String proCode) throws WEBException {
+		// TODO Auto-generated method stub
+		try {
+			productInfoDao = (ProductInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_PRODUCT_INFO);
+			Session sess = HibernateUtil.currentSession();
+			return productInfoDao.checkExistByCode(sess, proCode);
+		} catch (Exception e) {
+			throw new WEBException("检查是否存在该产品信息时出现异常,请重试！");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+}

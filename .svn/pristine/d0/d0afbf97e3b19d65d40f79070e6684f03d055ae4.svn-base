@@ -1,0 +1,69 @@
+package com.optic.service.impl;
+
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import com.optic.dao.DepartmentInfoDao;
+import com.optic.exception.WEBException;
+import com.optic.factory.DaoFactory;
+import com.optic.module.DepartmentInfo;
+import com.optic.service.DepartmentInfoManager;
+import com.optic.tools.HibernateUtil;
+import com.optic.util.Constants;
+
+public class DepartmentInfoManagerImpl implements DepartmentInfoManager{
+
+	public Integer addDep(String dName, Integer dOption, String dRemark)
+			throws WEBException {
+		// TODO Auto-generated method stub
+		DepartmentInfoDao dDao = null;
+		Transaction tran = null;
+		try {
+			dDao = (DepartmentInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_DEP_INFO);
+			Session sess = HibernateUtil.currentSession();
+			tran = sess.beginTransaction();
+			DepartmentInfo dep = new DepartmentInfo(dName,dOption,dRemark);
+			dDao.save(sess, dep);
+			tran.commit();
+			return dep.getId();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new WEBException("增加部门信息时出现异常!");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public List<DepartmentInfo> listInfo() throws WEBException {
+		// TODO Auto-generated method stub
+		DepartmentInfoDao dDao = null;
+		try {
+			dDao = (DepartmentInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_DEP_INFO);
+			Session sess = HibernateUtil.currentSession();
+			return dDao.findInfo(sess);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new WEBException("获取部门信息时出现异常!");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public List<DepartmentInfo> listGxDepInfo() throws WEBException {
+		// TODO Auto-generated method stub
+		DepartmentInfoDao dDao = null;
+		try {
+			dDao = (DepartmentInfoDao) DaoFactory.instance(null).getDao(Constants.DAO_DEP_INFO);
+			Session sess = HibernateUtil.currentSession();
+			return dDao.findGxDepInfo(sess);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new WEBException("获取工序部门信息时出现异常!");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+}

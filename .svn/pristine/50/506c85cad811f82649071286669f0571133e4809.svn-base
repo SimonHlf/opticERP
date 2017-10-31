@@ -1,0 +1,907 @@
+<%@ page contentType="text/html; charset=UTF-8" language="java"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html>
+<head>
+<title>新增入库信息</title>
+<link rel="stylesheet" type="text/css" href="Module/css/reset.css"/>
+<link rel="stylesheet" type="text/css" href="Module/css/commonCss.css"/>
+<link rel="stylesheet" type="text/css" href="Module/css/iconfont.css"/>
+<link rel="stylesheet" type="text/css" href="Module/inStore/css/inStoreCss.css"/>
+<link rel="stylesheet" type="text/css" href="Module/inStore/css/animate.css"/>
+<script src="Module/commonJs/jquery-1.7.2.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="Module/commonJs/comMethod.js" type="text/javascript" charset="utf-8"></script>
+<script src="Module/inStore/js/inStoreJs.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+var creScroll = true;
+$(function(){
+	judgeTime_1();
+});
+//新增入库单下选取供应商数据 、选取供应商下商品的数据层弹窗
+function showCorrUnProInfDiv(options){
+	if(options == 1){//选取供应商
+		$(".purDataDiv").show();
+		inpTipFocBlur("searInput","请输入往来单位拼音码","#999","#666");
+		if($("#categDataDivPur li").length == 0){
+			$("#categDataDivPur").html("<div class='noRecCon'><i class='iconfont icon-noListRec noListRec'></i><p>暂无单位类别，请添加</p></div>");
+		}
+	}else if(options == 2){//选取商品
+		$(".proInfoDiv").show();
+		createLeftScroll();
+		inpTipFocBlur("searInput_pro","请输入商品名称","#999","#666");
+		if($("#categDataDivPro li").length == 0){
+			$("#categDataDivPro").html("<div class='noRecCon'><i class='iconfont icon-noListRec noListRec'></i><p>暂无产品类别，请添加</p></div>");
+		}
+	}else if(options == 3){//入库货架  
+		$(".instWhDataDiv").show();
+		inpTipFocBlur("searInput_insWh","请输入货架编号","#999","#666");
+	}
+	$(".layer").show();
+	
+}
+//根据产品类别的高度来动态创建模拟滚动条
+function createLeftScroll(){
+	if($("#categDataUlPro").height() > $("#categDataDivPro").height()){
+		//创建模拟滚动条
+		var scroll = "<div id='scrollPar' class='parScroll'><div id='scrollSon' class='sonScroll'></div></div>";
+		if(creScroll){
+			$(".proCategDataDiv").append(scroll);
+			scrollBar("categDataDivPro","categDataUlPro","scrollPar","scrollSon",15);
+		}
+		creScroll = false;
+	}
+}
+function closeAlertWin(obj){
+	$(obj).hide();
+	$(".layer").hide();
+}
+//浏览入库购单下头部的查询
+function changeSearch(options){
+	$(".selCondP label").removeClass("active");
+	if(options == 1){//根据新增入库单时间查询
+		$("#addInsTimSearLab").addClass("active");
+		$(".searLayer").animate({"left":599});
+	}else if(options == 2){//根据入库单号查询
+		$("#insNumSearLab").addClass("active");
+		$(".searLayer").animate({"left":0});
+		inpTipFocBlur("queryInsNum","请输入入库单号","#999","#666");
+	}
+}
+//添加单位类别、单位基本信息、产品类别、产品基本信息窗口
+function showComAddWin(options){
+	$(".closeIcon").hide();
+	$(".addNewDataDiv").show().animate({"top":50},function(){
+		if(options == 1){//添加仓库类别
+			$(".addWhCategDiv").show();
+		}else if(options == 2){//添加仓库货架信息
+			$(".addWhInfoDiv").show();
+		}
+	});
+}
+function selCategBankWin(options){
+	//1:查看仓库类别 
+	if(options == 1){
+		$(".selWhCategLay").show().animate({"opacity":1});
+		if($(".selCategDiv_wh p").html() == ""){
+			$("#nowCateg_wh").html("暂未选择仓库类别");
+		}else{
+			$("#nowCateg_wh").html($(".selCategDiv_wh p").html());
+			matchingHtml($("#selCategWrap_wh li"),$("#nowCateg_wh"));
+		}
+		if($("#selCategWrap_wh li").length == 0){
+			$("#selCategWrap_wh").html("<div class='noRecCon'><i class='iconfont icon-noListRec noListRec_1'></i><span>暂无产品类别，请添加</span></div>");
+		}
+		addLiActive($("#selCategWrap_wh li"),$("#nowCateg_wh"));
+	}
+}
+function addLiActive(obj,objHtml){
+	$(obj).each(function(){
+		$(this).click(function(){
+			$(obj).removeClass("active");
+			$(this).addClass("active");
+			$(objHtml).html($(this).html());
+		});
+	});
+}
+function matchingHtml(obj,objHtml){
+	var htmlCon = objHtml.html();
+	$(obj).each(function(i){
+		if(htmlCon != "" && $(obj).eq(i).html() == htmlCon){
+			$(obj).eq(i).addClass("active");
+		}
+	});
+}
+function comCanCategBankWin(options){
+	//1:关闭选择仓库类别
+	if(options == 1){
+		$(".selWhCategLay").animate({"opacity":0},function(){$(".selWhCategLay").hide();});
+		$("#selCategWrap_wh li").removeClass("active");
+	}
+}
+</script>
+</head>
+<body>
+	<!-- 头部  -->
+	<div class="headWrap">
+		<img class="logo fl" src="Module/basicInfo/images/logo.png" alt="镜片车间ERP管理系统"/>
+		<div class="perInfoBox fr">
+			<div class="perInfo clearfix fl">
+				<img class="fl" src="Module/basicInfo/images/user.png"/>
+				<p class="timeHello fl"></p>
+				<p class="fl">${sessionScope.login_real_name}</p>
+			</div>
+			<a class="exit fr" href="javascript:void(0)" title="退出系统" onclick="loginOut();">
+				<i class="iconfont icon-tuichu exitIcon"></i>
+			</a>
+		</div>
+	</div>
+	<!-- 主体  -->
+	<div class="mainWrap clearfix">
+		<!-- 左侧导航  -->
+		<div class="leftPart"></div>
+		<!-- 右侧对应内容  -->
+		<div class="rightPart noSmaNav">
+			<!-- 头部搜索框 -->
+			<div class="searWrap">
+				<div class="searBox comMainWid">
+					<p>
+						<a id="addNewPurBtn" class="active" href="javascript:void(0)" onclick="selPurchaseTab(1)">新增入库单</a>
+						<span>|</span>
+						<a id="viewPurBtn" href="javascript:void(0)" onclick="selPurchaseTab(2)">浏览入库单</a>
+					</p>
+				</div>
+			</div>
+			<!-- 新增采购单  -->
+			<div class="mainCon comMainWid newAddPurDiv clearfix">
+				<!-- 供应商选择、采购编号填写层  -->
+				<div class="selBusDiv clearfix">
+					<div class="comSelDiv fl">
+						<span>供应商：</span>
+						<input id="purVal" type="text" disabled="disabled"/>
+						<i class="iconfont icon-corrUnit comInsIcon pos1" onclick="showCorrUnProInfDiv(1)" title="选择供应商"></i>
+						<!-- input提示信息 -->
+						<div id="corrUnTipDiv" class="tipDiv" >
+							<span class="tipTriSpan"></span>
+							<p></p>
+						</div>
+						<i id="sucCorUnit" class="iconfont icon-duihao sucInfoIcon2"></i>
+					</div>
+					<div class="comSelDiv margSelL fl">
+						<span>入库单编号：</span>
+						<input type="text"/>
+						<!-- input提示信息 -->
+						<div id="insNumTipDiv" class="tipDiv" >
+							<span class="tipTriSpan"></span>
+							<p></p>
+						</div>
+						<i id="sucInsNum" class="iconfont icon-duihao sucInfoIcon"></i>
+					</div>
+					<div class="comSelDiv margSelL fl">
+						<span>产品名称：</span>
+						<input type="text" disabled="disabled"/>
+						<i class="iconfont icon-product comInsIcon pos2" onclick="showCorrUnProInfDiv(2)" title="选择产品"></i>
+						<!-- input提示信息 -->
+						<div id="proNamTipDiv" class="tipDiv" >
+							<span class="tipTriSpan"></span>
+							<p></p>
+						</div>
+						<i id="sucProNam" class="iconfont icon-duihao sucInfoIcon"></i>
+					</div>
+					<div class="comSelDiv fl">
+						<span>产品编号：</span>
+						<input type="text" disabled="disabled"/>
+						<!-- input提示信息 -->
+						<div id="proNumTipDiv" class="tipDiv" >
+							<span class="tipTriSpan"></span>
+							<p></p>
+						</div>
+						<i id="sucProNum" class="iconfont icon-duihao sucInfoIcon"></i>
+					</div>
+					<div class="comSelDiv margSelL fl">
+						<span>基本单位：</span>
+						<input type="text" disabled="disabled"/>
+						<!-- input提示信息 -->
+						<div id="basicUnitDiv" class="tipDiv" >
+							<span class="tipTriSpan"></span>
+							<p></p>
+						</div>
+						<i id="sucBasUnit" class="iconfont icon-duihao sucInfoIcon"></i>
+					</div>
+					<div class="comSelDiv margSelL fl">
+						<span>产品规格：</span>
+						<input type="text" disabled="disabled"/>
+						<!-- input提示信息 -->
+						<div id="proFormatDiv" class="tipDiv" >
+							<span class="tipTriSpan"></span>
+							<p></p>
+						</div>
+						<i id="sucProFormat" class="iconfont icon-duihao sucInfoIcon"></i>
+					</div>
+					<div class="comSelDiv fl">
+						<span>产品单价：</span>
+						<input type="text" disabled="disabled"/>
+						<!-- input提示信息 -->
+						<div id="proPriceDiv" class="tipDiv" >
+							<span class="tipTriSpan"></span>
+							<p></p>
+						</div>
+						<i id="sucProPrice" class="iconfont icon-duihao sucInfoIcon"></i>
+					</div>
+					<div class="comSelDiv margSelL fl">
+						<span>采购数量：</span>
+						<input type="text" disabled="disabled"/>
+						<!-- input提示信息 -->
+						<div id="purNumDiv" class="tipDiv" >
+							<span class="tipTriSpan"></span>
+							<p></p>
+						</div>
+						<i id="sucPurNum" class="iconfont icon-duihao sucInfoIcon"></i>
+					</div>
+					<div class="comSelDiv margSelL fl">
+						<span>入库数量：</span>
+						<input type="text"/>
+						<!-- input提示信息 -->
+						<div id="inStNumDiv" class="tipDiv" >
+							<span class="tipTriSpan"></span>
+							<p></p>
+						</div>
+						<i id="sucInStNum" class="iconfont icon-duihao sucInfoIcon"></i>
+					</div>
+					<div class="comSelDiv fl">
+						<span>入库货架：</span>
+						<input type="text" disabled="disabled"/>
+						<i class="iconfont icon-whose comInsIcon pos3" onclick="showCorrUnProInfDiv(3)" title="选择货架"></i>
+						<!-- input提示信息 -->
+						<div id="inStWhDiv" class="tipDiv" >
+							<span class="tipTriSpan"></span>
+							<p></p>
+						</div>
+						<i id="sucInStWh" class="iconfont icon-duihao sucInfoIcon"></i>
+					</div>
+					<div class="comSelDiv margSelL fl">
+						<span>入库人员：</span>
+						<input type="text" disabled="disabled"/>
+						<!-- input提示信息 -->
+						<div id="inStPeoDiv" class="tipDiv" >
+							<span class="tipTriSpan"></span>
+							<p></p>
+						</div>
+						<i id="sucInStPeo" class="iconfont icon-duihao sucInfoIcon"></i>
+					</div>
+					<div class="comSelDiv margSelL fl">
+						<span>入库日期：</span>
+						<input type="text" disabled="disabled"/>
+						<!-- input提示信息 -->
+						<div id="inStTimDiv" class="tipDiv" >
+							<span class="tipTriSpan"></span>
+							<p></p>
+						</div>
+						<i id="sucInStTim" class="iconfont icon-duihao sucInfoIcon"></i>
+					</div>
+					<div class="comSelDiv fl">
+						<input id="insStatusIn" type="hidden"/>
+						<span class="fl">录入状态：</span>
+						<label for="beginWhInp">
+							<input type="radio" id="beginWhInp" name="insStatus" value="0"/>
+							<em>期初库存</em>
+							<span class="cirSpan"></span>
+						</label>
+						<label for="purInsInp">
+							<input type="radio" id="purInsInp" name="insStatus" value="1"/>
+							<em>采购入库</em>
+							<span class="cirSpan"></span>
+						</label>
+						<label for="madInsInp">
+							<input type="radio" id="madInsInp" name="insStatus" value="2"/>
+							<em>加工入库</em>
+							<span class="cirSpan"></span>
+						</label>
+						<!-- input提示信息 -->
+						<div id="inStStaDiv" class="tipDiv" >
+							<span class="tipTriSpan"></span>
+							<p></p>
+						</div>
+						<i id="sucInStSta" class="iconfont icon-duihao sucInfoIcon"></i>
+					</div>
+					<div class="comSelDiv margSelL fl">
+						<span>入库备注：</span>
+						<input type="text"/>
+						<!-- input提示信息 -->
+						<div id="inStRemDiv" class="tipDiv" >
+							<span class="tipTriSpan"></span>
+							<p></p>
+						</div>
+						<i id="sucInStRem" class="iconfont icon-duihao sucInfoIcon"></i>
+					</div>
+				</div>
+				<div class="saveDiv">
+					<a href="javascript:void(0)">保存入库信息</a>
+				</div>
+			</div>
+			<!-- 浏览采购单  -->
+			<div class="mainCon comMainWid viewPurDiv clearfix">
+				<!-- 根据采购订单单号查询、根据新增采购单时间查询  -->
+				<div class="queryDiv clearfix">
+					<p class="selCondP">
+						<label id="addInsTimSearLab" class="active" onclick="changeSearch(1)">
+							<span class="cirSpan"></span>
+							<span>根据新增入库单时间查询</span>
+							<i class="iconfont icon-duihao selSearIcon"></i>
+						</label>
+						<label id="insNumSearLab" class="marglLab" onclick="changeSearch(2)">
+							<span class="cirSpan"></span>
+							<i class="iconfont icon-duihao selSearIcon"></i>
+							<span>根据入库单号查询</span>
+						</label>
+					</p>
+					<div class="queryBox fl">
+						<div class="comQueryDiv">
+							<span>新增入库单时间：</span>
+							<input type="text" />
+						</div>
+						<div class="comQueryDiv">
+							<input id="insStaInpVal" type="hidden"/>
+							<span>录入状态：</span>
+							<label for="begInsWhInp">
+								<span class="cirSpan"></span>
+								<input type="radio" id="begInsWhInp" name="insStaInp" value="0"/>
+								<span>期初库存</span>
+							</label>
+							<label for="purInstInp">
+								<span class="cirSpan"></span>
+								<input type="radio" id="purInstInp" name="insStaInp" value="1"/>
+								<span>采购入库</span>
+							</label>
+							<label for="madeInsInp">
+								<span class="cirSpan"></span>
+								<input type="radio" id="madeInsInp" name="insStaInp" value="2"/>
+								<span>加工入库</span>
+							</label>
+						</div>
+						<div class="comQueryDiv">
+							<!-- 选择产品名称  -->
+							<div class="selQueryDiv">
+								<span>产品名称：</span>
+								<input id="proNaInp" type="text" disabled="disabled"/>
+								<i class='iconfont icon-more moreIcon' title='选择产品' onclick="showCorrUnProInfDiv(2)"></i>
+							</div>
+							<!-- 选择货架编号  -->
+							<div class="selQueryDiv margLQu">
+								<span>货架编号：</span>
+								<input id="whNumInp" type="text" disabled="disabled"/>
+								<i class='iconfont icon-more moreIcon' title='选择货架' onclick="showCorrUnProInfDiv(3)"></i>
+							</div>
+						</div>
+						<a class="queryStaBtn" href="javascript:void(0)">查询</a>
+					</div>
+					<div class="queryBox fl">
+						<p class="searchPurNum fl">
+							<input type="text" id="queryInsNum" value="请输入入库单号" class="searInp_purNum fl"/>
+							<a href="javascript:void(0)" class="searA fl" title="查询">
+								<i class="iconfont icon-search searIcon"></i>
+							</a>
+						</p>
+					</div>
+					<span class="borSpan"></span>
+					<!-- 二选一查询条件遮罩层  -->
+					<span class="searLayer"></span>
+				</div>
+				<!-- 浏览入库单  -->
+				<div class="viewInsInfoDiv">
+					<ul class="cardUl clearfix">
+						<li class="cardLi">
+							<div class="cardDiv">
+								<!-- 正面层 入库编号 商品名称编码 货架编号  -->
+								<div class="front">
+									<div class="comInnerInfo">
+										<h4>LC-20170502Bk8</h4>
+										<p class="inStaP">录入状态：期初库存</p>
+										<span class="lineSpan"></span>
+										<strong>磨砂镜片</strong>
+										<p class="proNumP">产品编码：SN-2017b688</p>
+										<p class="whNumP">
+											<span class="lDecSpan"></span>
+											<span class="rDecSpan"></span>
+											<span class="whNumCon">A-002</span>
+										</p>
+									</div>
+									
+									<span class="shadowSpan"></span>
+								</div>
+								<!-- 反面层 入库单基本信息 -->
+								<div class="back">
+									<div class="comInnerInfo">
+										<ul>
+											<li class="clearfix">
+												<p class="flP txtInd">库存量：1024</p>
+												<p class="flP">入库数量：15</p>
+												<p class="flP txtInd">入库人员：黄利峰</p>
+												<p class="flP">入库时间：2017-05-09</p>
+											</li>
+										</ul>
+										<p class="noFlP">产品规格：20cm*18cm</p>
+										<p class="noFlP">材质要求：铜</p>
+									</div>
+									<span class="shadowSpan"></span>
+									<a href="javascript:void(0)"></a>
+								</div>
+							</div>
+						</li>
+						<li class="cardLi">
+							<div class="cardDiv">
+								<!-- 正面层 入库编号 商品名称编码 货架编号  -->
+								<div class="front">
+									<div class="comInnerInfo">
+										<h4>LC-20170502Bk8</h4>
+										<p class="inStaP">录入状态：期初库存</p>
+										<span class="lineSpan"></span>
+										<strong>磨砂镜片</strong>
+										<p class="proNumP">产品编码：SN-2017b688</p>
+										<p class="whNumP">
+											<span class="lDecSpan"></span>
+											<span class="rDecSpan"></span>
+											<span class="whNumCon">A-002</span>
+										</p>
+									</div>
+									
+									<span class="shadowSpan"></span>
+								</div>
+								<!-- 反面层 入库单基本信息 -->
+								<div class="back">
+									<div class="comInnerInfo">
+										<ul>
+											<li class="clearfix">
+												<p class="flP txtInd">库存量：1024</p>
+												<p class="flP">入库数量：15</p>
+												<p class="flP txtInd">入库人员：黄利峰</p>
+												<p class="flP">入库时间：2017-05-09</p>
+											</li>
+										</ul>
+										<p class="noFlP">产品规格：20cm*18cm</p>
+										<p class="noFlP">材质要求：铜</p>
+									</div>
+									<span class="shadowSpan"></span>
+									<a href="javascript:void(0)"></a>
+								</div>
+							</div>
+						</li>
+						<li class="cardLi">
+							<div class="cardDiv">
+								<!-- 正面层 入库编号 商品名称编码 货架编号  -->
+								<div class="front">
+									<div class="comInnerInfo">
+										<h4>LC-20170502Bk8</h4>
+										<p class="inStaP">录入状态：期初库存</p>
+										<span class="lineSpan"></span>
+										<strong>磨砂镜片</strong>
+										<p class="proNumP">产品编码：SN-2017b688</p>
+										<p class="whNumP">
+											<span class="lDecSpan"></span>
+											<span class="rDecSpan"></span>
+											<span class="whNumCon">A-002</span>
+										</p>
+									</div>
+									
+									<span class="shadowSpan"></span>
+								</div>
+								<!-- 反面层 入库单基本信息 -->
+								<div class="back">
+									<div class="comInnerInfo">
+										<ul>
+											<li class="clearfix">
+												<p class="flP txtInd">库存量：1024</p>
+												<p class="flP">入库数量：15</p>
+												<p class="flP txtInd">入库人员：黄利峰</p>
+												<p class="flP">入库时间：2017-05-09</p>
+											</li>
+										</ul>
+										<p class="noFlP">产品规格：20cm*18cm</p>
+										<p class="noFlP">材质要求：铜</p>
+									</div>
+									<span class="shadowSpan"></span>
+									<a href="javascript:void(0)"></a>
+								</div>
+							</div>
+						</li>
+						<li class="cardLi">
+							<div class="cardDiv">
+								<!-- 正面层 入库编号 商品名称编码 货架编号  -->
+								<div class="front">
+									<div class="comInnerInfo">
+										<h4>LC-20170502Bk8</h4>
+										<p class="inStaP">录入状态：期初库存</p>
+										<span class="lineSpan"></span>
+										<strong>磨砂镜片</strong>
+										<p class="proNumP">产品编码：SN-2017b688</p>
+										<p class="whNumP">
+											<span class="lDecSpan"></span>
+											<span class="rDecSpan"></span>
+											<span class="whNumCon">A-002</span>
+										</p>
+									</div>
+									
+									<span class="shadowSpan"></span>
+								</div>
+								<!-- 反面层 入库单基本信息 -->
+								<div class="back">
+									<div class="comInnerInfo">
+										<ul>
+											<li class="clearfix">
+												<p class="flP txtInd">库存量：1024</p>
+												<p class="flP">入库数量：15</p>
+												<p class="flP txtInd">入库人员：黄利峰</p>
+												<p class="flP">入库时间：2017-05-09</p>
+											</li>
+										</ul>
+										<p class="noFlP">产品规格：20cm*18cm</p>
+										<p class="noFlP">材质要求：铜</p>
+									</div>
+									<span class="shadowSpan"></span>
+									<a href="javascript:void(0)"></a>
+								</div>
+							</div>
+						</li>
+						<li class="cardLi">
+							<div class="cardDiv">
+								<!-- 正面层 入库编号 商品名称编码 货架编号  -->
+								<div class="front">
+									<div class="comInnerInfo">
+										<h4>LC-20170502Bk8</h4>
+										<p class="inStaP">录入状态：期初库存</p>
+										<span class="lineSpan"></span>
+										<strong>磨砂镜片</strong>
+										<p class="proNumP">产品编码：SN-2017b688</p>
+										<p class="whNumP">
+											<span class="lDecSpan"></span>
+											<span class="rDecSpan"></span>
+											<span class="whNumCon">A-002</span>
+										</p>
+									</div>
+									
+									<span class="shadowSpan"></span>
+								</div>
+								<!-- 反面层 入库单基本信息 -->
+								<div class="back">
+									<div class="comInnerInfo">
+										<ul>
+											<li class="clearfix">
+												<p class="flP txtInd">库存量：1024</p>
+												<p class="flP">入库数量：15</p>
+												<p class="flP txtInd">入库人员：黄利峰</p>
+												<p class="flP">入库时间：2017-05-09</p>
+											</li>
+										</ul>
+										<p class="noFlP">产品规格：20cm*18cm</p>
+										<p class="noFlP">材质要求：铜</p>
+									</div>
+									<span class="shadowSpan"></span>
+									<a href="javascript:void(0)"></a>
+								</div>
+							</div>
+						</li>
+						<li class="cardLi">
+							<div class="cardDiv">
+								<!-- 正面层 入库编号 商品名称编码 货架编号  -->
+								<div class="front">
+									<div class="comInnerInfo">
+										<h4>LC-20170502Bk8</h4>
+										<p class="inStaP">录入状态：期初库存</p>
+										<span class="lineSpan"></span>
+										<strong>磨砂镜片</strong>
+										<p class="proNumP">产品编码：SN-2017b688</p>
+										<p class="whNumP">
+											<span class="lDecSpan"></span>
+											<span class="rDecSpan"></span>
+											<span class="whNumCon">A-002</span>
+										</p>
+									</div>
+									
+									<span class="shadowSpan"></span>
+								</div>
+								<!-- 反面层 入库单基本信息 -->
+								<div class="back">
+									<div class="comInnerInfo">
+										<ul>
+											<li class="clearfix">
+												<p class="flP txtInd">库存量：1024</p>
+												<p class="flP">入库数量：15</p>
+												<p class="flP txtInd">入库人员：黄利峰</p>
+												<p class="flP">入库时间：2017-05-09</p>
+											</li>
+										</ul>
+										<p class="noFlP">产品规格：20cm*18cm</p>
+										<p class="noFlP">材质要求：铜</p>
+									</div>
+									<span class="shadowSpan"></span>
+									<a href="javascript:void(0)"></a>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="layer"></div>
+	<!-- 供应商数据层弹窗  -->
+	<div class="comAlertDiv purDataDiv">
+		<div class="comDataTop">
+			<p>选择供应商</p>
+			<i class="iconfont icon-close closeIcon comTransition" onclick="closeAlertWin($('.purDataDiv'))"></i>
+		</div>
+		<div class="searLay">
+			<!-- 根据拼音码搜索层  -->
+			<div class="searchDiv">
+				<input type="text" id="searInput" value="请输入往来单位拼音码" class="searInp fl"/>
+				<a href="javascript:void(0)" class="searA fl" title="查询">
+					<i class="iconfont icon-search searIcon"></i>
+				</a>
+			</div>
+		</div>
+		<!-- 往来单位类别 单位具体信息数据层  -->
+		<div class="comDataDiv clearfix">
+			<!-- left 类别数据  -->
+			<div class="comLeftData fl">
+				<p class="categTit"><i class="iconfont icon-categ categIcon"></i><span>往来单位类别</span></p>
+				<div id="categDataDivPur" class="categDataDiv">
+					<ul id="categDataUlPur" class="categDataUl">
+						<!-- li下增加active状态为当前选中  -->
+						<li><span></span><i class="iconfont icon-mingpian cardIcon"></i><p class="ellip">供应商</p></li>
+						<li><span></span><i class="iconfont icon-mingpian cardIcon"></i><p>供应商1</p></li>
+						<li><span></span><i class="iconfont icon-mingpian cardIcon"></i><p>供应商2</p></li>
+						<li><span></span><i class="iconfont icon-mingpian cardIcon"></i><p>客户</p></li>
+					</ul>
+				</div>
+			</div>
+			<!-- right 详细信息数据  -->
+			<div class="comRightData fl">
+				<!-- 数据层  -->
+				<div class="tabData">
+					<table class="dataTitTab" cellpadding="0" cellspacing="0">
+						<tr>
+							<td class="listDataWid1" align="center">序号</td>
+							<td class="listDataWid2" align="center">单位名称</td>
+							<td class="listDataWid3" align="center">拼音码</td>
+							<td class="listDataWid3" align="center">联系人</td>
+							<td class="listDataWid4" align="center">联系电话</td>
+							<td class="listDataWid4" align="center">联系手机</td>
+							<td class="listDataWid2" align="center">电子邮箱</td>
+							<td class="listDataWid5 noBorR" align="center">单位地址</td>
+						</tr>
+					</table>
+					<table id="dataListTab_un" class="dataListTab" cellpadding="0" cellspacing="0">
+						<!-- 分页的话一页8条数据  -->
+						<tr>
+							<td class="listDataWid1" align="center">01</td>
+							<td class="listDataWid2 ellip" align="center">濮阳亮宇实业</td>
+							<td class="listDataWid3" align="center">pylysy</td>
+							<td class="listDataWid3" align="center">与长存</td>
+							<td class="listDataWid4" align="center">0393-8713658</td>
+							<td class="listDataWid4" align="center">13311089766</td>
+							<td class="listDataWid2 ellip" align="center">275890380@qq.com</td>
+							<td class="listDataWid5 noBorR ellip" align="center">新东路北段华龙区科技创业园</td>
+						</tr>
+					</table>
+				</div>
+				<!-- 选中保存按钮  -->
+				<a class="saveDataBtn saveMargT" href="javascript:void(0)">确定</a>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 选择产品数据弹窗  -->
+	<div class="comAlertDiv proInfoDiv">
+		<div class="comDataTop">
+			<p>选择产品</p>
+			<i class="iconfont icon-close closeIcon comTransition" onclick="closeAlertWin($('.proInfoDiv'))"></i>
+		</div>
+		<div class="searLay">
+			<!-- 根据拼音码搜索层  -->
+			<div class="searchDiv">
+				<input type="text" id="searInput_pro" value="请输入商品名称" class="searInp fl"/>
+				<a href="javascript:void(0)" class="searA fl" title="查询">
+					<i class="iconfont icon-search searIcon"></i>
+				</a>
+			</div>
+		</div>
+		<!-- 产品类别产品具体信息数据层  -->
+		<div class="comDataDiv clearfix">
+			<!-- left 类别数据  -->
+			<div class="comLeftData proCategDataDiv fl">
+				<p class="categTit"><i class="iconfont icon-categ categIcon"></i><span>产品类别</span></p>
+				<div id="categDataDivPro" class="categDataDiv">
+					<ul id="categDataUlPro" class="categDataUl">
+						<!-- li下增加active状态为当前选中  -->
+						<li><span></span><i class="iconfont icon-mingpian cardIcon"></i><p class="ellip">百货</p></li>
+						<li><span></span><i class="iconfont icon-mingpian cardIcon"></i><p>文具</p></li>
+						<li><span></span><i class="iconfont icon-mingpian cardIcon"></i><p>沙硅</p></li>
+						<li><span></span><i class="iconfont icon-mingpian cardIcon"></i><p>学习用具</p></li>
+						<li><span></span><i class="iconfont icon-mingpian cardIcon"></i><p class="ellip">百货</p></li>
+					</ul>
+				</div>
+			</div>
+			<!-- right 详细信息数据  -->
+			<div class="comRightData fl">
+				<!-- 数据层  -->
+				<div class="tabData">
+					<table class="dataTitTab" cellpadding="0" cellspacing="0">
+						<tr>
+							<td class="lisDaWid1" align="center">选择</td>
+							<td class="lisDaWid1" align="center">序号</td>
+							<td class="lisDaWid2" align="center">产品名称</td>
+							<td class="lisDaWid3" align="center">产品库存</td>
+							<td class="lisDaWid3" align="center">产品规格</td>
+							<td class="lisDaWid3" align="center">产品均价</td>
+							<td class="lisDaWid3" align="center">最高价格</td>
+							<td class="lisDaWid3 noBorR" align="center">最低价格</td>
+						</tr>
+					</table>
+					<table id="dataListTab_pro" class="dataListTab" cellpadding="0" cellspacing="0">
+						<!-- 分页的话一页8条数据  -->
+						<tr>
+							<td class="lisDaWid1" align="center">
+								<label class="tabLabel">
+									<span class="checkSpan"></span>
+									<input type="checkbox"/>
+								</label>
+							</td>
+							<td class="lisDaWid1" align="center">01</td>
+							<td class="lisDaWid2" align="center">钢笔</td>
+							<td class="lisDaWid3" align="center">100</td>
+							<td class="lisDaWid3" align="center">25cm*25cm</td>
+							<td class="lisDaWid3" align="center">65.00</td>
+							<td class="lisDaWid3" align="center">80.00</td>
+							<td class="lisDaWid3 noBorR" align="center">50.00</td>
+						</tr>
+					</table>
+				</div>
+				<div class="botDiv">
+					<label class="selAllLab" onclick="selectAllPro()">
+						<span class="checkSpan"></span>
+						<input type="checkbox"/>
+						<span class="selAllTxt">全选</span>
+						<!--  i class="iconfont icon-duihao choiceAct"></i-->
+					</label>
+					<!-- 选中保存按钮  -->
+					<a class="saveDataBtn" href="javascript:void(0)">确定</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 选择仓库数据弹窗  -->
+	<div class="comAlertDiv instWhDataDiv">
+		<div class="comDataTop">
+			<p>选择货架编号</p>
+			<i class="iconfont icon-close closeIcon comTransition" onclick="closeAlertWin($('.instWhDataDiv'))"></i>
+		</div>
+		<div class="searLay">
+			<!-- 根据货架编号搜索层  -->
+			<div class="searchDiv">
+				<input type="text" id="searInput_insWh" value="请输入货架编号" class="searInp fl"/>
+				<a href="javascript:void(0)" class="searA fl" title="查询">
+					<i class="iconfont icon-search searIcon"></i>
+				</a>
+			</div>
+			<!-- 增加仓库类别层  -->
+			<a class="addCategUnitBtn" href="javascript:void(0)" onclick="showComAddWin(1)">
+				<i class="iconfont icon-tianjia addCaIcon fl"></i>
+				<span class="fl">添加仓库类别</span>
+			</a>
+			<!-- 增加仓库货架基本信息层  -->
+			<a class="addCategBtn" href="javascript:void(0)" onclick="showComAddWin(2)">
+				<i class="iconfont icon-tianjia addCaIcon fl"></i>
+				<span class="fl">添加货架</span>
+			</a>
+		</div>
+		<!-- 选择货架类别货架编号具体信息数据层  -->
+		<div class="comDataDiv clearfix">
+			<!-- left 类别数据  -->
+			<div class="comLeftData whCategDataDiv fl">
+				<p class="categTit"><i class="iconfont icon-categ categIcon"></i><span>仓库类别</span></p>
+				<div id="categDataDivWh" class="categDataDiv">
+					<ul id="categDataUlWh" class="categDataUl">
+						<!-- li下增加active状态为当前选中  -->
+						<li><span></span><i class="iconfont icon-mingpian cardIcon"></i><p class="ellip">亮宇一号仓库</p></li>
+						<li><span></span><i class="iconfont icon-mingpian cardIcon"></i><p>亮宇二号仓库</p></li>
+						<li><span></span><i class="iconfont icon-mingpian cardIcon"></i><p>亮宇三号仓库</p></li>
+					</ul>
+				</div>
+			</div>
+			<!-- right 详细信息数据  -->
+			<div class="comRightData fl">
+				<!-- 数据层  -->
+				<div class="tabData">
+					<ul class="selWhDataUl clearfix">
+						<li>A-00125811</li>
+						<li>A-002</li>
+						<li>A-003</li>
+						<li>A-0001</li>
+						<li>A-002</li>
+						<li>A-001013</li>
+						<li>B0df04</li>
+						<li>A-002</li>
+						<li>A-003</li>
+						<li>A-004</li>
+					</ul>
+				</div>
+				<div class="botDiv">
+					<!-- 选中保存按钮  -->
+					<a class="saveDataBtn" href="javascript:void(0)">确定</a>
+				</div>
+			</div>
+		</div>
+		<!-- 添加仓库类别和仓库货架编号遮罩层  -->
+		<div class="addNewDataDiv addWhCateg">
+			<!-- 添加仓库类别  -->
+			<div class="addWhCategDiv">
+				<div class="comCategDiv margT_cate">
+					<span>类别名称：</span>
+					<input type="text" class="comInp_add"/>
+					<!-- input提示信息  -->
+					<div id="categWhNaDiv" class="tipDiv">
+						<span class="tipTriSpan"></span>
+						<p></p>
+					</div>
+					<i id="sucWhCategNam" class="iconfont icon-duihao sucInfoIcon"></i>
+				</div>
+				<div class="comCategDiv">
+					<span>类别备注：</span>
+					<input type="text" class="comInp_add"/>
+				</div>
+				<a class="saveCategBtn" href="javascript:void(0)">添加保存</a>
+				<a class="cancelBtn" href="javascript:void(0)" onclick="comCancelAdd(3)">取消</a>
+			</div>
+			<!-- 添加货架基本信息 -->
+			<div class="addWhInfoDiv">
+				<div class="comAddDiv1 margT1">
+					<span>货架名称：</span>
+					<input type="text" class="comInp_add"/>
+					<!-- input提示信息 -->
+					<div id="whNameDiv" class="tipDiv">
+						<span class="tipTriSpan"></span>
+						<p></p>
+					</div>
+					<i id="sucWhName" class="iconfont icon-duihao sucInfoIcon"></i>
+				</div>
+				<div class="comAddDiv1">
+					<span class="fl">仓库类别：</span>
+					<div class="selCategDiv_wh fl">
+						<!-- 将确定的分类增加到p标签里面 -->
+						<p></p>
+						<a class="classifyA" href="javascript:void(0)" title="查看分类" onclick="selCategBankWin(1)">
+							<i class="iconfont icon-fenlei2 classifyIcon"></i>
+						</a>
+					</div>
+					<!-- input提示信息 -->
+					<div id="whCategDiv" class="tipDiv">
+						<span class="tipTriSpan"></span>
+						<p></p>
+					</div>
+					<i id="sucWhCateg" class="iconfont icon-duihao sucInfoIcon1"></i>
+				</div>
+				<div class="comAddDiv1">
+					<span>货架备注：</span>
+					<input type="text" class="comInp_add"/>
+				</div>
+				<a class="saveWhInfoBtn" href="javascript:void(0)">添加保存</a>
+				<a class="cancelBtn" href="javascript:void(0)" onclick="comCancelAdd(4)">取消</a>
+				<!-- 选择产品类别层  -->
+				<div class="selWhCategLay">
+					<p class="nowCategP">当前类别&gt;&gt;<span id="nowCateg_wh"></span></p>
+					<div id="selCategWrap_wh">
+						<ul id="selCategUl_wh" class="clearfix">
+							<li>钢笔耗材类</li>
+							<li>镜片耗材</li>
+							<li>钢笔耗材类</li>
+							<li>镜片耗材</li>
+							<li>钢笔耗材类</li>
+							<li>钢笔耗材类</li>
+						</ul>
+					</div>
+					<a class="selCategBtn" href="javascript:void(0)" onclick="selCagetBankName(2,$('#nowCateg_pro'),'暂未选择产品类别')">确定</a>
+					<a class="cancelBtn" href="javascript:void(0)" onclick="comCanCategBankWin(1)">取消</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

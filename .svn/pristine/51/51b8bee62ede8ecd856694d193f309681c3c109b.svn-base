@@ -1,0 +1,206 @@
+package com.optic.service.impl;
+
+import java.sql.Timestamp;
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import com.optic.dao.PurchaseOrderInfoDao;
+import com.optic.dao.UserInfoDao;
+import com.optic.exception.WEBException;
+import com.optic.factory.DaoFactory;
+import com.optic.module.BusinessContactInfo;
+import com.optic.module.PurchaseOrderInfo;
+import com.optic.module.UserInfo;
+import com.optic.service.PurchaseOrderInfoManager;
+import com.optic.tools.HibernateUtil;
+import com.optic.util.Constants;
+
+public class PurchaseOrderInfoManagerImpl implements PurchaseOrderInfoManager{
+
+	public Integer addPO(Integer bId, String poNo, Integer purUserId,
+			Timestamp pDate, float pTotalMoney, Integer status,
+			Integer payStatus, String pRemark) throws WEBException {
+		// TODO Auto-generated method stub
+		PurchaseOrderInfoDao poDao = null;
+		Transaction tran = null;
+		UserInfoDao uDao = null;
+		try {
+			poDao = (PurchaseOrderInfoDao)DaoFactory.instance(null).getDao(Constants.DAO_PURCHASE_ORDER_INFO);
+			uDao = (UserInfoDao)DaoFactory.instance(null).getDao(Constants.DAO_USER_INFO);
+			Session sess = HibernateUtil.currentSession();
+			tran = sess.beginTransaction();
+			UserInfo u = uDao.get(sess, purUserId);
+			PurchaseOrderInfo po = new PurchaseOrderInfo(null,u,poNo,pDate,pTotalMoney,0f,status,payStatus,pRemark);
+			poDao.save(sess, po);
+			tran.commit();
+			return po.getId();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new WEBException("增加采购订单信息时出现异常!");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public boolean updateBasicOP(Integer poId, Integer bId, String poNo,
+			Integer purUserId, Timestamp pDate, float pTotalMoney)
+			throws WEBException {
+		// TODO Auto-generated method stub
+		PurchaseOrderInfoDao poDao = null;
+		Transaction tran = null;
+		UserInfoDao uDao = null;
+		//修改此订单前需修改该订单下的订单详情
+		try {
+			poDao = (PurchaseOrderInfoDao)DaoFactory.instance(null).getDao(Constants.DAO_PURCHASE_ORDER_INFO);
+			uDao = (UserInfoDao)DaoFactory.instance(null).getDao(Constants.DAO_USER_INFO);
+			Session sess = HibernateUtil.currentSession();
+			tran = sess.beginTransaction();
+			UserInfo u = uDao.get(sess, purUserId);
+			PurchaseOrderInfo po = poDao.get(sess, poId);
+			BusinessContactInfo bc = new BusinessContactInfo();
+			po.setBusinessContactInfo(bc);
+			po.setPurONo(poNo);
+			po.setUserInfo(u);
+			po.setPurDate(pDate);
+			po.setPurTotalMoney(pTotalMoney);
+			poDao.update(sess, po);
+			tran.commit();
+			return true;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new WEBException("修改制定采购订单信息时出现异常!");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public boolean updateActivePayMoney(Integer poId, float payMoney)
+			throws WEBException {
+		// TODO Auto-generated method stub
+		PurchaseOrderInfoDao poDao = null;
+		Transaction tran = null;
+		//当财务进行付款时进行修改
+		try {
+			poDao = (PurchaseOrderInfoDao)DaoFactory.instance(null).getDao(Constants.DAO_PURCHASE_ORDER_INFO);
+			Session sess = HibernateUtil.currentSession();
+			tran = sess.beginTransaction();
+			PurchaseOrderInfo po = poDao.get(sess, poId);
+			po.setPurRealMoney(payMoney);
+			poDao.update(sess, po);
+			tran.commit();
+			return true;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new WEBException("修改指定采购订单的实际付款总额信息时出现异常!");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public boolean updateStatus(Integer poId, Integer status, Integer payStatus)
+			throws WEBException {
+		// TODO Auto-generated method stub
+		PurchaseOrderInfoDao poDao = null;
+		Transaction tran = null;
+		//当财务进行付款时进行修改
+		try {
+			poDao = (PurchaseOrderInfoDao)DaoFactory.instance(null).getDao(Constants.DAO_PURCHASE_ORDER_INFO);
+			Session sess = HibernateUtil.currentSession();
+			tran = sess.beginTransaction();
+			PurchaseOrderInfo po = poDao.get(sess, poId);
+			if(status != null){
+				po.setStatus(status);
+			}
+			if(payStatus != null){
+				po.setPayStatus(payStatus);
+			}
+			poDao.update(sess, po);
+			tran.commit();
+			return true;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new WEBException("修改指定采购订单的标记状态、付款状态信息时出现异常!");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public List<PurchaseOrderInfo> listPageInfoByOption(String poNo,
+			String poDate_s, String poDate_e, Integer poStatus,
+			Integer payStatus, Integer pageNo, Integer pageSize)
+			throws WEBException {
+		// TODO Auto-generated method stub
+		PurchaseOrderInfoDao poDao = null;
+		try {
+			poDao = (PurchaseOrderInfoDao)DaoFactory.instance(null).getDao(Constants.DAO_PURCHASE_ORDER_INFO);
+			Session sess = HibernateUtil.currentSession();
+			return poDao.findInfoByOption(sess, poNo, poDate_s, poDate_e, poStatus, payStatus, pageNo, pageSize);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new WEBException("根据条件分页获取采购订单信息时出现异常!");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public Integer getCountByOption(String poNo, String poDate_s,
+			String poDate_e, Integer poStatus, Integer payStatus)
+			throws WEBException {
+		// TODO Auto-generated method stub
+		PurchaseOrderInfoDao poDao = null;
+		try {
+			poDao = (PurchaseOrderInfoDao)DaoFactory.instance(null).getDao(Constants.DAO_PURCHASE_ORDER_INFO);
+			Session sess = HibernateUtil.currentSession();
+			return poDao.getCountByOption(sess, poNo, poDate_s, poDate_e, poStatus, payStatus);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new WEBException("根据条件获取采购订单信息记录条数时出现异常!");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public Integer getPageCount(int count, int pageSize) throws WEBException {
+		// TODO Auto-generated method stub
+		return (count + pageSize - 1 ) / pageSize;
+	}
+
+	public boolean delPO(Integer poId) throws WEBException {
+		// TODO Auto-generated method stub
+		PurchaseOrderInfoDao poDao = null;
+		Transaction tran = null;
+		//删除该采购订单前需要删除该订单下所有子订单
+		//只有采购中的采购单才能删除。已付款、已入库的单子不能删除。
+		try {
+			poDao = (PurchaseOrderInfoDao)DaoFactory.instance(null).getDao(Constants.DAO_PURCHASE_ORDER_INFO);
+			Session sess = HibernateUtil.currentSession();
+			tran = sess.beginTransaction();
+			poDao.delete(sess, poId);
+			tran.commit();
+			return true;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new WEBException("删除指定采购订单态信息时出现异常!");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+	public Integer getMaxCountByDate(String currDate) throws WEBException {
+		// TODO Auto-generated method stub
+		PurchaseOrderInfoDao poDao = null;
+		try {
+			poDao = (PurchaseOrderInfoDao)DaoFactory.instance(null).getDao(Constants.DAO_PURCHASE_ORDER_INFO);
+			Session sess = HibernateUtil.currentSession();
+			return poDao.getMaxNumberByDate(sess, currDate);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new WEBException("获取当天采购订单信息全部记录条数时出现异常!");
+		} finally{
+			HibernateUtil.closeSession();
+		}
+	}
+
+}

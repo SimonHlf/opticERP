@@ -1,0 +1,100 @@
+package com.optic.tools;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
+import net.sourceforge.pinyin4j.PinyinHelper;
+import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
+import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
+import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
+import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
+import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
+
+public class Convert {
+	/**
+	 * 获取中文全拼
+	 * @description
+	 * @author wm
+	 * @date 2017-3-7 上午09:46:40
+	 * @param inputStr
+	 * @return
+	 */
+	public static String getFullPY(String inputStr){
+		HanyuPinyinOutputFormat format = new HanyuPinyinOutputFormat();
+        format.setCaseType(HanyuPinyinCaseType.LOWERCASE);
+        format.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
+        format.setVCharType(HanyuPinyinVCharType.WITH_V);
+ 
+        char[] input = inputStr.trim().toCharArray();
+        String output = "";
+        try {
+            for (int i = 0; i < input.length; i++) {
+                if (java.lang.Character.toString(input[i]).matches("[\\u4E00-\\u9FA5]+")) {
+                    String[] temp = PinyinHelper.toHanyuPinyinStringArray(input[i], format);
+                    output += temp[0];
+                } else
+                    output += java.lang.Character.toString(input[i]);
+            }
+        } catch (BadHanyuPinyinOutputFormatCombination e) {
+            e.printStackTrace();
+        }
+        return output;
+	}
+	
+	/**
+	 * 获取中文首字母拼音
+	 * @description
+	 * @author wm
+	 * @date 2017-3-7 上午09:48:39
+	 * @param inputStr_chi
+	 * @return
+	 */
+	public static String getFirstSpell(String inputStr_chi){
+		StringBuffer pybf = new StringBuffer();   
+        char[] arr = inputStr_chi.toCharArray();   
+        HanyuPinyinOutputFormat defaultFormat = new HanyuPinyinOutputFormat();   
+        defaultFormat.setCaseType(HanyuPinyinCaseType.LOWERCASE);   
+        defaultFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);  
+        for (int i = 0; i < arr.length; i++) {   
+            if (arr[i] > 128) {   
+                    try {   
+                            String[] temp = PinyinHelper.toHanyuPinyinStringArray(arr[i], defaultFormat);   
+                            if (temp != null) {   
+                                    pybf.append(temp[0].charAt(0));   
+                            }   
+                    } catch (BadHanyuPinyinOutputFormatCombination e) {   
+                            e.printStackTrace();   
+                    }   
+            } else {   
+                    pybf.append(arr[i]);   
+            }   
+        }   
+        return pybf.toString().replaceAll("\\W", "").trim(); 
+	}
+	
+	/**
+	 * 保留2位小数的四舍五入
+	 * @description
+	 * @author wm
+	 * @date 2017-5-5 下午03:59:39
+	 * @param inputF
+	 * @return
+	 */
+	public static float convertInputNumber(float inputF){
+		return (float)(Math.round(inputF * 100)) / 100;
+	}
+	
+	/**
+	 * 保留2位小数的四舍五入
+	 * @description
+	 * @author wm
+	 * @date 2017-6-21 下午05:19:40
+	 * @param inputD
+	 * @return
+	 */
+	public static String convertInputNumber_1(double inputD){
+		DecimalFormat    df   = new DecimalFormat("######0.00");   
+		return df.format(inputD);
+	}
+}

@@ -1,0 +1,33 @@
+package com.optic.page;
+
+
+
+public class PageConst
+{
+
+    public PageConst()
+    {
+    }
+
+    public static int getPageNo(String pageNoStr, int pageCount)
+    {
+        int pageNo;
+        if(pageNoStr == null || pageNoStr.trim().equals(""))
+            pageNo = 0;
+        try
+        {
+            pageNo = Integer.parseInt(pageNoStr.trim());
+        }
+        catch(Exception e)
+        {
+            pageNo = 1;
+        }
+        if(pageNo > pageCount)
+            pageNo = pageCount;
+        return pageNo;
+    }
+    
+    public static int getPageCount(int count, int pageSize){
+		return (count + pageSize - 1) / pageSize;
+	}
+}

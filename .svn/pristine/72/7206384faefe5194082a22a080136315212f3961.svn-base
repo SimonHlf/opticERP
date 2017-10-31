@@ -1,0 +1,80 @@
+package com.optic.module;
+
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * PLossInfo entity. @author MyEclipse Persistence Tools
+ */
+
+public class PLossInfo implements java.io.Serializable {
+
+	// Fields
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Integer id;
+	private OutInfo outInfo;
+	private Integer inNumber;
+	private Set<PLossSubInfo> proLossSubInfos = new HashSet<PLossSubInfo>();
+
+	// Constructors
+
+	/** default constructor */
+	public PLossInfo() {
+	}
+
+	/** minimal constructor */
+	public PLossInfo(OutInfo outInfo, Integer inNumber) {
+		this.outInfo = outInfo;
+		this.inNumber = inNumber;
+	}
+
+	/** full constructor */
+	public PLossInfo(Integer id,OutInfo outInfo, Integer inNumber) {
+		this.id = id;
+		this.outInfo = outInfo;
+		this.inNumber = inNumber;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public OutInfo getOutInfo() {
+		return outInfo;
+	}
+
+	public void setOutInfo(OutInfo outInfo) {
+		this.outInfo = outInfo;
+	}
+
+	public Integer getInNumber() {
+		return inNumber;
+	}
+
+	public void setInNumber(Integer inNumber) {
+		this.inNumber = inNumber;
+	}
+
+	public Set<PLossSubInfo> getProLossSubInfos() {
+		return proLossSubInfos;
+	}
+
+	public void setProLossSubInfos(Set<PLossSubInfo> proLossSubInfos) {
+		this.proLossSubInfos = proLossSubInfos;
+	}
+
+	
+
+	// Property accessors
+
+	
+
+}

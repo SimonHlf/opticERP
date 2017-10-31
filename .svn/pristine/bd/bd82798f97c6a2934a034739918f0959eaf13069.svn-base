@@ -1,0 +1,109 @@
+package com.optic.module;
+
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * DepartmentInfo entity. @author MyEclipse Persistence Tools
+ */
+
+public class DepartmentInfo implements java.io.Serializable {
+
+	// Fields
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Integer id;
+	private String depName;
+	private Integer depOption;
+	private String depRemark;
+	private Set<UserDepartmentInfo> userDepartmentInfos = new HashSet<UserDepartmentInfo>();
+	private Set<PLossSubInfo> proLossSubInfos = new HashSet<PLossSubInfo>();
+	private Set<OutInfo> outInfos = new HashSet<OutInfo>();
+
+	// Constructors
+
+	/** default constructor */
+	public DepartmentInfo() {
+	}
+
+	/** minimal constructor */
+	public DepartmentInfo(String depName, Integer depOption, String depRemark) {
+		this.depName = depName;
+		this.depOption = depOption;
+		this.depRemark = depRemark;
+	}
+
+	/** full constructor */
+	public DepartmentInfo(Integer id,String depName, Integer depOption, String depRemark) {
+		this.id = id;
+		this.depName = depName;
+		this.depOption = depOption;
+		this.depRemark = depRemark;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getDepName() {
+		return depName;
+	}
+
+	public void setDepName(String depName) {
+		this.depName = depName;
+	}
+
+	public Integer getDepOption() {
+		return depOption;
+	}
+
+	public void setDepOption(Integer depOption) {
+		this.depOption = depOption;
+	}
+
+	public String getDepRemark() {
+		return depRemark;
+	}
+
+	public void setDepRemark(String depRemark) {
+		this.depRemark = depRemark;
+	}
+
+	public Set<UserDepartmentInfo> getUserDepartmentInfos() {
+		return userDepartmentInfos;
+	}
+
+	public void setUserDepartmentInfos(Set<UserDepartmentInfo> userDepartmentInfos) {
+		this.userDepartmentInfos = userDepartmentInfos;
+	}
+
+	public Set<PLossSubInfo> getProLossSubInfos() {
+		return proLossSubInfos;
+	}
+
+	public void setProLossSubInfos(Set<PLossSubInfo> proLossSubInfos) {
+		this.proLossSubInfos = proLossSubInfos;
+	}
+
+	public Set<OutInfo> getOutInfos() {
+		return outInfos;
+	}
+
+	public void setOutInfos(Set<OutInfo> outInfos) {
+		this.outInfos = outInfos;
+	}
+
+	
+
+	// Property accessors
+
+	
+
+}

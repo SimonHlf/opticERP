@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<daoContext>
+	<dao id="user_info_Dao" class="com.optic.dao.impl.UserInfoDaoImpl"/>
+	<dao id="wh_type_info_Dao" class="com.optic.dao.impl.WhTypeInfoDaoImpl"/>
+	<dao id="wh_storage_info_Dao" class="com.optic.dao.impl.WhStorageInfoDaoImpl"/>
+	<dao id="user_dep_info_Dao" class="com.optic.dao.impl.UserDepartmentInfoDaoImpl"/>
+	<dao id="dep_info_Dao" class="com.optic.dao.impl.DepartmentInfoDaoImpl"/>
+</daoContext>

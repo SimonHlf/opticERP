@@ -1,0 +1,73 @@
+package com.optic.dao.impl;
+
+import java.util.List;
+
+import org.hibernate.Session;
+
+import com.optic.dao.ProductInfoDao;
+import com.optic.module.ProductInfo;
+
+public class ProductInfoDaoImpl implements ProductInfoDao {
+
+	public ProductInfo get(Session sess, int id) {
+		return (ProductInfo)sess.load(ProductInfo.class, id);
+	}
+
+	public void save(Session sess, ProductInfo productInfo) {
+		sess.save(productInfo);
+	}
+
+	public void delete(Session sess, ProductInfo productInfo) {
+		sess.delete(productInfo);
+
+	}
+
+	public void delete(Session sess, int id) {
+		sess.delete(this.get(sess, id));
+
+	}
+
+	public void update(Session sess, ProductInfo productInfo) {
+		sess.update(productInfo);
+
+	}
+	
+	public List<ProductInfo> getInfoById(Session sess, Integer id) {
+		
+		String hql = " from ProductInfo as pi where pi.id = "+id;
+		@SuppressWarnings("unchecked")
+		List<ProductInfo> pList = sess.createQuery(hql).list();
+		return pList;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<ProductInfo> getProductInfoList(Session sess,Integer proTypeId , String proPy,int pageNo, int pageSize) {
+		int offset = (pageNo-1)*pageSize;
+		if(offset<0){
+			offset = 0;
+		}
+		String hql = " from ProductInfo as pi where 1=1";
+		if(!proTypeId.equals(0)){
+			hql += " and pi.productTypeInfo.id="+proTypeId;
+		}
+		if(!proPy.equals("")){
+			hql += " and pi.proPy='"+proPy+"'";
+		}
+		List<ProductInfo> pList = sess.createQuery(hql).setFirstResult(offset).setMaxResults(pageSize).list();
+		return pList;
+	}
+
+	public Integer getProInfoCount(Session sess, Integer proTypeId, String proPy) {
+		String hql = "select count(pi.id) from ProductInfo as pi  where 1=1";
+		if(!proTypeId.equals(0)){
+			hql += " and pi.productTypeInfo.id="+proTypeId;
+		}
+		if(!proPy.equals("")){
+			hql += " and pi.proPy='"+proPy+"'";
+		}
+		
+		long proCount = (Long) sess.createQuery(hql).uniqueResult();
+		return  (int) proCount;
+	}
+
+}
